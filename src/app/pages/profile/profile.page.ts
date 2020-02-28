@@ -11,8 +11,29 @@ import { CartModalPage } from '../cart-modal/cart-modal.page';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage  {
+// export class ProfilePage  {
   
 
-  constructor() { }
+//   constructor() { }
+// }
+
+
+
+export class ProfilePage implements OnInit {
+  products: Observable<any>;
+
+  constructor(private auth: AuthService, private productService: ProductService) { }
+
+  ngOnInit() {
+    this.products = this.productService.getSellerProducts();
+  }
+
+  delete(id) {
+    this.productService.deleteProduct(id);
+  }
+
+  signOut() {
+    this.auth.signOut();
+  }
+
 }

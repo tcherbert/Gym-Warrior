@@ -491,6 +491,7 @@ var routes = [
         loadChildren: function () { return __webpack_require__.e(/*! import() | pages-login-login-module */ "pages-login-login-module").then(__webpack_require__.bind(null, /*! ./pages/login/login.module */ "./src/app/pages/login/login.module.ts")).then(function (m) { return m.LoginPageModule; }); },
         canActivate: [_guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_5__["AutomaticLoginGuard"]]
     },
+    // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
     {
         path: 'buyer',
         canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
@@ -499,6 +500,14 @@ var routes = [
             role: 'BUYER'
         },
         children: [
+            {
+                path: 'gym',
+                loadChildren: function () { return __webpack_require__.e(/*! import() | pages-gym-gym-module */ "pages-gym-gym-module").then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(function (m) { return m.GymPageModule; }); }
+            },
+            {
+                path: 'profile',
+                loadChildren: function () { return Promise.all(/*! import() | pages-profile-profile-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-profile-profile-module")]).then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(function (m) { return m.ProfilePageModule; }); }
+            },
             {
                 path: 'list',
                 loadChildren: function () { return Promise.all(/*! import() | pages-buyer-list-buyer-list-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-buyer-list-buyer-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/buyer-list/buyer-list.module */ "./src/app/pages/buyer-list/buyer-list.module.ts")).then(function (m) { return m.BuyerListPageModule; }); }
@@ -509,7 +518,7 @@ var routes = [
             },
             {
                 path: '',
-                redirectTo: 'list',
+                redirectTo: 'profile',
                 pathMatch: 'full'
             }
         ]
@@ -1247,7 +1256,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/timherbert/Desktop/academy-fire-marketplace-course/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/timherbert/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
 
 
 /***/ })
