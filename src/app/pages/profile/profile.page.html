@@ -1,23 +1,5 @@
 <ion-app>
-  <ion-menu side="end" content-id="main-content">
-    <ion-content>
-      <ion-list>
-            <ion-button class="navButton" fill="clear"  href="buyer/profile">Profile Page</ion-button>
-            <ion-button class="navButton" fill="clear" href="buyer/gym">Gym Page</ion-button>
-            <ion-button class="navButton" fill="clear" href="/groups">Groups Page</ion-button>
-      </ion-list>
-    </ion-content>
-  </ion-menu>
-
-  <div id="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="end">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-img class="logo" src="http://isoptera.lcsc.edu/~tcherbert/cs480/gwlogo.png"></ion-img>
-      </ion-toolbar>
-    </ion-header>
+  
     
     <!-- Main Content Area. Insert content in here-->
       <header>
@@ -31,7 +13,7 @@
      
   </main>
     
-  </div>
+
   <ion-button (click)="signOut()">
     <ion-icon slot="icon-only" name="log-out"></ion-icon>
   </ion-button>

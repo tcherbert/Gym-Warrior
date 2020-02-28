@@ -32,6 +32,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
+        path: 'groups',
+        loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
+      },
+     
+      {
         path: 'list',
         loadChildren: () => import('./pages/buyer-list/buyer-list.module').then( m => m.BuyerListPageModule)
       },
