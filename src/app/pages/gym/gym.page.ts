@@ -11,8 +11,21 @@ import { CartModalPage } from '../cart-modal/cart-modal.page';
   templateUrl: './gym.page.html',
   styleUrls: ['./gym.page.scss'],
 })
-export class GymPage  {
-  
+export class GymPage implements OnInit {
+  products: Observable<any>;
 
-  constructor() { }
+  constructor(private auth: AuthService, private productService: ProductService) { }
+
+  ngOnInit() {
+    this.products = this.productService.getSellerProducts();
+  }
+
+  delete(id) {
+    this.productService.deleteProduct(id);
+  }
+
+  signOut() {
+    this.auth.signOut();
+  }
+
 }
