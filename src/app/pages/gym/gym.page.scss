@@ -2,7 +2,8 @@
   background: url(../../../assets/gymprofile.jpeg);
   background-size: cover;
   background-repeat: no-repeat;
-  height: 35%;
+  height: 55%;
+  margin-top: 62px;
 }
 
 #nameStatus {
@@ -10,6 +11,14 @@
   text-shadow: -2px 2px 6px black;
   }
 
-ion-button {
-      width: 32%;
+
+  .profileImage2 {
+    background: url(../../../assets/gymprofile.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 55%;
+
+  }
+  .nav{
+    width: 32%;
   }
