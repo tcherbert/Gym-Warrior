@@ -2,7 +2,5 @@ Google-Service-Info.plist
 google-services.json
 node_modules/*
 node_modules
-resources/*
-resouces
 platforms/*
 platforms
