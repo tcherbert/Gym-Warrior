@@ -28,3 +28,19 @@
 .nav{
   width: 24%;
 }
+@media only screen and (max-width: 400px){
+  .nav{
+    width: 23.7%;
+  }
+}
+@media only screen and (min-width: 1000px){
+  .navbar{
+    margin-top: -110px;
+  }
+  .mainContent{
+    margin-top: -110px;
+  }
+  .signOutButton{
+    margin-top: -110px;
+  }
+}
