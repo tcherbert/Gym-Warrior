@@ -24,6 +24,10 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'calendar',
+        loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
+      },
+      {
         path: 'gym',
         loadChildren: () => import('./pages/gym/gym.module').then( m => m.GymPageModule)
       },
