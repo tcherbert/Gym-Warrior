@@ -6,6 +6,7 @@ import { CartService } from '../../services/cart.service';
 import { ModalController } from '@ionic/angular';
 import { CartModalPage } from '../cart-modal/cart-modal.page';
 
+
 @Component({
   selector: 'app-buyer-list',
   templateUrl: './profile.page.html',
@@ -22,7 +23,11 @@ import { CartModalPage } from '../cart-modal/cart-modal.page';
 export class ProfilePage implements OnInit {
   products: Observable<any>;
 
-  constructor(private auth: AuthService, private productService: ProductService) { }
+  constructor(private auth: AuthService, private productService: ProductService ) {
+    
+
+   }
+  
 
   ngOnInit() {
     this.products = this.productService.getSellerProducts();

@@ -18,6 +18,8 @@ import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
 import { Camera } from '@ionic-native/camera/ngx';
 import { CartModalPageModule } from './pages/cart-modal/cart-modal.module';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Geofence } from '@ionic-native/geofence/ngx';
 
 class CameraMock extends Camera {
   getPicture(options) {
@@ -40,6 +42,8 @@ class CameraMock extends Camera {
   ],
   providers: [
     StatusBar,
+    Geolocation,
+    Geofence,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // Camera

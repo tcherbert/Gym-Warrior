@@ -29,7 +29,20 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
+    },
+    "cordova-plugin-geofence": {
+      "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
     }
   },
-  "dependent_plugins": {}
+  "dependent_plugins": {
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
+    },
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
+    }
+  }
 }
