@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.LCSCWorkoutApp.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MyApp</name>
     <description>An awesome Ionic/Cordova app.</description>
-    <author email="tcherbert@lcmail.lcsc.edu" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -47,40 +47,40 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <icon height="57" src="assets/icons/Icon-57.png" width="57" />
-        <icon height="114" src="assets/icons/Icon-114.png" width="114" />
-        <icon height="29" src="assets/icons/Icon-29.png" width="29" />
-        <icon height="58" src="assets/icons/Icon-58.png" width="58" />
-        <icon height="87" src="assets/icons/Icon-87.png" width="87" />
-        <icon height="20" src="assets/icons/Icon-20.png" width="20" />
-        <icon height="40" src="assets/icons/Icon-40.png" width="40" />
-        <icon height="60" src="assets/icons/Icon-60.png" width="60" />
-        <icon height="48" src="assets/icons/Icon-48.png" width="48" />
-        <icon height="55" src="assets/icons/Icon-55.png" width="55" />
-        <icon height="29" src="assets/icons/Icon-29.png" width="29" />
-        <icon height="58" src="assets/icons/Icon-58.png" width="58" />
-        <icon height="87" src="assets/icons/Icon-87.png" width="87" />
-        <icon height="40" src="assets/icons/Icon-40.png" width="40" />
-        <icon height="80" src="assets/icons/Icon-80.png" width="80" />
-        <icon height="120" src="assets/icons/Icon-120.png" width="120" />
-        <icon height="88" src="assets/icons/Icon-88.png" width="88" />
-        <icon height="50" src="assets/icons/Icon-50.png" width="50" />
-        <icon height="100" src="assets/icons/Icon-100.png" width="100" />
-        <icon height="60" src="assets/icons/Icon-60.png" width="60" />
-        <icon height="120" src="assets/icons/Icon-120.png" width="120" />
-        <icon height="180" src="assets/icons/Icon-180.png" width="180" />
-        <icon height="72" src="assets/icons/Icon-72.png" width="72" />
-        <icon height="144" src="assets/icons/Icon-144.png" width="144" />
-        <icon height="76" src="assets/icons/Icon-76.png" width="76" />
-        <icon height="152" src="assets/icons/Icon-152.png" width="152" />
-        <icon height="167" src="assets/icons/Icon-167.png" width="167" />
-        <icon height="172" src="assets/icons/Icon-172.png" width="172" />
-        <icon height="196" src="assets/icons/Icon-196.png" width="196" />
-        <icon height="1024" src="assets/icons/Icon-1024.png" width="1024" />
-        <splash height="480" src="assets/icons/Icon-320.png" width="320" />
-        <splash height="960" src="assets/icons/Icon-640.png" width="640" />
-        <splash height="1024" src="assets/icons/Icon-768.png" width="768" />
-        <splash height="768" src="assets/icons/Icon-768.png" width="1024" />
+        <icon height="57" src="resources/ios/icon/icon.png" width="57" />
+        <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
+        <icon height="29" src="resources/ios/icon/icon-small.png" width="29" />
+        <icon height="58" src="resources/ios/icon/icon-small@2x.png" width="58" />
+        <icon height="87" src="resources/ios/icon/icon-small@3x.png" width="87" />
+        <icon height="20" src="resources/ios/icon/icon-20.png" width="20" />
+        <icon height="40" src="resources/ios/icon/icon-20@2x.png" width="40" />
+        <icon height="60" src="resources/ios/icon/icon-20@3x.png" width="60" />
+        <icon height="48" src="resources/ios/icon/icon-24@2x.png" width="48" />
+        <icon height="55" src="resources/ios/icon/icon-27.5@2x.png" width="55" />
+        <icon height="29" src="resources/ios/icon/icon-29.png" width="29" />
+        <icon height="58" src="resources/ios/icon/icon-29@2x.png" width="58" />
+        <icon height="87" src="resources/ios/icon/icon-29@3x.png" width="87" />
+        <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
+        <icon height="80" src="resources/ios/icon/icon-40@2x.png" width="80" />
+        <icon height="120" src="resources/ios/icon/icon-40@3x.png" width="120" />
+        <icon height="88" src="resources/ios/icon/icon-44@2x.png" width="88" />
+        <icon height="50" src="resources/ios/icon/icon-50.png" width="50" />
+        <icon height="100" src="resources/ios/icon/icon-50@2x.png" width="100" />
+        <icon height="60" src="resources/ios/icon/icon-60.png" width="60" />
+        <icon height="120" src="resources/ios/icon/icon-60@2x.png" width="120" />
+        <icon height="180" src="resources/ios/icon/icon-60@3x.png" width="180" />
+        <icon height="72" src="resources/ios/icon/icon-72.png" width="72" />
+        <icon height="144" src="resources/ios/icon/icon-72@2x.png" width="144" />
+        <icon height="76" src="resources/ios/icon/icon-76.png" width="76" />
+        <icon height="152" src="resources/ios/icon/icon-76@2x.png" width="152" />
+        <icon height="167" src="resources/ios/icon/icon-83.5@2x.png" width="167" />
+        <icon height="172" src="resources/ios/icon/icon-86@2x.png" width="172" />
+        <icon height="196" src="resources/ios/icon/icon-98@2x.png" width="196" />
+        <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
+        <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
+        <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
+        <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
+        <splash height="768" src="resources/ios/splash/Default-Landscape~ipad.png" width="1024" />
         <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436" />
         <splash height="1242" src="resources/ios/splash/Default-Landscape-736h.png" width="2208" />
         <splash height="2048" src="resources/ios/splash/Default-Portrait@2x~ipad.png" width="1536" />

@@ -447,7 +447,7 @@ module.exports = webpackAsyncContext;
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n"
+module.exports = "<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n\n</ion-app>\n"
 
 /***/ }),
 
@@ -501,12 +501,20 @@ var routes = [
         },
         children: [
             {
+                path: 'calendar',
+                loadChildren: function () { return Promise.all(/*! import() | pages-calendar-calendar-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-calendar-calendar-module")]).then(__webpack_require__.bind(null, /*! ./pages/calendar/calendar.module */ "./src/app/pages/calendar/calendar.module.ts")).then(function (m) { return m.CalendarPageModule; }); }
+            },
+            {
                 path: 'gym',
-                loadChildren: function () { return __webpack_require__.e(/*! import() | pages-gym-gym-module */ "pages-gym-gym-module").then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(function (m) { return m.GymPageModule; }); }
+                loadChildren: function () { return Promise.all(/*! import() | pages-gym-gym-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-gym-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(function (m) { return m.GymPageModule; }); }
             },
             {
                 path: 'profile',
                 loadChildren: function () { return Promise.all(/*! import() | pages-profile-profile-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-profile-profile-module")]).then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(function (m) { return m.ProfilePageModule; }); }
+            },
+            {
+                path: 'groups',
+                loadChildren: function () { return Promise.all(/*! import() | pages-groups-groups-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-groups-groups-module")]).then(__webpack_require__.bind(null, /*! ./pages/groups/groups.module */ "./src/app/pages/groups/groups.module.ts")).then(function (m) { return m.GroupsPageModule; }); }
             },
             {
                 path: 'list',
@@ -663,6 +671,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/index.js");
 /* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "./node_modules/@ionic-native/camera/ngx/index.js");
 /* harmony import */ var _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/cart-modal/cart-modal.module */ "./src/app/pages/cart-modal/cart-modal.module.ts");
+/* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
+/* harmony import */ var _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic-native/geofence/ngx */ "./node_modules/@ionic-native/geofence/ngx/index.js");
+
+
 
 
 
@@ -709,6 +721,8 @@ var AppModule = /** @class */ (function () {
             ],
             providers: [
                 _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_7__["StatusBar"],
+                _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__["Geolocation"],
+                _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__["Geofence"],
                 _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_6__["SplashScreen"],
                 { provide: _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouteReuseStrategy"], useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonicRouteStrategy"] },
                 // Camera
