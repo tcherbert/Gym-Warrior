@@ -17,7 +17,7 @@ export class RoleGuard implements CanActivate {
     return this.auth.user.pipe(
       take(1),
       map(user => {
-        console.log('user in here: ', user);
+        // console.log('user in here: ', user);
         if (!user) {
           return false;
         } else {

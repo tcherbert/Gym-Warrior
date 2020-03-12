@@ -16,6 +16,10 @@
     },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "io.ionic.starter"
+    },
+    "cordova-plugin-ionic-webview": {
+      "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+",
+      "PACKAGE_NAME": "com.LCSCWorkoutApp.app"
     }
   },
   "dependent_plugins": {}

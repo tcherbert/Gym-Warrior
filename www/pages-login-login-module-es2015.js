@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-title>Academy Fire</ion-title>\n  </ion-toolbar>\n</ion-header> -->\n\n<ion-content>\n  <header>\n    <ion-img class=\"centerLogo\" src=\"../../../assets/landing_logo.png\"></ion-img>\n  </header>\n  <div class=\"flip-container\" #flipcontainer>\n    <div class=\"flipper\">\n      <div class=\"front\">\n          <ion-card>\n            <ion-card-header>\n              <ion-card-title>Login</ion-card-title>\n            </ion-card-header>\n              <ion-card-content>\n                <form [formGroup]=\"loginForm\" (ngSubmit)=\"login()\">\n                  <ion-input type=\"email\" placeholder=\"E-Mail\" formControlName=\"email\"></ion-input>\n                  <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n\n                  <ion-button expand=\"block\" type=\"submit\" [disabled]=\"!loginForm.valid\"\n                  class=\"sign-in ion-padding-horizontal ion-margin-vertical\">\n                    Sign in\n                  </ion-button>\n     \n                  <ion-button expand=\"block\" type=\"button\" fill=\"outline\"\n                  class=\"create-button ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                Create Account\n                </ion-button>\n                </form>\n              </ion-card-content>\n            </ion-card>\n      </div>\n\n      <div class=\"back\">\n          <ion-card>\n              <ion-card-header>\n                <ion-card-title>Register</ion-card-title>\n              </ion-card-header>\n              <ion-card-content>\n                <form [formGroup]=\"registerForm\" (ngSubmit)=\"register()\">\n                  <ion-input type=\"email\" placeholder=\"Email\" formControlName=\"email\"></ion-input>\n                    <ion-input placeholder=\"Name\" formControlName=\"name\"></ion-input>\n                    <ion-input type=\"password\" placeholder=\"password\" formControlName=\"password\"></ion-input>\n                  \n          \n                  <ion-item lines=\"none\">\n                    <ion-label>Select Role</ion-label>\n                    <ion-select formControlName=\"role\">\n                        <ion-select-option value=\"BUYER\">Buyer</ion-select-option>\n                        <ion-select-option value=\"SELLER\">Seller</ion-select-option>\n                    </ion-select>\n                  </ion-item>\n          \n                  <ion-button expand=\"block\" type=\"submit\" class=\"ion-padding-horizontal ion-margin-vertical\"\n                  [disabled]=\"!registerForm.valid\">\n                    Register\n                  </ion-button>\n\n                  <ion-button expand=\"block\" type=\"button\"  fill=\"clear\"\n                  class=\"ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                  <ion-icon name=\"arrow-back\" slot=\"start\"></ion-icon>\n                Back to Login\n                </ion-button>\n\n                </form>\n              </ion-card-content>\n            </ion-card>\n      </div>\n    </div>\n  </div>\n\n</ion-content>\n"
+module.exports = "<!-- <ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-title>Academy Fire</ion-title>\n  </ion-toolbar>\n</ion-header> -->\n\n<ion-content>\n  <header>\n    <ion-img class=\"centerLogo\" src=\"../../../assets/landing_logo.png\"></ion-img>\n  </header>\n  <div class=\"flip-container\" #flipcontainer>\n    <div class=\"flipper\">\n      <div class=\"front\">\n        <ion-card>\n          <ion-card-header>\n            <ion-card-title>Login</ion-card-title>\n          </ion-card-header>\n          <ion-card-content>\n            <form [formGroup]=\"loginForm\" (ngSubmit)=\"login()\">\n              <ion-input type=\"email\" placeholder=\"E-Mail\" formControlName=\"email\"></ion-input>\n              <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n\n              <ion-button expand=\"block\" type=\"submit\" [disabled]=\"!loginForm.valid\"\n              class=\"sign-in ion-padding-horizontal ion-margin-vertical\">\n                Sign in\n              </ion-button>\n  \n              <ion-button expand=\"block\" type=\"button\" fill=\"outline\"\n              class=\"create-button ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                Create Account\n              </ion-button>\n            </form>\n          </ion-card-content>\n        </ion-card>\n      </div>\n\n      <div class=\"back\">\n        <ion-card>\n            <ion-card-header>\n              <ion-card-title>Register</ion-card-title>\n            </ion-card-header>\n            <ion-card-content>\n              <form [formGroup]=\"registerForm\" (ngSubmit)=\"register()\">\n                <ion-input type=\"email\" placeholder=\"Email\" formControlName=\"email\"></ion-input>\n                <ion-input placeholder=\"First Name\" formControlName=\"fname\"></ion-input>\n                <ion-input placeholder=\"Last Name\" formControlName=\"lname\"></ion-input>\n                <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n                \n                <ion-button expand=\"block\" type=\"submit\" class=\"ion-padding-horizontal ion-margin-vertical\"\n                [disabled]=\"!registerForm.valid\">\n                  Register\n                </ion-button>\n                \n                <ion-button expand=\"block\" type=\"button\"  fill=\"clear\"\n                class=\"ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                  <ion-icon name=\"arrow-back\" slot=\"start\"></ion-icon>\n                  Back to Login\n                </ion-button>\n                \n              </form>\n            </ion-card-content>\n          </ion-card>\n      </div>\n    </div>\n  </div>\n\n</ion-content>\n"
 
 /***/ }),
 
@@ -137,7 +137,8 @@ let LoginPage = class LoginPage {
         this.registerForm = this.fb.group({
             email: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].email]],
             password: ['', [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required, _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].minLength(6)]],
-            name: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            fname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
+            lname: ['', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required],
             role: ['BUYER', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]
         });
         this.loginForm = this.fb.group({
@@ -146,16 +147,13 @@ let LoginPage = class LoginPage {
         });
     }
     navigateByRole(role) {
-        if (role == 'BUYER') {
-            this.router.navigateByUrl('/buyer/profile');
-        }
-        else if (role == 'SELLER') {
-            this.router.navigateByUrl('/seller');
+        if (role === 'USER') {
+            this.router.navigateByUrl('/user/profile');
         }
     }
     login() {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
-            let loading = yield this.loadingCtrl.create({
+            const loading = yield this.loadingCtrl.create({
                 message: 'Loading...'
             });
             yield loading.present();
@@ -176,6 +174,7 @@ let LoginPage = class LoginPage {
     }
     register() {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            console.log('Start of Register...');
             let loading = yield this.loadingCtrl.create({
                 message: 'Loading...'
             });

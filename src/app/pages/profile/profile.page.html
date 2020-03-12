@@ -1,19 +1,19 @@
-<ion-app>
+<ion-app *ngIf="dataReady">
   <!--Navigation Bar-->
   <ion-menu contentId="main" side="end" class="navMenu">
     <ion-content>
       <ion-list>
         <ion-item>
-          <ion-button class="navButton" fill="clear" href="/buyer/home">Home Page</ion-button>
+          <ion-button class="navButton" fill="clear" href="/user/home">Home Page</ion-button>
         </ion-item>
         <ion-item>
-          <ion-button class="navButton" fill="clear"  href="/buyer/profile">Profile Page</ion-button>
+          <ion-button class="navButton" fill="clear"  href="/user/profile">Profile Page</ion-button>
         </ion-item>
         <ion-item>
-          <ion-button class="navButton" fill="clear" href="/buyer/gym">Gym Page</ion-button>
+          <ion-button class="navButton" fill="clear" href="/user/gym">Gym Page</ion-button>
         </ion-item>
         <ion-item>
-          <ion-button class="navButton" fill="clear" href="/buyer/groups">Groups Page</ion-button>
+          <ion-button class="navButton" fill="clear" href="/user/groups">Groups Page</ion-button>
         </ion-item>
     
       </ion-list>
@@ -30,11 +30,19 @@
       </ion-toolbar>
     </ion-header>
   </div> 
-
-  <div class="profileImage ">
+  
+  <div class="profileImage">
+    <div *ngIf="imageReady">
+      <!-- <div class="imageBg" [style.background-image]="profileImage"> -->
+      <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
+        
+        <!-- <img [src]="profileImage" *ngIf="profileImage"> -->
+      </div>
+  </div>
+    <ion-button (click)="selectSource()"><ion-icon name="md-create"></ion-icon></ion-button>  
     <ion-card-header>
-        <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-        <ion-card-subtitle id="nameStatus">Tim Herbert</ion-card-subtitle>
+        <ion-card-title> {{ fname }} {{ lname }}</ion-card-title>
+        <ion-card-subtitle> Out of Shape -- Beginner </ion-card-subtitle>
     </ion-card-header>
   </div>
   <div class="navbar">
@@ -43,6 +51,8 @@
     <ion-button class="nav" color="lightred">Friends</ion-button>
     <ion-button class="nav" color="darkred">Schedule</ion-button>
   </div>
+  
+  
   <main class="mainContent">
     <div>
       <ion-card class="profileImage2">
@@ -72,5 +82,4 @@
     <ion-icon slot="icon-only" name="log-out"></ion-icon>
   </ion-button>
 </ion-app>
-
 
