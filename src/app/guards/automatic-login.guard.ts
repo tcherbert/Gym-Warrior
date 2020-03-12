@@ -20,11 +20,12 @@ export class AutomaticLoginGuard implements CanActivate  {
         } else {
           const role = user['role'];
 
-          if (role == 'BUYER') {
-            this.router.navigateByUrl('/buyer');
-          } else if (role == 'SELLER') {
-            this.router.navigateByUrl('/seller');
+          if (role == 'USER') {
+            this.router.navigateByUrl('/user');
           }
+          // } else if (role == 'SELLER') {
+          //   this.router.navigateByUrl('/seller');
+          // }
           return false;
         }
       })
