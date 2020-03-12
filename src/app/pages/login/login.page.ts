@@ -22,7 +22,8 @@ export class LoginPage implements OnInit {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      name: ['', Validators.required],
+      fname: ['', Validators.required],
+      lname: ['', Validators.required],
       role: ['BUYER', Validators.required]
     });
 
@@ -33,10 +34,8 @@ export class LoginPage implements OnInit {
   }
 
   navigateByRole(role) {
-    if (role == 'BUYER') {
-      this.router.navigateByUrl('/buyer/profile');
-    } else if (role == 'SELLER') {
-      this.router.navigateByUrl('/seller');
+    if (role == 'USER') {
+      this.router.navigateByUrl('/user/profile');
     }
   }
 
@@ -64,6 +63,7 @@ export class LoginPage implements OnInit {
   }
 
   async register() {
+    console.log("Start of Register...");
     let loading = await this.loadingCtrl.create({
       message: 'Loading...'
     });

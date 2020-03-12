@@ -29,8 +29,11 @@ export class AuthService {
       switchMap(user => {
         console.log('real user: ', user);
         if (user) {
+          console.log('Login Working...??');
+          console.log(this.db.doc(`users/${user.user.uid}`).valueChanges());
           return this.db.doc(`users/${user.user.uid}`).valueChanges();
         } else {
+          console.log('Login Not Working...');
           return of(null);
         }
       })
@@ -38,12 +41,14 @@ export class AuthService {
   }
 
   signUp(credentials) {
+    console.log('signUp Credentials: ' + credentials);
     return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then(data => {
       console.log('after register: ', data);
       return this.db.doc(`users/${data.user.uid}`).set({
-        name: credentials.name,
+        fname: credentials.fname,
+        lname: credentials.lname,
         email: credentials.email,
-        role: credentials.role,
+        role: 'USER',
         created: firebase.firestore.FieldValue.serverTimestamp()
       });
     });

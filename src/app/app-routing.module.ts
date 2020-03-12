@@ -16,11 +16,11 @@ const routes: Routes = [
 
   // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
   {
-    path: 'buyer',
+    path: 'user',
     canActivate: [AngularFireAuthGuard, RoleGuard],
     data: {
       authGuardPipe: redirectUnauthorizedToLogin,
-      role: 'BUYER'
+      role: 'USER'
     },
     children: [
       {
@@ -39,7 +39,6 @@ const routes: Routes = [
         path: 'groups',
         loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
       },
-     
       {
         path: 'list',
         loadChildren: () => import('./pages/buyer-list/buyer-list.module').then( m => m.BuyerListPageModule)
