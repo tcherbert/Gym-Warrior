@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ProductService } from '../../services/product.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { CartService } from '../../services/cart.service';
-import { ModalController } from '@ionic/angular';
-import { CartModalPage } from '../cart-modal/cart-modal.page';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
+
+
 
 
 @Component({
@@ -12,33 +12,41 @@ import { CartModalPage } from '../cart-modal/cart-modal.page';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-// export class ProfilePage  {
-  
 
-//   constructor() { }
-// }
-
-
+interface User {
+  fname: string;
+  lname: string;
+}
 
 export class ProfilePage implements OnInit {
-  products: Observable<any>;
+  // user: Observable<any>;
+  userCollection: AngularFirestoreCollection<User>;
+  userData: Observable<User>;
 
-  constructor(private auth: AuthService, private productService: ProductService ) {
-    
+  constructor(private auth: AuthService,
+              private db: AngularFirestore,
+              private afAuth: AngularFireAuth
+  ) {
 
-   }
-  
-
-  ngOnInit() {
-    this.products = this.productService.getSellerProducts();
   }
 
-  delete(id) {
-    this.productService.deleteProduct(id);
+
+  ngOnInit() {
+    // this.db.doc(`users/${user.user.uid}`).valueChanges();
+    this.pageSetup();
   }
 
   signOut() {
     this.auth.signOut();
+  }
+
+  pageSetup(){
+    const id = this.afAuth.auth.currentUser.uid;
+    this.userCollection = this.db.collection('users/${id}');
+    this.db.collection('users');
+
+    console.log('user id: ', id);
+    console.log(this.userCollection);
   }
 
 }
