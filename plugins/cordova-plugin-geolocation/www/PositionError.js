@@ -1,4 +1,3 @@
-cordova.define("cordova-plugin-camera.CameraPopoverHandle", function(require, exports, module) {
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -21,15 +20,19 @@ cordova.define("cordova-plugin-camera.CameraPopoverHandle", function(require, ex
 */
 
 /**
- * @ignore in favour of iOS' one
- * A handle to an image picker popover.
+ * Position error object
+ *
+ * @constructor
+ * @param code
+ * @param message
  */
-var CameraPopoverHandle = function () {
-    this.setPosition = function (popoverOptions) {
-        console.log('CameraPopoverHandle.setPosition is only supported on iOS.');
-    };
+var PositionError = function (code, message) {
+    this.code = code || null;
+    this.message = message || '';
 };
 
-module.exports = CameraPopoverHandle;
+PositionError.prototype.PERMISSION_DENIED = PositionError.PERMISSION_DENIED = 1;
+PositionError.prototype.POSITION_UNAVAILABLE = PositionError.POSITION_UNAVAILABLE = 2;
+PositionError.prototype.TIMEOUT = PositionError.TIMEOUT = 3;
 
-});
+module.exports = PositionError;
