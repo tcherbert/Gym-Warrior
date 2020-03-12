@@ -493,11 +493,11 @@ var routes = [
     },
     // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
     {
-        path: 'buyer',
+        path: 'user',
         canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
         data: {
             authGuardPipe: redirectUnauthorizedToLogin,
-            role: 'BUYER'
+            role: 'USER'
         },
         children: [
             {
@@ -772,12 +772,12 @@ var AutomaticLoginGuard = /** @class */ (function () {
             }
             else {
                 var role = user['role'];
-                if (role == 'BUYER') {
-                    _this.router.navigateByUrl('/buyer');
+                if (role == 'USER') {
+                    _this.router.navigateByUrl('/user');
                 }
-                else if (role == 'SELLER') {
-                    _this.router.navigateByUrl('/seller');
-                }
+                // } else if (role == 'SELLER') {
+                //   this.router.navigateByUrl('/seller');
+                // }
                 return false;
             }
         }));
@@ -1068,21 +1068,26 @@ var AuthService = /** @class */ (function () {
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["from"])(this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(function (user) {
             console.log('real user: ', user);
             if (user) {
+                console.log('Login Working...??');
+                console.log(_this.db.doc("users/" + user.user.uid).valueChanges());
                 return _this.db.doc("users/" + user.user.uid).valueChanges();
             }
             else {
+                console.log('Login Not Working...');
                 return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["of"])(null);
             }
         }));
     };
     AuthService.prototype.signUp = function (credentials) {
         var _this = this;
+        console.log('signUp Credentials: ' + credentials);
         return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then(function (data) {
             console.log('after register: ', data);
             return _this.db.doc("users/" + data.user.uid).set({
-                name: credentials.name,
+                fname: credentials.fname,
+                lname: credentials.lname,
                 email: credentials.email,
-                role: credentials.role,
+                role: 'USER',
                 created: firebase_app__WEBPACK_IMPORTED_MODULE_4__["firestore"].FieldValue.serverTimestamp()
             });
         });
