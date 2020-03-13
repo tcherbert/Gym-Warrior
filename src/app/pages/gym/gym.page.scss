@@ -20,3 +20,13 @@
   .nav{
     width: 32%;
   }
+
+  .navMenu {
+    position: fixed;
+    z-index: 9999;
+    
+    ion-list {
+      padding-top: 30px;
+      height: 100%;
+    }
+  }

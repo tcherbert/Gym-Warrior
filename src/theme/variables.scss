@@ -4,7 +4,7 @@
 /** Ionic CSS Variables **/
 :root {
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #fff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -139,7 +139,7 @@
   max-width: 500px;
 }
 .logo{
-  max-width: 75px;
+  max-width: 50px;
   float: left;
 
 }
@@ -351,4 +351,118 @@ ion-button {
   --box-shadow: none;
   --border-color: #fff;
   --color: #fff;
+}
+
+
+
+/* Set a style for all buttons */
+
+button[type="submit"] {
+  background-color: #FF3233;
+  border: 8px solid #AC0002;
+  border-radius: 10px;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 80px;
+  font-size: 1em;
+  letter-spacing: 1px;
+}
+
+button[type="submit"]:active {
+  border: 8px solid rgb(99, 5, 7);
+  outline: none;
+}
+
+/*End Page 1*/
+
+/*Page 2*/
+
+
+.profileImage{
+  max-height: 50%;
+  
+}
+
+
+
+
+.icon{
+  font-size: 150%;
+  color: white;
+  margin: 0.5em;
+  float: right;
+}
+#navbar{
+  margin-top: 50%;
+  padding: 0;
+}
+
+#about, #friends{
+  background-color: darkred;
+}
+#photos, #schedule{
+  background-color: var(--ion-color-lightred);
+}
+
+/* gym page */
+#nameStatus {
+color:white;
+text-shadow: -2px 2px 6px black;
+}
+
+
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+  margin-top: -5em;
+}
+
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+  
+}
+
+
+
+
+/*
+Header Section
+*/
+
+.title-default {
+  background: #D02027;
+}
+
+
+/*
+  iOS Fixes
+*/
+ion-toolbar.ios {
+  padding-top: 0px !important;
+  margin-top: 20px;
+}
+
+ion-title.ios {
+  padding-top: 0px !important;
+  -webkit-padding-start: 0px;
+  padding-inline-start: 0px;
+  -webkit-padding-end: 0px;
+  padding-inline-end: 0px;
+}
+
+ion-toolbar {
+  --background: transparent;
 }

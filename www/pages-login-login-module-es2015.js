@@ -174,9 +174,7 @@ let LoginPage = class LoginPage {
     }
     register() {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
-
             console.log('Start of Register...');
-
             let loading = yield this.loadingCtrl.create({
                 message: 'Loading...'
             });
