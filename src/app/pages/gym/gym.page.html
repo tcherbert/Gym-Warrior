@@ -35,6 +35,16 @@
     </ion-card-header>
   </div>
 <main>
+    <ion-button (click)="signOut()" class="signOutButton">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+      
+      <ion-button (click)="getLocation()">
+        Get Location
+        
+      </ion-button>
+      <p>Latitude: {{lat}}</p>
+      <p>Longitude: {{long}}</p>
     <div>
         <ion-button class="nav" color="lightred">Message</ion-button>
         <ion-button class="nav" color="darkred">Photos</ion-button>
@@ -75,15 +85,6 @@
 
 </main>
 
-<ion-button (click)="signOut()" class="signOutButton">
-  <ion-icon slot="icon-only" name="log-out"></ion-icon>
-</ion-button>
 
-<ion-button (click)="getLocation()">
-  Get Location
-  
-</ion-button>
-<p>Latitude: {{lat}}</p>
-<p>Longitude: {{long}}</p>
 
 </ion-app>
