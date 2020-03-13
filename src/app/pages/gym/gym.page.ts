@@ -18,14 +18,7 @@ export class GymPage implements OnInit {
   long;
 
   constructor(private auth: AuthService, private productService: ProductService, private geolocation: Geolocation) { 
-    this.geolocation.getCurrentPosition().then((location) => {
-      this.lat= location.coords.latitude;
-      this.long = location.coords.longitude;
-      console.log('Latitude: ' + location.coords.latitude);
-      console.log('Longitude: ' + location.coords.longitude);
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
+    
   }
 
   getLocation(){
