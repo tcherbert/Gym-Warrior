@@ -53,11 +53,20 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "file": "plugins/cordova-plugin-geolocation/www/PositionError.js",
       "pluginId": "cordova-plugin-geolocation",
       "runs": true
+    },
+    {
+      "id": "cordova-plugin-ionic-webview.IonicWebView",
+      "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+      "pluginId": "cordova-plugin-ionic-webview",
+      "clobbers": [
+        "Ionic.WebView"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-geolocation": "4.0.2"
+    "cordova-plugin-geolocation": "4.0.2",
+    "cordova-plugin-ionic-webview": "4.1.3"
   };
 });

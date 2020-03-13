@@ -34,13 +34,13 @@ export class LoginPage implements OnInit {
   }
 
   navigateByRole(role) {
-    if (role == 'USER') {
+    if (role === 'USER') {
       this.router.navigateByUrl('/user/profile');
     }
   }
 
   async login() {
-    let loading = await this.loadingCtrl.create({
+    const loading = await this.loadingCtrl.create({
       message: 'Loading...'
     });
     await loading.present();
@@ -63,7 +63,7 @@ export class LoginPage implements OnInit {
   }
 
   async register() {
-    console.log("Start of Register...");
+    console.log('Start of Register...');
     let loading = await this.loadingCtrl.create({
       message: 'Loading...'
     });

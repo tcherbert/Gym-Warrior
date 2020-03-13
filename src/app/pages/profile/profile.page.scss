@@ -3,6 +3,44 @@
   background-size: cover;
   background-repeat: no-repeat;
   height: 55%;
+
+  position: relative;
+
+  
+  .imageBg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+  ion-card-header {
+    position: absolute;
+    bottom: 0px;
+    padding: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #ffffff;
+
+    ion-card-title {
+      font-weight: bold;
+      padding: 0px;
+      color: #fff !important;
+    }
+    ion-card-subtitle {
+      margin: 0px;
+      color: #fff;
+    }
+  }
+
+  ion-button {
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    position: absolute;
+    right: 5px;
+    top: 0px;
+  }
 }
 
 .profileImage2 {

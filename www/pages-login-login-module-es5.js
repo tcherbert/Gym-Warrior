@@ -153,7 +153,7 @@ var LoginPage = /** @class */ (function () {
         });
     };
     LoginPage.prototype.navigateByRole = function (role) {
-        if (role == 'USER') {
+        if (role === 'USER') {
             this.router.navigateByUrl('/user/profile');
         }
     };
@@ -205,7 +205,7 @@ var LoginPage = /** @class */ (function () {
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log("Start of Register...");
+                        console.log('Start of Register...');
                         return [4 /*yield*/, this.loadingCtrl.create({
                                 message: 'Loading...'
                             })];
