@@ -6,6 +6,7 @@ import { CartService } from '../../services/cart.service';
 import { ModalController } from '@ionic/angular';
 import { CartModalPage } from '../cart-modal/cart-modal.page';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {Geofence} from '@ionic-native/geofence/ngx';
 
 @Component({
   selector: 'app-buyer-list',
@@ -17,7 +18,7 @@ export class GymPage implements OnInit {
   lat;
   long;
 
-  constructor(private auth: AuthService, private productService: ProductService, private geolocation: Geolocation) { 
+  constructor(private auth: AuthService, private productService: ProductService, private geolocation: Geolocation, private geofence: Geofence) { 
     
   }
 
@@ -32,6 +33,27 @@ export class GymPage implements OnInit {
     });
    
   }
+  addGeofence(){
+    let fence = {
+      id: 'testID',
+      latitude: 46.411662,
+      longitude: -117.026571,
+      radius: 100,
+      transitionType: 3,
+      notification: {
+        id: 1,
+        title: 'You crossed a fence',
+        text: 'You just arrived at LCSC',
+        openAppOnClick : true
+      }
+    }
+    this.geofence.addOrUpdate(fence).then(
+      () => console.log("Geofence added"),
+      (err) => console.log('Geofence failed to add')
+
+    );
+  }
+
    
   ngOnInit() {
     this.products = this.productService.getSellerProducts();

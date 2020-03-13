@@ -1,4 +1,5 @@
 <ion-app *ngIf="dataReady">
+    <ion-content overflow-scroll="true">
   <!--Navigation Bar-->
   <ion-menu contentId="main" side="end" class="navMenu">
     <ion-content>
@@ -77,5 +78,6 @@
   <ion-button (click)="signOut()" class="signOutButton">
     <ion-icon slot="icon-only" name="log-out"></ion-icon>
   </ion-button>
+  </ion-content>
 </ion-app>
 
