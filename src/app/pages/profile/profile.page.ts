@@ -95,6 +95,7 @@ export class ProfilePage implements OnInit {
       buttons: [{
         text: 'Load from Library',
         handler: () => {
+          console.log("Hello from Load from Library");
           this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY);
         }
       },
@@ -114,6 +115,8 @@ export class ProfilePage implements OnInit {
   }
 
   captureImage(sourceType: number){
+    console.log("Hello from CaptureImage");
+
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
