@@ -12,7 +12,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
     canActivate: [AutomaticLoginGuard]
   },
-  
 
   // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
   {
