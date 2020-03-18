@@ -23,6 +23,10 @@ import { Geofence } from '@ionic-native/geofence/ngx';
 
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 
+import { File } from '@ionic-native/file/ngx';
+
+import { IonicStorageModule } from '@ionic/storage';
+
 // Leaving here for now.. will be removed as soon as I get the camera and upload working..
 // class CameraMock extends Camera {
 //   getPicture(options) {
@@ -35,13 +39,16 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthGuardModule,
-    CartModalPageModule
+    CartModalPageModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,
@@ -50,7 +57,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     SplashScreen,
     WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Camera
+    Camera,
+    File
     // { provide: Camera, useClass: CameraMock}
   ],
   bootstrap: [AppComponent]

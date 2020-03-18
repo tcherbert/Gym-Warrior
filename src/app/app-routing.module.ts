@@ -52,7 +52,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'camera',
+        redirectTo: 'profile',
         pathMatch: 'full'
       }
     ]

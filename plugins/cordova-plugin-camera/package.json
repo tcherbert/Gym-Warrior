@@ -2,7 +2,7 @@
   "_args": [
     [
       "cordova-plugin-camera@4.1.0",
-      "/Users/timherbert/Desktop/academy-fire-marketplace-course"
+      "/Users/timherbert/Documents/GitHub/Gym-Warrior"
     ]
   ],
   "_from": "cordova-plugin-camera@4.1.0",
@@ -26,7 +26,7 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-camera/-/cordova-plugin-camera-4.1.0.tgz",
   "_spec": "4.1.0",
-  "_where": "/Users/timherbert/Desktop/academy-fire-marketplace-course",
+  "_where": "/Users/timherbert/Documents/GitHub/Gym-Warrior",
   "author": {
     "name": "Apache Software Foundation"
   },
