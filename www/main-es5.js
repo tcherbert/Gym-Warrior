@@ -509,6 +509,10 @@ var routes = [
                 loadChildren: function () { return Promise.all(/*! import() | pages-gym-gym-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-gym-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(function (m) { return m.GymPageModule; }); }
             },
             {
+                path: 'camera',
+                loadChildren: function () { return __webpack_require__.e(/*! import() | pages-camera-camera-module */ "pages-camera-camera-module").then(__webpack_require__.bind(null, /*! ./pages/camera/camera.module */ "./src/app/pages/camera/camera.module.ts")).then(function (m) { return m.CameraPageModule; }); }
+            },
+            {
                 path: 'profile',
                 loadChildren: function () { return __webpack_require__.e(/*! import() | pages-profile-profile-module */ "pages-profile-profile-module").then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(function (m) { return m.ProfilePageModule; }); }
             },
@@ -526,7 +530,7 @@ var routes = [
             },
             {
                 path: '',
-                redirectTo: 'profile',
+                redirectTo: 'camera',
                 pathMatch: 'full'
             }
         ]

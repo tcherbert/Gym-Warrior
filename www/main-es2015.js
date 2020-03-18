@@ -503,6 +503,10 @@ const routes = [
                 loadChildren: () => Promise.all(/*! import() | pages-gym-gym-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-gym-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(m => m.GymPageModule)
             },
             {
+                path: 'camera',
+                loadChildren: () => __webpack_require__.e(/*! import() | pages-camera-camera-module */ "pages-camera-camera-module").then(__webpack_require__.bind(null, /*! ./pages/camera/camera.module */ "./src/app/pages/camera/camera.module.ts")).then(m => m.CameraPageModule)
+            },
+            {
                 path: 'profile',
                 loadChildren: () => __webpack_require__.e(/*! import() | pages-profile-profile-module */ "pages-profile-profile-module").then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(m => m.ProfilePageModule)
             },
@@ -520,7 +524,7 @@ const routes = [
             },
             {
                 path: '',
-                redirectTo: 'profile',
+                redirectTo: 'camera',
                 pathMatch: 'full'
             }
         ]
