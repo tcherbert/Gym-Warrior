@@ -1,0 +1,9 @@
+Added this here incase the info.plist issue pops up again so I don't have to go track it down.
+
+in config.xml
+<config-file parent="NSCameraUsageDescription" target="*-Info.plist">
+    <string>need camera access to take pictures</string>
+</config-file>
+<config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
+    <string>need photo library access to get pictures from there</string>
+</config-file>

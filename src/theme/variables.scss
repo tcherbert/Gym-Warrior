@@ -466,3 +466,11 @@ ion-title.ios {
 ion-toolbar {
   --background: transparent;
 }
+
+.action-sheet-button {
+  --color: #333 !important;
+}
+
+.action-sheet-group-cancel .action-sheet-button  {
+  --color: #fff !important;
+}
