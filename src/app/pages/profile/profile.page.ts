@@ -3,7 +3,7 @@ import { AuthService } from '../../services/auth.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ActionSheetController } from '@ionic/angular';
@@ -38,6 +38,8 @@ export class ProfilePage implements OnInit {
   public imageReady: boolean;
   public profileImage;
 
+  
+
 
   constructor(private auth: AuthService,
               private db: AngularFirestore,
@@ -48,41 +50,36 @@ export class ProfilePage implements OnInit {
               private actionSheetController: ActionSheetController,
               private webview: WebView,
   ) {
+    const id = this.afAuth.auth.currentUser.uid;
     this.dataReady = false;
     this.imageReady = false;
-
   }
 
 
-
-
   ngOnInit() {
-    this.getUserData();
+    const id = this.afAuth.auth.currentUser.uid;
+    this.getUserData(id);
+    this.getProfileImage(id);
   }
 
   signOut() {
     this.auth.signOut();
   }
 
-  async getUserData(){
-    const id = this.afAuth.auth.currentUser.uid;
+  async getUserData(id){
+    // const id = this.afAuth.auth.currentUser.uid;
     const userData = await this.db.collection('users')
       .doc(id)
       .ref
       .get().then(function(doc) {
           if (doc.exists) {
-              // console.log("Document data:", doc.data());
               const userData = doc.data();
-              // this.fname = doc.data().fname;
-              // this.lname = doc.data().lname;
-              // this.updateData = true;
               return userData;
-
-              console.log('userData: ', userData);
           } else {
               console.log('No such document!');
           }
       });
+
 
     this.fname = userData.fname;
     this.lname = userData.lname;
@@ -95,7 +92,7 @@ export class ProfilePage implements OnInit {
       buttons: [{
         text: 'Load from Library',
         handler: () => {
-          console.log("Hello from Load from Library");
+          // console.log("Hello from Load from Library");
           this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY);
         }
       },
@@ -115,7 +112,10 @@ export class ProfilePage implements OnInit {
   }
 
   captureImage(sourceType: number){
-    console.log("Hello from CaptureImage");
+    // console.log('Hello from CaptureImage');
+    let storageRef: AngularFireStorageReference = null;
+    const id = this.afAuth.auth.currentUser.uid;
+
 
     const options: CameraOptions = {
       quality: 100,
@@ -124,23 +124,64 @@ export class ProfilePage implements OnInit {
       correctOrientation: true
     };
 
-    this.camera.getPicture(options).then(imagePath => {
-      console.log('Path Before: ', imagePath);
-      // this.image = this.webview.convertFileSrc(imagePath);
-      // this.image = this.sanitizer.bypassSecurityTrustUrl(this.image);
-      // console.log('path: ', this.image);
 
+    this.camera.getPicture(options).then(imagePath => {
+      storageRef = this.storage.ref(id);
+      // Convert url to safe url and set the state of new profileImage
       this.profileImage = this.webview.convertFileSrc(imagePath);
       this.imageReady = true;
-      // this.profileImage = this.sanitizer.bypassSecurityTrustUrl(this.profileImage);
-
-      console.log('profileImage: ', this.profileImage);
+      // Upload image
+      this.uploadImage(this.profileImage, 'profileImage');
     });
   }
 
-  getBackground() {
-    return this.sanitizer.bypassSecurityTrustUrl(this.profileImage);
+  // getBackground() {
+  //   return this.sanitizer.bypassSecurityTrustUrl(this.profileImage);
+  // }
+
+  uploadImage(imageURI, imageName){
+    return new Promise<any>((resolve, reject) => {
+      const id = this.afAuth.auth.currentUser.uid;
+      let storageRef: AngularFireStorageReference = this.storage.ref(id);
+      let imageRef = storageRef.child('image').child(imageName);
+      this.encodeImageUri(imageURI, function(image64){
+        imageRef.putString(image64, 'data_url')
+        .then(snapshot => {
+          resolve(snapshot.downloadURL);
+          this.profileImage = snapshot.downloadURL;
+        }, err => {
+          reject(err);
+        })
+      })
+    })
   }
 
+  encodeImageUri(imageUri, callback) {
+    var c = document.createElement('canvas');
+    var ctx = c.getContext('2d');
+    var img = new Image();
+    img.crossOrigin = 'anonymous';  // This enables CORS
+    img.onload = function () {
+      var aux:any = this;
+      c.width = aux.width;
+      c.height = aux.height;
+      ctx.drawImage(img, 0, 0);
+      var dataURL = c.toDataURL('image/jpeg');
+      callback(dataURL);
+    };
+    img.src = imageUri;
+  }
+
+
+  async getProfileImage(id){
+    const ref = this.storage.ref(id + '/image/profileImage');
+    const profileImage = ref.getDownloadURL();
+    profileImage.subscribe(result => {
+      this.profileImage = result;
+      this.imageReady = true;
+    });
+
+
+  }
 
 } // end ProfilePage Class

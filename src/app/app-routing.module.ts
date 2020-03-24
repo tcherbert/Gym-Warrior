@@ -31,6 +31,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/gym/gym.module').then( m => m.GymPageModule)
       },
       {
+        path: 'camera',
+        loadChildren: () => import('./pages/camera/camera.module').then( m => m.CameraPageModule)
+      },
+      {
         path: 'profile',
         loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
       },
