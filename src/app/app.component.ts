@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Geolocation} from '@ionic-native/geolocation/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx'
-import { AlertController } from '@ionic/angular'
+// import { AlertController } from '@ionic/angular'
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private oneSignal: OneSignal,
-    // private alertCtrl: AlertController
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
   }
@@ -67,5 +67,6 @@ export class AppComponent {
         }
       ]
     })
+    alert.present();
   }
 }
