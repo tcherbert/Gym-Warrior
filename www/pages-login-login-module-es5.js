@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <ion-header>\n  <ion-toolbar color=\"primary\">\n    <ion-title>Academy Fire</ion-title>\n  </ion-toolbar>\n</ion-header> -->\n\n<ion-content>\n  <header>\n    <ion-img class=\"centerLogo\" src=\"../../../assets/landing_logo.png\"></ion-img>\n  </header>\n  <div class=\"flip-container\" #flipcontainer>\n    <div class=\"flipper\">\n      <div class=\"front\">\n        <ion-card>\n          <ion-card-header>\n            <ion-card-title>Login</ion-card-title>\n          </ion-card-header>\n          <ion-card-content>\n            <form [formGroup]=\"loginForm\" (ngSubmit)=\"login()\">\n              <ion-input type=\"email\" placeholder=\"E-Mail\" formControlName=\"email\"></ion-input>\n              <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n\n              <ion-button expand=\"block\" type=\"submit\" [disabled]=\"!loginForm.valid\"\n              class=\"sign-in ion-padding-horizontal ion-margin-vertical\">\n                Sign in\n              </ion-button>\n  \n              <ion-button expand=\"block\" type=\"button\" fill=\"outline\"\n              class=\"create-button ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                Create Account\n              </ion-button>\n            </form>\n          </ion-card-content>\n        </ion-card>\n      </div>\n\n      <div class=\"back\">\n        <ion-card>\n            <ion-card-header>\n              <ion-card-title>Register</ion-card-title>\n            </ion-card-header>\n            <ion-card-content>\n              <form [formGroup]=\"registerForm\" (ngSubmit)=\"register()\">\n                <ion-input type=\"email\" placeholder=\"Email\" formControlName=\"email\"></ion-input>\n                <ion-input placeholder=\"First Name\" formControlName=\"fname\"></ion-input>\n                <ion-input placeholder=\"Last Name\" formControlName=\"lname\"></ion-input>\n                <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n                \n                <ion-button expand=\"block\" type=\"submit\" class=\"ion-padding-horizontal ion-margin-vertical\"\n                [disabled]=\"!registerForm.valid\">\n                  Register\n                </ion-button>\n                \n                <ion-button expand=\"block\" type=\"button\"  fill=\"clear\"\n                class=\"ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                  <ion-icon name=\"arrow-back\" slot=\"start\"></ion-icon>\n                  Back to Login\n                </ion-button>\n                \n              </form>\n            </ion-card-content>\n          </ion-card>\n      </div>\n    </div>\n  </div>\n\n</ion-content>\n"
+module.exports = "<ion-content>\n  <header>\n    <ion-img class=\"centerLogo\" src=\"../../../assets/landing_logo.png\"></ion-img>\n  </header>\n  <div class=\"flip-container\" #flipcontainer>\n    <div class=\"flipper\">\n      <div class=\"front\">\n        <ion-card>\n          <ion-card-header>\n            <ion-card-title>Login</ion-card-title>\n          </ion-card-header>\n          <ion-card-content>\n            <form [formGroup]=\"loginForm\" (ngSubmit)=\"login()\">\n              <ion-input type=\"email\" placeholder=\"E-Mail\" formControlName=\"email\"></ion-input>\n              <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n\n              <ion-button expand=\"block\" type=\"submit\" [disabled]=\"!loginForm.valid\"\n              class=\"sign-in ion-padding-horizontal ion-margin-vertical\">\n                Sign in\n              </ion-button>\n  \n              <ion-button expand=\"block\" type=\"button\" fill=\"outline\"\n              class=\"create-button ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                Create Account\n              </ion-button>\n            </form>\n          </ion-card-content>\n        </ion-card>\n      </div>\n\n      <div class=\"back\">\n        <ion-card>\n            <ion-card-header>\n              <ion-card-title>Register</ion-card-title>\n            </ion-card-header>\n            <ion-card-content>\n              <form [formGroup]=\"registerForm\" (ngSubmit)=\"register()\">\n                <ion-input type=\"email\" placeholder=\"Email\" formControlName=\"email\"></ion-input>\n                <ion-input placeholder=\"First Name\" formControlName=\"fname\"></ion-input>\n                <ion-input placeholder=\"Last Name\" formControlName=\"lname\"></ion-input>\n                <ion-input type=\"password\" placeholder=\"Password\" formControlName=\"password\"></ion-input>\n                \n                <ion-button expand=\"block\" type=\"submit\" class=\"ion-padding-horizontal ion-margin-vertical\"\n                [disabled]=\"!registerForm.valid\">\n                  Register\n                </ion-button>\n                \n                <ion-button expand=\"block\" type=\"button\"  fill=\"clear\"\n                class=\"ion-padding-horizontal ion-margin-vertical\" (click)=\"toggleRegister()\">\n                  <ion-icon name=\"arrow-back\" slot=\"start\"></ion-icon>\n                  Back to Login\n                </ion-button>\n                \n              </form>\n            </ion-card-content>\n          </ion-card>\n      </div>\n    </div>\n  </div>\n\n</ion-content>\n"
 
 /***/ }),
 
@@ -204,11 +204,9 @@ var LoginPage = /** @class */ (function () {
             var _this = this;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log('Start of Register...');
-                        return [4 /*yield*/, this.loadingCtrl.create({
-                                message: 'Loading...'
-                            })];
+                    case 0: return [4 /*yield*/, this.loadingCtrl.create({
+                            message: 'Loading...'
+                        })];
                     case 1:
                         loading = _a.sent();
                         return [4 /*yield*/, loading.present()];
@@ -278,8 +276,12 @@ var LoginPage = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./login.page.html */ "./node_modules/raw-loader/index.js!./src/app/pages/login/login.page.html"),
             styles: [__webpack_require__(/*! ./login.page.scss */ "./src/app/pages/login/login.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"], _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"], _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ToastController"], _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"], _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormBuilder"],
+            _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["LoadingController"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["ToastController"],
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["AlertController"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"]])
     ], LoginPage);
     return LoginPage;
 }());
