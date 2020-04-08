@@ -591,84 +591,91 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-/* harmony import */ var _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/splash-screen/ngx */ "./node_modules/@ionic-native/splash-screen/ngx/index.js");
-/* harmony import */ var _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic-native/status-bar/ngx */ "./node_modules/@ionic-native/status-bar/ngx/index.js");
+/* harmony import */ var _services_fcm_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/fcm.service */ "./src/app/services/fcm.service.ts");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic-native/splash-screen/ngx */ "./node_modules/@ionic-native/splash-screen/ngx/index.js");
+/* harmony import */ var _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic-native/status-bar/ngx */ "./node_modules/@ionic-native/status-bar/ngx/index.js");
+/* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/fire/auth */ "./node_modules/@angular/fire/auth/es2015/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 
 
 
 
 
+
+
+
+// import { Geolocation} from '@ionic-native/geolocation/ngx';
+// import { OneSignal } from '@ionic-native/onesignal/ngx'
 // import { AlertController } from '@ionic/angular'
 let AppComponent = class AppComponent {
-    // constructor(
-    //   private platform: Platform,
-    //   private splashScreen: SplashScreen,
-    //   private statusBar: StatusBar,
-    //   private oneSignal: OneSignal,
-    //   private alertCtrl: AlertController
-    // ) {
-    //   this.initializeApp();
-    // }
-    // initializeApp() {
-    //   this.platform.ready().then(() => {
-    //     this.statusBar.styleDefault();
-    //     this.splashScreen.hide();
-    //     if (this.platform.is('cordova')){
-    //       this.setupPush();
-    //     }
-    //   });
-    // }
-    // setupPush() {
-    //   this.oneSignal.startInit('a8b71954-a37d-4675-81c3-cbc121d9d4fb', '79982833297');
-    //   this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-    //   this.oneSignal.handleNotificationOpened().subscribe(data => {
-    //     let additionalData = data.notification.payload.additionalData;
-    //     this.showAlert('Notification opened', 'You already read this', additionalData);
-    //   });
-    //   this.oneSignal.handleNotificationReceived().subscribe(data => {
-    //     let msg = data.payload.body;
-    //     let title = data.payload.title;
-    //     let additionalData = data.payload.additionalData;
-    //     this.showAlert(title, msg, additionalData.task);
-    //   });
-    //   this.oneSignal.endInit();
-    // }
-    // async showAlert(title, msg, task){
-    //   const alert = await this.alertCtrl.create({
-    //     header: title,
-    //     subHeader: msg, 
-    //     buttons: [
-    //       {
-    //         text: `Action: ${task}`,
-    //         handler: () => {
-    //         }     
-    //       }
-    //     ]
-    //   })
-    //   alert.present();
-    // }
-    constructor(platform, statusBar, splashScreen) {
-        platform.ready().then(() => {
-            statusBar.styleDefault();
-            splashScreen.hide();
-            // OneSignal Code start:
-            // Enable to debug issues:
-            // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-            var notificationOpenedCallback = function (jsonData) {
-                console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-            };
-            window["plugins"].OneSignal
-                .startInit("YOUR_APPID", "YOUR_GOOGLE_PROJECT_NUMBER_IF_ANDROID")
-                .handleNotificationOpened(notificationOpenedCallback)
-                .endInit();
+    constructor(platform, splashScreen, statusBar, afAuth, router, fcm, alertCtrl) {
+        this.platform = platform;
+        this.splashScreen = splashScreen;
+        this.statusBar = statusBar;
+        this.afAuth = afAuth;
+        this.router = router;
+        this.fcm = fcm;
+        this.alertCtrl = alertCtrl;
+        this.initializeApp();
+    }
+    initializeApp() {
+        this.platform.ready().then(() => {
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+            this.afAuth.authState.subscribe(user => {
+                if (user) {
+                    this.notificationSetup();
+                    this.router.navigateByUrl('/chats');
+                }
+            });
+        });
+    }
+    notificationSetup() {
+        this.fcm.getToken();
+        this.fcm.onNotifications().subscribe(msg => {
+            if (msg.tap >= 1) {
+                this.router.navigateByUrl(`/chat/${msg.chat}`);
+            }
+            else {
+                if (this.platform.is('ios')) {
+                    this.presentAlert(msg.aps.alert, msg.chat);
+                }
+                else {
+                    this.presentAlert(msg, msg.chat);
+                }
+            }
+        });
+    }
+    presentAlert(info, chat) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const toast = yield this.alertCtrl.create({
+                header: info.title,
+                message: 'Would you like to open the chat now?',
+                buttons: [
+                    {
+                        text: 'No',
+                        role: 'cancel'
+                    }, {
+                        text: 'Yes',
+                        handler: () => {
+                            this.router.navigateByUrl(`/chat/${chat}`);
+                        }
+                    }
+                ]
+            });
+            toast.present();
         });
     }
 };
 AppComponent.ctorParameters = () => [
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"] },
-    { type: _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"] },
-    { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"] }
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"] },
+    { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_4__["SplashScreen"] },
+    { type: _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_5__["StatusBar"] },
+    { type: _angular_fire_auth__WEBPACK_IMPORTED_MODULE_6__["AngularFireAuth"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"] },
+    { type: _services_fcm_service__WEBPACK_IMPORTED_MODULE_2__["FcmService"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"] }
 ];
 AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -676,7 +683,13 @@ AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         template: __webpack_require__(/*! raw-loader!./app.component.html */ "./node_modules/raw-loader/index.js!./src/app/app.component.html"),
         styles: [__webpack_require__(/*! ./app.component.scss */ "./src/app/app.component.scss")]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"], _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"], _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"],
+        _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_4__["SplashScreen"],
+        _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_5__["StatusBar"],
+        _angular_fire_auth__WEBPACK_IMPORTED_MODULE_6__["AngularFireAuth"],
+        _angular_router__WEBPACK_IMPORTED_MODULE_7__["Router"],
+        _services_fcm_service__WEBPACK_IMPORTED_MODULE_2__["FcmService"],
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["AlertController"]])
 ], AppComponent);
 
 
@@ -1066,6 +1079,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+/* harmony import */ var firebase_firestore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! firebase/firestore */ "./node_modules/firebase/firestore/dist/index.esm.js");
+
 
 
 
@@ -1075,6 +1090,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let AuthService = class AuthService {
+    // user: User = null;
     constructor(afAuth, db, navCtrl) {
         this.afAuth = afAuth;
         this.db = db;
@@ -1088,6 +1104,20 @@ let AuthService = class AuthService {
             }
         }));
     }
+    // constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
+    //   this.afAuth.authState.subscribe(res => {
+    //     this.user = res;
+    //     if (this.user) {
+    //       console.log('authenticated user: ', this.user);
+    //       this.db.doc(`users/${this.currentUserId}`).valueChanges().pipe(
+    //         tap(res => {
+    //           // this.nickname = res['nickname'];
+    //           console.log(res);
+    //         })
+    //       ).subscribe();
+    //     }
+    //   })
+    //  }
     signIn(credentials) {
         return Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["from"])(this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["switchMap"])(user => {
             console.log('real user: ', user);
@@ -1119,6 +1149,21 @@ let AuthService = class AuthService {
         this.afAuth.auth.signOut().then(() => {
             this.navCtrl.navigateRoot('/');
         });
+    }
+    get authenticated() {
+        return this.user !== null;
+    }
+    get currentUser() {
+        return this.authenticated ? this.user : null;
+    }
+    get currentUserId() {
+        const user = this.user.subscribe(event => {
+            console.log(event);
+            // this.user = event;
+            // return this.user;
+        });
+        return 'hello';
+        // return this.authenticated ? this.user.uid : '';
     }
 };
 AuthService.ctorParameters = () => [
@@ -1224,6 +1269,84 @@ CartService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
+/***/ "./src/app/services/fcm.service.ts":
+/*!*****************************************!*\
+  !*** ./src/app/services/fcm.service.ts ***!
+  \*****************************************/
+/*! exports provided: FcmService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FcmService", function() { return FcmService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! src/app/services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/es2015/index.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _ionic_native_firebase_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic-native/firebase/ngx */ "./node_modules/@ionic-native/firebase/ngx/index.js");
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
+
+
+
+
+
+
+// https://medium.freecodecamp.org/how-to-get-push-notifications-working-with-ionic-4-and-firebase-ad87cc92394e
+let FcmService = class FcmService {
+    constructor(firebase, afs, platform, auth) {
+        this.firebase = firebase;
+        this.afs = afs;
+        this.platform = platform;
+        this.auth = auth;
+    }
+    getToken() {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            let token;
+            if (this.platform.is('android')) {
+                token = yield this.firebase.getToken();
+            }
+            if (this.platform.is('ios')) {
+                token = yield this.firebase.getToken();
+                yield this.firebase.grantPermission();
+            }
+            console.log('got token: ', token);
+            this.saveToken(token);
+        });
+    }
+    saveToken(token) {
+        if (!token)
+            return;
+        const devicesRef = this.afs.collection('devices');
+        const data = {
+            token,
+            userId: this.auth.currentUserId
+        };
+        return devicesRef.doc(this.auth.currentUserId).set(data);
+    }
+    onNotifications() {
+        return this.firebase.onNotificationOpen();
+    }
+};
+FcmService.ctorParameters = () => [
+    { type: _ionic_native_firebase_ngx__WEBPACK_IMPORTED_MODULE_4__["Firebase"] },
+    { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] },
+    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["Platform"] },
+    { type: src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"] }
+];
+FcmService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_native_firebase_ngx__WEBPACK_IMPORTED_MODULE_4__["Firebase"],
+        _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"],
+        _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["Platform"],
+        src_app_services_auth_service__WEBPACK_IMPORTED_MODULE_1__["AuthService"]])
+], FcmService);
+
+
+
+/***/ }),
+
 /***/ "./src/environments/environment.ts":
 /*!*****************************************!*\
   !*** ./src/environments/environment.ts ***!
@@ -1295,7 +1418,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/daniellaamundson/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/timherbert/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
 
 
 /***/ })

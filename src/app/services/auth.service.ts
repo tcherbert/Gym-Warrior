@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase/app';
 import { Observable, from, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
 import { User } from 'firebase';
 import 'firebase/firestore';
@@ -12,8 +12,8 @@ import 'firebase/firestore';
   providedIn: 'root'
 })
 export class AuthService {
-  // user: Observable<any>;
-  user: User = null;
+  user: Observable<any>;
+  // user: User = null;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private navCtrl: NavController) {
     this.user = this.afAuth.authState.pipe(
@@ -26,6 +26,21 @@ export class AuthService {
       })
     )
   }
+
+  // constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
+  //   this.afAuth.authState.subscribe(res => {
+  //     this.user = res;
+  //     if (this.user) {
+  //       console.log('authenticated user: ', this.user);
+  //       this.db.doc(`users/${this.currentUserId}`).valueChanges().pipe(
+  //         tap(res => {
+  //           // this.nickname = res['nickname'];
+  //           console.log(res);
+  //         })
+  //       ).subscribe();
+  //     }
+  //   })
+  //  }
 
   signIn(credentials): Observable<any> {
     return from(this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password)).pipe(
@@ -62,6 +77,7 @@ export class AuthService {
       this.navCtrl.navigateRoot('/');
     });
   }
+
   get authenticated(): boolean {
     return this.user !== null;
   }
@@ -70,6 +86,15 @@ export class AuthService {
   }
 
   get currentUserId(): string {
-    return this.authenticated ? this.user.uid : '';
+    const user = this.user.subscribe(event => {
+      console.log('currentUserId...');
+      console.log(event);
+      // this.user = event;
+      // return this.user;
+    });
+
+    return 'hello';
+
+    // return this.authenticated ? this.user.uid : '';
   }
 }

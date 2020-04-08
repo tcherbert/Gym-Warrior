@@ -10,10 +10,12 @@ import { Platform } from '@ionic/angular';
 })
 export class FcmService {
 
-  constructor(private firebase: Firebase,
-    private afs: AngularFirestore,
-    private platform: Platform,
-    private auth: AuthService) { }
+  constructor(
+              private firebase: Firebase,
+              private afs: AngularFirestore,
+              private platform: Platform,
+              private auth: AuthService
+  ) { }
 
   async getToken() {
     let token;

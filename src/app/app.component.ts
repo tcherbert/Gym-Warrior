@@ -32,12 +32,12 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.afAuth.authState.subscribe(user => {
-        if (user) {
-          this.notificationSetup();
-          this.router.navigateByUrl('/chats');
-        }
-      })
+      // this.afAuth.authState.subscribe(user => {
+      //   if (user) {
+      //     this.notificationSetup();
+      //     this.router.navigateByUrl('/chats');
+      //   }
+      // })
     });
   }
 
