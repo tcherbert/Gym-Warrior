@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-
+import { FcmService } from './services/fcm.service';
 import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Geolocation} from '@ionic-native/geolocation/ngx';
-import { OneSignal } from '@ionic-native/onesignal/ngx'
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+// import { Geolocation} from '@ionic-native/geolocation/ngx';
+// import { OneSignal } from '@ionic-native/onesignal/ngx'
 // import { AlertController } from '@ionic/angular'
 
 @Component({
@@ -13,79 +15,64 @@ import { OneSignal } from '@ionic-native/onesignal/ngx'
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  // constructor(
-  //   private platform: Platform,
-  //   private splashScreen: SplashScreen,
-  //   private statusBar: StatusBar,
-  //   private oneSignal: OneSignal,
-  //   private alertCtrl: AlertController
-  // ) {
-  //   this.initializeApp();
-  // }
+  constructor(
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar,
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private fcm: FcmService,
+    private alertCtrl: AlertController
+  ) {
+    this.initializeApp();
+  }
 
-  // initializeApp() {
-  //   this.platform.ready().then(() => {
-  //     this.statusBar.styleDefault();
-  //     this.splashScreen.hide();
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
 
-  //     if (this.platform.is('cordova')){
-  //       this.setupPush();
-  //     }
-  //   });
-  // }
-
-  // setupPush() {
-  //   this.oneSignal.startInit('a8b71954-a37d-4675-81c3-cbc121d9d4fb', '79982833297');
-
-  //   this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-
-  //   this.oneSignal.handleNotificationOpened().subscribe(data => {
-  //     let additionalData = data.notification.payload.additionalData;
-  //     this.showAlert('Notification opened', 'You already read this', additionalData);
-  //   });
-
-  //   this.oneSignal.handleNotificationReceived().subscribe(data => {
-  //     let msg = data.payload.body;
-  //     let title = data.payload.title;
-  //     let additionalData = data.payload.additionalData;
-  //     this.showAlert(title, msg, additionalData.task);
-  //   });
-
-  //   this.oneSignal.endInit();
-  // }
-
-  // async showAlert(title, msg, task){
-  //   const alert = await this.alertCtrl.create({
-  //     header: title,
-  //     subHeader: msg, 
-  //     buttons: [
-  //       {
-  //         text: `Action: ${task}`,
-  //         handler: () => {
-
-  //         }     
-  //       }
-  //     ]
-  //   })
-  //   alert.present();
-  // }
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
-    platform.ready().then(() => {
-      statusBar.styleDefault();
-      splashScreen.hide();
-  
-      // OneSignal Code start:
-      // Enable to debug issues:
-      // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-  
-      var notificationOpenedCallback = function(jsonData) {
-        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-      };
-  
-      window["plugins"].OneSignal
-        .startInit("YOUR_APPID", "YOUR_GOOGLE_PROJECT_NUMBER_IF_ANDROID")
-        .handleNotificationOpened(notificationOpenedCallback)
-        .endInit();
+      this.afAuth.authState.subscribe(user => {
+        if (user) {
+          this.notificationSetup();
+          this.router.navigateByUrl('/chats');
+        }
+      })
     });
   }
+
+  notificationSetup() {
+    this.fcm.getToken();
+    this.fcm.onNotifications().subscribe(msg => {
+      if (msg.tap >= 1) {
+        this.router.navigateByUrl(`/chat/${msg.chat}`);
+      } else {
+        if (this.platform.is('ios')) {
+          this.presentAlert(msg.aps.alert, msg.chat);
+        } else {
+          this.presentAlert(msg, msg.chat);
+        }
+      }
+    });
+  }
+
+  private async presentAlert(info, chat) {
+    const toast = await this.alertCtrl.create({
+      header: info.title,
+      message: 'Would you like to open the chat now?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel'
+        }, {
+          text: 'Yes',
+          handler: () => {
+            this.router.navigateByUrl(`/chat/${chat}`);
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+
 }

@@ -5,12 +5,15 @@ import * as firebase from 'firebase/app';
 import { Observable, from, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NavController } from '@ionic/angular';
+import { User } from 'firebase';
+import 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  user: Observable<any>;
+  // user: Observable<any>;
+  user: User = null;
 
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore, private navCtrl: NavController) {
     this.user = this.afAuth.authState.pipe(
@@ -58,5 +61,15 @@ export class AuthService {
     this.afAuth.auth.signOut().then(() => {
       this.navCtrl.navigateRoot('/');
     });
+  }
+  get authenticated(): boolean {
+    return this.user !== null;
+  }
+  get currentUser(): any {
+    return this.authenticated ? this.user : null;
+  }
+
+  get currentUserId(): string {
+    return this.authenticated ? this.user.uid : '';
   }
 }

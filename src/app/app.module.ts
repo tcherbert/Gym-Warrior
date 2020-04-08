@@ -16,6 +16,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
+import { Firebase } from '@ionic-native/firebase/ngx';
+
 import { Camera } from '@ionic-native/camera/ngx';
 import { CartModalPageModule } from './pages/cart-modal/cart-modal.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -50,7 +52,8 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
     SplashScreen,
     WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Camera
+    Camera,
+    Firebase
     // { provide: Camera, useClass: CameraMock}
   ],
   bootstrap: [AppComponent]

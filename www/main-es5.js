@@ -603,8 +603,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
 /* harmony import */ var _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic-native/splash-screen/ngx */ "./node_modules/@ionic-native/splash-screen/ngx/index.js");
 /* harmony import */ var _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic-native/status-bar/ngx */ "./node_modules/@ionic-native/status-bar/ngx/index.js");
-/* harmony import */ var _ionic_native_onesignal_ngx__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic-native/onesignal/ngx */ "./node_modules/@ionic-native/onesignal/ngx/index.js");
-
 
 
 
@@ -612,70 +610,73 @@ __webpack_require__.r(__webpack_exports__);
 
 // import { AlertController } from '@ionic/angular'
 var AppComponent = /** @class */ (function () {
-    function AppComponent(platform, splashScreen, statusBar, oneSignal, alertCtrl) {
-        this.platform = platform;
-        this.splashScreen = splashScreen;
-        this.statusBar = statusBar;
-        this.oneSignal = oneSignal;
-        this.alertCtrl = alertCtrl;
-        this.initializeApp();
+    // constructor(
+    //   private platform: Platform,
+    //   private splashScreen: SplashScreen,
+    //   private statusBar: StatusBar,
+    //   private oneSignal: OneSignal,
+    //   private alertCtrl: AlertController
+    // ) {
+    //   this.initializeApp();
+    // }
+    // initializeApp() {
+    //   this.platform.ready().then(() => {
+    //     this.statusBar.styleDefault();
+    //     this.splashScreen.hide();
+    //     if (this.platform.is('cordova')){
+    //       this.setupPush();
+    //     }
+    //   });
+    // }
+    // setupPush() {
+    //   this.oneSignal.startInit('a8b71954-a37d-4675-81c3-cbc121d9d4fb', '79982833297');
+    //   this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    //   this.oneSignal.handleNotificationOpened().subscribe(data => {
+    //     let additionalData = data.notification.payload.additionalData;
+    //     this.showAlert('Notification opened', 'You already read this', additionalData);
+    //   });
+    //   this.oneSignal.handleNotificationReceived().subscribe(data => {
+    //     let msg = data.payload.body;
+    //     let title = data.payload.title;
+    //     let additionalData = data.payload.additionalData;
+    //     this.showAlert(title, msg, additionalData.task);
+    //   });
+    //   this.oneSignal.endInit();
+    // }
+    // async showAlert(title, msg, task){
+    //   const alert = await this.alertCtrl.create({
+    //     header: title,
+    //     subHeader: msg, 
+    //     buttons: [
+    //       {
+    //         text: `Action: ${task}`,
+    //         handler: () => {
+    //         }     
+    //       }
+    //     ]
+    //   })
+    //   alert.present();
+    // }
+    function AppComponent(platform, statusBar, splashScreen) {
+        platform.ready().then(function () {
+            statusBar.styleDefault();
+            splashScreen.hide();
+            // OneSignal Code start:
+            // Enable to debug issues:
+            // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+            var notificationOpenedCallback = function (jsonData) {
+                console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+            };
+            window["plugins"].OneSignal
+                .startInit("YOUR_APPID", "YOUR_GOOGLE_PROJECT_NUMBER_IF_ANDROID")
+                .handleNotificationOpened(notificationOpenedCallback)
+                .endInit();
+        });
     }
-    AppComponent.prototype.initializeApp = function () {
-        var _this = this;
-        this.platform.ready().then(function () {
-            _this.statusBar.styleDefault();
-            _this.splashScreen.hide();
-            if (_this.platform.is('cordova')) {
-                _this.setupPush();
-            }
-        });
-    };
-    AppComponent.prototype.setupPush = function () {
-        var _this = this;
-        this.oneSignal.startInit('a8b71954-a37d-4675-81c3-cbc121d9d4fb', '79982833297');
-        this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-        this.oneSignal.handleNotificationOpened().subscribe(function (data) {
-            var additionalData = data.notification.payload.additionalData;
-            _this.showAlert('Notification opened', 'You already read this', additionalData);
-        });
-        this.oneSignal.handleNotificationReceived().subscribe(function (data) {
-            var msg = data.payload.body;
-            var title = data.payload.title;
-            var additionalData = data.payload.additionalData;
-            _this.showAlert(title, msg, additionalData.task);
-        });
-        this.oneSignal.endInit();
-    };
-    AppComponent.prototype.showAlert = function (title, msg, task) {
-        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var alert;
-            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.alertCtrl.create({
-                            header: title,
-                            subHeader: msg,
-                            buttons: [
-                                {
-                                    text: "Action: " + task,
-                                    handler: function () {
-                                    }
-                                }
-                            ]
-                        })];
-                    case 1:
-                        alert = _a.sent();
-                        alert.present();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
     AppComponent.ctorParameters = function () { return [
         { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"] },
-        { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"] },
         { type: _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"] },
-        { type: _ionic_native_onesignal_ngx__WEBPACK_IMPORTED_MODULE_5__["OneSignal"] },
-        { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"] }
+        { type: _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"] }
     ]; };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -683,11 +684,7 @@ var AppComponent = /** @class */ (function () {
             template: __webpack_require__(/*! raw-loader!./app.component.html */ "./node_modules/raw-loader/index.js!./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.scss */ "./src/app/app.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"],
-            _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"],
-            _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"],
-            _ionic_native_onesignal_ngx__WEBPACK_IMPORTED_MODULE_5__["OneSignal"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_2__["AlertController"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"], _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_4__["StatusBar"], _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_3__["SplashScreen"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -721,11 +718,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/index.js");
 /* harmony import */ var _angular_fire_storage__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/fire/storage */ "./node_modules/@angular/fire/storage/index.js");
 /* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/index.js");
-/* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "./node_modules/@ionic-native/camera/ngx/index.js");
-/* harmony import */ var _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/cart-modal/cart-modal.module */ "./src/app/pages/cart-modal/cart-modal.module.ts");
-/* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
-/* harmony import */ var _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic-native/geofence/ngx */ "./node_modules/@ionic-native/geofence/ngx/index.js");
-/* harmony import */ var _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @ionic-native/ionic-webview/ngx */ "./node_modules/@ionic-native/ionic-webview/ngx/index.js");
+/* harmony import */ var _ionic_native_firebase_ngx__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ionic-native/firebase/ngx */ "./node_modules/@ionic-native/firebase/ngx/index.js");
+/* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "./node_modules/@ionic-native/camera/ngx/index.js");
+/* harmony import */ var _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pages/cart-modal/cart-modal.module */ "./src/app/pages/cart-modal/cart-modal.module.ts");
+/* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
+/* harmony import */ var _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @ionic-native/geofence/ngx */ "./node_modules/@ionic-native/geofence/ngx/index.js");
+/* harmony import */ var _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @ionic-native/ionic-webview/ngx */ "./node_modules/@ionic-native/ionic-webview/ngx/index.js");
+
 
 
 
@@ -767,16 +766,17 @@ var AppModule = /** @class */ (function () {
                 _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_12__["AngularFirestoreModule"],
                 _angular_fire_storage__WEBPACK_IMPORTED_MODULE_13__["AngularFireStorageModule"],
                 _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_14__["AngularFireAuthGuardModule"],
-                _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_16__["CartModalPageModule"]
+                _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_17__["CartModalPageModule"]
             ],
             providers: [
                 _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_7__["StatusBar"],
-                _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__["Geolocation"],
-                _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__["Geofence"],
+                _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_18__["Geolocation"],
+                _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_19__["Geofence"],
                 _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_6__["SplashScreen"],
-                _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_19__["WebView"],
+                _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_20__["WebView"],
                 { provide: _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouteReuseStrategy"], useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonicRouteStrategy"] },
-                _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_15__["Camera"]
+                _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_16__["Camera"],
+                _ionic_native_firebase_ngx__WEBPACK_IMPORTED_MODULE_15__["Firebase"]
                 // { provide: Camera, useClass: CameraMock}
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"]]
