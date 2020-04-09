@@ -17,8 +17,15 @@ export class GymPage implements OnInit {
   products: Observable<any>;
   lat;
   long;
+  success;
+  fail;
 
-  constructor(private auth: AuthService, private productService: ProductService, private geolocation: Geolocation, private geofence: Geofence) { 
+  constructor(private auth: AuthService, private productService: ProductService, private geolocation: Geolocation, private geofence: Geofence) {
+    geofence.initialize().then(
+      // resolved promise does not return a value
+      () => console.log('Geofence Plugin Ready'),
+      (err) => console.log(err)
+    ) 
     
   }
 
@@ -48,8 +55,8 @@ export class GymPage implements OnInit {
       }
     }
     this.geofence.addOrUpdate(fence).then(
-      () => console.log("Geofence added"),
-      (err) => console.log('Geofence failed to add')
+      () => this.success="success",
+      (err) => this.fail = err
 
     );
   }
