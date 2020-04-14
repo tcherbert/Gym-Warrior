@@ -58,7 +58,7 @@ export class ProfilePage implements OnInit {
     const userData = await this.db.collection('users')
       .doc(id)
       .ref
-      .get().then(function(doc) {
+      .get().then( doc => { // function(doc) {
           if (doc.exists) {
               const userData = doc.data();
               return userData;
@@ -66,7 +66,7 @@ export class ProfilePage implements OnInit {
               console.log('No such document!');
           }
       });
-      
+
     this.fname = userData.fname;
     this.lname = userData.lname;
     this.dataReady = true;

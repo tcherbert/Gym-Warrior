@@ -42,7 +42,7 @@
       <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
     </div>
     
-    <div class="profileImage">
+    <div class="profileImage" *ngIf="togglePostFlag">
       <div *ngIf="imageReady">
         <!-- <div class="imageBg" [style.background-image]="profileImage"> -->
         <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
@@ -55,8 +55,7 @@
       <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
       <ion-button (click)="selectSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
       <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
-      <ion-button expand="block" type="submit"
-      class="ion-margin-vertical">
+      <ion-button expand="block" type="submit" class="ion-margin-vertical">
         Post
       </ion-button>
     </form>
@@ -65,8 +64,9 @@
       <ion-card  *ngFor ="let post of myPosts">
         <div>
           <div class="post-bg" *ngIf=post.Image [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
-          <p>{{post.User_ID}}</p>
           <p>{{post.Data.txt}}</p>
+          <p>{{post.Data.fname}}</p>
+          <p>{{post.Data.lname}}</p>
         </div>
       </ion-card> 
       
