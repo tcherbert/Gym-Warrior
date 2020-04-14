@@ -23,6 +23,10 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'feed',
+        loadChildren: () => import('./pages/feed/feed.module').then( m => m.FeedPageModule)
+      },
+      {
         path: 'calendar',
         loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
       },
@@ -52,7 +56,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'profile',
+        redirectTo: 'feed',
         pathMatch: 'full'
       }
     ]

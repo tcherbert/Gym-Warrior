@@ -1,0 +1,86 @@
+
+
+<ion-app>
+    <ion-content overflow-scroll="true">
+
+    <ion-menu contentId="main" side="end" class="navMenu">
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile Page</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/gym">Gym Page</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/groups">Groups Page</ion-button>
+            </ion-item>
+            <ion-button (click)="signOut()" class="signOutButton">
+              Logout <ion-icon slot="icon-only" name="log-out"></ion-icon>
+            </ion-button>
+       
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+      
+      <div id="main">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+          </ion-toolbar>
+        </ion-header>
+      </div>   
+
+<main>
+    <div>
+      <ion-button class="nav" href="user/profile" color="lightred">profile</ion-button>
+      <ion-button class="nav" color="darkred">Photos</ion-button>
+      <ion-button class="nav" color="lightred">Schedule</ion-button>
+      <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
+    </div>
+    
+    <div class="profileImage" *ngIf="togglePostFlag">
+      <div *ngIf="imageReady">
+        <!-- <div class="imageBg" [style.background-image]="profileImage"> -->
+        <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
+          <!-- <img [src]="profileImage" *ngIf="profileImage"> -->
+        </div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
+      <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
+      <ion-button (click)="selectSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
+      <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
+      <ion-button expand="block" type="submit" class="ion-margin-vertical">
+        Post
+      </ion-button>
+    </form>
+
+    <div>
+      <ion-card  *ngFor ="let post of myPosts">
+        <div>
+          <div class="post-bg" *ngIf=post.Image [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
+          <p>{{post.Data.txt}}</p>
+          <p>{{post.Data.fname}}</p>
+          <p>{{post.Data.lname}}</p>
+        </div>
+      </ion-card> 
+      
+      <ion-card class="profileImage2">
+          <ion-card-header>
+            <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content id="nameStatus">
+            We just released a new class schedule! Check it out!
+          </ion-card-content>
+        </ion-card>
+    </div>
+</main>
+</ion-content>
+
+</ion-app>

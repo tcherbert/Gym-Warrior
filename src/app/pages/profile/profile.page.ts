@@ -20,17 +20,6 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 export class ProfilePage implements OnInit {
 
-
-
-  // This works to pull all users data in conjunction with the code below the next 2 lines... 
-  // But is vastly overkill. Keeping it for possible future reference.
-  // userCollection: AngularFirestoreCollection<User>;
-  // userData: Observable<User[]>;
-  // this.userCollection = this.db.collection('users');
-  // this.userData = this.userCollection.valueChanges(); 
-
-
-
   public fname: string;
   public lname: string;
   public dataReady: boolean;
@@ -38,7 +27,6 @@ export class ProfilePage implements OnInit {
   public imageReady: boolean;
   public profileImage;
 
-  
 
 
   constructor(private auth: AuthService,
@@ -66,12 +54,11 @@ export class ProfilePage implements OnInit {
     this.auth.signOut();
   }
 
-  async getUserData(id){
-    // const id = this.afAuth.auth.currentUser.uid;
+  async getUserData(id) {
     const userData = await this.db.collection('users')
       .doc(id)
       .ref
-      .get().then(function(doc) {
+      .get().then( doc => { // function(doc) {
           if (doc.exists) {
               const userData = doc.data();
               return userData;
@@ -79,7 +66,6 @@ export class ProfilePage implements OnInit {
               console.log('No such document!');
           }
       });
-
 
     this.fname = userData.fname;
     this.lname = userData.lname;
@@ -92,7 +78,6 @@ export class ProfilePage implements OnInit {
       buttons: [{
         text: 'Load from Library',
         handler: () => {
-          // console.log("Hello from Load from Library");
           this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY);
         }
       },
@@ -111,8 +96,7 @@ export class ProfilePage implements OnInit {
     actionSheet.present();
   }
 
-  captureImage(sourceType: number){
-    // console.log('Hello from CaptureImage');
+  captureImage(sourceType: number) {
     let storageRef: AngularFireStorageReference = null;
     const id = this.afAuth.auth.currentUser.uid;
 
@@ -134,10 +118,6 @@ export class ProfilePage implements OnInit {
       this.uploadImage(this.profileImage, 'profileImage');
     });
   }
-
-  // getBackground() {
-  //   return this.sanitizer.bypassSecurityTrustUrl(this.profileImage);
-  // }
 
   uploadImage(imageURI, imageName){
     return new Promise<any>((resolve, reject) => {
@@ -180,8 +160,10 @@ export class ProfilePage implements OnInit {
       this.profileImage = result;
       this.imageReady = true;
     });
+  }
 
-
+  async createPost() {
+    const id = this.afAuth.auth.currentUser.uid;
   }
 
 } // end ProfilePage Class

@@ -15,8 +15,14 @@ export class LoginPage implements OnInit {
 
   @ViewChild('flipcontainer', { static: false }) flipcontainer: ElementRef;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController, private alertCtrl: AlertController, private router: Router) { }
+  constructor(
+              private fb: FormBuilder,
+              private authService: AuthService,
+              private loadingCtrl: LoadingController,
+              private toastCtrl: ToastController,
+              private alertCtrl: AlertController,
+              private router: Router
+  ) {}
 
   ngOnInit() {
     this.registerForm = this.fb.group({
@@ -63,7 +69,6 @@ export class LoginPage implements OnInit {
   }
 
   async register() {
-    console.log('Start of Register...');
     let loading = await this.loadingCtrl.create({
       message: 'Loading...'
     });
