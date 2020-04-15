@@ -159,7 +159,7 @@ let ProfilePage = class ProfilePage {
             const userData = yield this.db.collection('users')
                 .doc(id)
                 .ref
-                .get().then(function (doc) {
+                .get().then(doc => {
                 if (doc.exists) {
                     const userData = doc.data();
                     return userData;

@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n\n<ion-app>\n    <ion-content overflow-scroll=\"true\">\n\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/profile\">Profile Page</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym\">Gym Page</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/groups\">Groups Page</ion-button>\n            </ion-item>\n            <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n              Logout <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n            </ion-button>\n       \n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      \n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n\n<main>\n    <div>\n      <ion-button class=\"nav\" href=\"user/profile\" color=\"lightred\">profile</ion-button>\n      <ion-button class=\"nav\" color=\"darkred\">Photos</ion-button>\n      <ion-button class=\"nav\" color=\"lightred\">Schedule</ion-button>\n      <ion-button (click)=\"togglePost()\" class=\"darkred\">Add Post</ion-button>\n    </div>\n    \n    <div class=\"profileImage\">\n      <div *ngIf=\"imageReady\">\n        <!-- <div class=\"imageBg\" [style.background-image]=\"profileImage\"> -->\n        <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+profileImage+')'}\">\n          <!-- <img [src]=\"profileImage\" *ngIf=\"profileImage\"> -->\n        </div>\n      </div>\n    </div>\n\n    <form (ngSubmit)=\"createPost()\" *ngIf=\"togglePostFlag\">\n      <ion-textarea placeholder=\"What is on your mind?\" [(ngModel)]=\"postData.txt\" name=\"txt\"></ion-textarea>\n      <ion-button (click)=\"selectSource()\"><ion-icon name=\"ios-image\"></ion-icon> Add Image</ion-button>\n      <ion-button *ngIf=\"imageReady\" (click)=\"removeImage()\"><ion-icon name=\"ios-image\"></ion-icon> Remove Image</ion-button>\n      <ion-button expand=\"block\" type=\"submit\"\n      class=\"ion-margin-vertical\">\n        Post\n      </ion-button>\n    </form>\n\n    <div>\n      <ion-card  *ngFor =\"let post of myPosts\">\n        <div>\n          <div class=\"post-bg\" *ngIf=post.Image [ngStyle]=\"{'background-image':'url('+post.Image+')'}\"></div>\n          <p>{{post.User_ID}}</p>\n          <p>{{post.Data.txt}}</p>\n        </div>\n      </ion-card> \n      \n      <ion-card class=\"profileImage2\">\n          <ion-card-header>\n            <ion-card-title id=\"nameStatus\">Smart Fitness</ion-card-title>\n          </ion-card-header>\n\n          <ion-card-content id=\"nameStatus\">\n            We just released a new class schedule! Check it out!\n          </ion-card-content>\n        </ion-card>\n    </div>\n</main>\n</ion-content>\n\n</ion-app>"
+module.exports = "\n\n<ion-app>\n    <ion-content overflow-scroll=\"true\">\n\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/profile\">Profile Page</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym\">Gym Page</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/groups\">Groups Page</ion-button>\n            </ion-item>\n            <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n              Logout <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n            </ion-button>\n       \n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      \n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n\n<main>\n    <div>\n      <ion-button class=\"nav\" href=\"user/profile\" color=\"lightred\">profile</ion-button>\n      <ion-button class=\"nav\" color=\"darkred\">Photos</ion-button>\n      <ion-button class=\"nav\" color=\"lightred\">Schedule</ion-button>\n      <ion-button (click)=\"togglePost()\" class=\"darkred\">Add Post</ion-button>\n    </div>\n    \n    <div class=\"profileImage\" *ngIf=\"togglePostFlag\">\n      <div *ngIf=\"imageReady\">\n        <!-- <div class=\"imageBg\" [style.background-image]=\"profileImage\"> -->\n        <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+profileImage+')'}\">\n          <!-- <img [src]=\"profileImage\" *ngIf=\"profileImage\"> -->\n        </div>\n      </div>\n    </div>\n\n    <form (ngSubmit)=\"createPost()\" *ngIf=\"togglePostFlag\">\n      <ion-textarea placeholder=\"What is on your mind?\" [(ngModel)]=\"postData.txt\" name=\"txt\"></ion-textarea>\n      <ion-button (click)=\"selectSource()\"><ion-icon name=\"ios-image\"></ion-icon> Add Image</ion-button>\n      <ion-button *ngIf=\"imageReady\" (click)=\"removeImage()\"><ion-icon name=\"ios-image\"></ion-icon> Remove Image</ion-button>\n      <ion-button expand=\"block\" type=\"submit\" class=\"ion-margin-vertical\">\n        Post\n      </ion-button>\n    </form>\n\n    <div>\n      <ion-card  *ngFor =\"let post of myPosts\">\n        <div>\n          <div class=\"post-bg\" *ngIf=post.Image [ngStyle]=\"{'background-image':'url('+post.Image+')'}\"></div>\n          <p>{{post.Data.txt}}</p>\n          <p>{{post.Data.fname}}</p>\n          <p>{{post.Data.lname}}</p>\n        </div>\n      </ion-card> \n      \n      <ion-card class=\"profileImage2\">\n          <ion-card-header>\n            <ion-card-title id=\"nameStatus\">Smart Fitness</ion-card-title>\n          </ion-card-header>\n\n          <ion-card-content id=\"nameStatus\">\n            We just released a new class schedule! Check it out!\n          </ion-card-content>\n        </ion-card>\n    </div>\n</main>\n</ion-content>\n\n</ion-app>"
 
 /***/ }),
 
@@ -161,6 +161,9 @@ var FeedPage = /** @class */ (function () {
     }
     FeedPage.prototype.ngOnInit = function () {
         var _this = this;
+        var id = this.afAuth.auth.currentUser.uid;
+        this.getUserData(id);
+        // This gets all posts...
         this.postCrudService.readPosts().subscribe(function (data) {
             _this.posts = data.map(function (e) {
                 return {
@@ -177,8 +180,12 @@ var FeedPage = /** @class */ (function () {
             var id = _this.afAuth.auth.currentUser.uid;
             var counter = 0;
             for (var i = 0; i < postsLength; i++) {
+                // If only this users posts
                 if (_this.posts[i].User_ID === id) {
                     _this.myPosts[counter] = _this.posts[i];
+                    console.log('this.posts[i].id');
+                    console.log(_this.posts[i].User_ID);
+                    _this.getUserData(_this.posts[i].User_ID);
                     // If this.posts[i].Image is set.
                     if (_this.posts[i].Image !== undefined) {
                         _this.getPostImage(id, _this.posts[i].Image, counter);
@@ -298,11 +305,19 @@ var FeedPage = /** @class */ (function () {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
             var id, record;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                console.log('this.fname');
+                console.log(this.fname);
+                console.log('this.lname');
+                console.log(this.lname);
                 id = this.afAuth.auth.currentUser.uid;
                 record = {};
                 record['user_id'] = id;
+                this.postData['fname'] = this.fname;
+                this.postData['lname'] = this.lname;
                 record['data'] = this.postData;
-                record['image'] = this.imageID;
+                if (this.imageID !== undefined) {
+                    record['image'] = this.imageID;
+                }
                 this.postCrudService.createPost(record).then(function (resp) {
                     console.log(resp);
                 })
@@ -340,6 +355,32 @@ var FeedPage = /** @class */ (function () {
             result += characters.charAt(Math.floor(Math.random() * charactersLength));
         }
         return result;
+    };
+    FeedPage.prototype.getUserData = function (id) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var userData;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.db.collection('users')
+                            .doc(id)
+                            .ref
+                            .get().then(function (doc) {
+                            if (doc.exists) {
+                                var userData_1 = doc.data();
+                                return userData_1;
+                            }
+                            else {
+                                console.log('No such document!');
+                            }
+                        })];
+                    case 1:
+                        userData = _a.sent();
+                        this.fname = userData.fname;
+                        this.lname = userData.lname;
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     FeedPage.ctorParameters = function () { return [
         { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] },

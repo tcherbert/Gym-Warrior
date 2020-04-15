@@ -1,0 +1,37 @@
+.profileImage {
+  background: url(../../../assets/gymprofile.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 55%;
+}
+
+#nameStatus {
+  color:white;
+  text-shadow: -2px 2px 6px black;
+  }
+
+  .profileImage2 {
+    background: url(../../../assets/gymprofile.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 55%;
+
+  }
+  .nav{
+    width: 32%;
+  }
+
+  .navMenu {
+    position: fixed;
+    z-index: 9999;
+    
+    ion-list {
+      padding-top: 30px;
+      height: 100%;
+    }
+  }
+ p{
+   color: white;
+   text-align: center;
+ }
+ 
