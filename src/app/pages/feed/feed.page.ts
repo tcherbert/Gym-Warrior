@@ -9,7 +9,6 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
-// import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 
 import { PostCrudService } from './../../services/firestore-api.service';
 
@@ -77,21 +76,16 @@ export class FeedPage implements OnInit {
         // If only this users posts
         if (this.posts[i].User_ID === id) {
           this.myPosts[counter] = this.posts[i];
-          console.log('this.posts[i].id');
-          console.log(this.posts[i].User_ID);
           this.getUserData(this.posts[i].User_ID);
 
           // If this.posts[i].Image is set.
           if (this.posts[i].Image !== undefined) {
             this.getPostImage(id, this.posts[i].Image, counter);
-            
-            // console.log('this.myPosts[counter].Image');
-            // console.log(this.myPosts[counter].Image);
           }
           counter++;
         }
       }
-      console.log(this.myPosts);
+      //console.log(this.myPosts);
     });
   }
 
@@ -150,7 +144,7 @@ export class FeedPage implements OnInit {
       this.imageReady = true;
       // Upload image
       this.imageID = this.makeid(60);
-      console.log(this.imageID);
+      // console.log(this.imageID);
       this.uploadImage(this.profileImage, this.imageID);
     });
   }
@@ -159,8 +153,8 @@ export class FeedPage implements OnInit {
     return new Promise<any>((resolve, reject) => {
       const id = this.afAuth.auth.currentUser.uid;
       let storageRef: AngularFireStorageReference = this.storage.ref(id);
-      console.log('storageRef');
-      console.log(storageRef);
+      // console.log('storageRef');
+      // console.log(storageRef);
       let imageRef = storageRef.child('image').child(imageName);
       this.encodeImageUri(imageURI, function(image64){
         imageRef.putString(image64, 'data_url')
@@ -196,10 +190,6 @@ export class FeedPage implements OnInit {
   }
 
   async createPost() {
-    console.log('this.fname');
-    console.log(this.fname);
-    console.log('this.lname');
-    console.log(this.lname);
     const id = this.afAuth.auth.currentUser.uid;
     let record = {};
     record['user_id'] = id;
@@ -212,10 +202,10 @@ export class FeedPage implements OnInit {
 
 
     this.postCrudService.createPost(record).then(resp => {
-      console.log(resp);
+      // console.log(resp);
     })
       .catch(error => {
-        console.log(error);
+        // console.log(error);
       });
   }
 
@@ -226,8 +216,8 @@ export class FeedPage implements OnInit {
     profileImage.subscribe(result => {
       // this.profileImage = result;
       // this.imageReady = true;
-      console.log('counter', counter);
-      console.log(result);
+      // console.log('counter', counter);
+      // console.log(result);
       this.myPosts[counter].Image = result;
       return result;
     });
@@ -241,23 +231,23 @@ export class FeedPage implements OnInit {
        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- }
- async getUserData(id) {
-  const userData = await this.db.collection('users')
-    .doc(id)
-    .ref
-    .get().then( doc => { // function(doc) {
-        if (doc.exists) {
-            const userData = doc.data();
-            return userData;
-        } else {
-            console.log('No such document!');
-        }
-    });
+  }
+  async getUserData(id) {
+    const userData = await this.db.collection('users')
+      .doc(id)
+      .ref
+      .get().then( doc => { // function(doc) {
+          if (doc.exists) {
+              const userData = doc.data();
+              return userData;
+          } else {
+              // console.log('No such document!');
+          }
+      });
 
 
-  this.fname = userData.fname;
-  this.lname = userData.lname;
-  // this.dataReady = true;
-}
+    this.fname = userData.fname;
+    this.lname = userData.lname;
+    // this.dataReady = true;
+  }
 }

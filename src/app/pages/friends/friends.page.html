@@ -1,0 +1,68 @@
+
+
+<ion-app>
+    <ion-content overflow-scroll="true">
+
+    <ion-menu contentId="main" side="end" class="navMenu">
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile Page</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/gym">Gym Page</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/groups">Groups Page</ion-button>
+            </ion-item>
+       
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+      
+      <div id="main">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+          </ion-toolbar>
+        </ion-header>
+      </div>   
+  
+    
+  
+  
+<main>
+  <section>
+    <p (click)="findFriendsToggle()">
+      Find Friends 
+      <span *ngIf="!findFriends"><ion-icon name="arrow-forward"></ion-icon></span>
+      <span *ngIf="findFriends"><ion-icon name="arrow-down"></ion-icon></span>
+    </p>
+    
+    
+    <div *ngIf="findFriends" class="find-friends">
+      <form (ngSubmit)="findFriend()" *ngIf="toggleFindFriendsFlag">
+        <!-- <ion-input type="text" placeholder="Who are you looking for?" [(ngModel)]="findFriendData.txt" name="txt"></ion-input> -->
+        <ion-searchbar animated [(ngModel)]="searchTerm.txt" name="txt" (ionChange)="setFilteredItems()"></ion-searchbar>
+        <p>all users here.. filter them as we can..</p>        
+        <!-- <ion-button expand="block" type="submit" class="ion-margin-vertical">
+          Search
+        </ion-button> -->
+      </form>
+    </div>
+  </section>
+
+  <section>
+    <p>Friends</p>
+    <div *ngIf="friendsReady">
+      <ion-card  *ngFor ="let friend of friendsData">
+        <div>
+          <p>{{friend.fname}} {{friend.lname}}</p>
+        </div>
+      </ion-card> 
+    </div>
+  </section>
+</main>

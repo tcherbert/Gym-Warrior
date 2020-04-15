@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/feed/feed.module').then( m => m.FeedPageModule)
       },
       {
+        path: 'friends',
+        loadChildren: () => import('./pages/friends/friends.module').then( m => m.FriendsPageModule)
+      },
+      {
         path: 'calendar',
         loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
       },
@@ -56,7 +60,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'feed',
+        redirectTo: 'friends',
         pathMatch: 'full'
       }
     ]
