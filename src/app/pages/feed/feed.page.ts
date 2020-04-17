@@ -49,7 +49,9 @@ export class FeedPage implements OnInit {
     this.togglePostFlag = false;
   }
 
-
+  signOut() {
+    this.auth.signOut();
+  }
   ngOnInit() {
     const id = this.afAuth.auth.currentUser.uid;
     this.getUserData(id);

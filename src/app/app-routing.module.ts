@@ -60,7 +60,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'friends',
+        redirectTo: 'profile',
         pathMatch: 'full'
       }
     ]

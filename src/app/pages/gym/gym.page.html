@@ -7,13 +7,18 @@
         <ion-content>
           <ion-list>
             <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile Page</ion-button>
+              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile</ion-button>
             </ion-item>
             <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/gym">Gym Page</ion-button>
+              <ion-button class="navButton" fill="clear" href="/user/feed">Feed</ion-button>
             </ion-item>
             <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/groups">Groups Page</ion-button>
+              <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button (click)="signOut()" class="signOutButton">
+                <ion-icon slot="icon-only" name="log-out"></ion-icon>
+              </ion-button>
             </ion-item>
        
           </ion-list>
@@ -79,11 +84,6 @@
         </ion-card>  
     </div>
 </main>
-
-<ion-button (click)="signOut()" class="signOutButton">
-    <ion-icon slot="icon-only" name="log-out"></ion-icon>
-  </ion-button>
-  
   <ion-button (click)="getLocation()" class="geolocationButton">
     Get Location  
   </ion-button>
