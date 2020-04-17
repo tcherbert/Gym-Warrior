@@ -403,6 +403,60 @@ var findCheckedOption = function (el, tagName) {
 
 /***/ }),
 
+/***/ "./src/app/services/firestore-api.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/services/firestore-api.service.ts ***!
+  \***************************************************/
+/*! exports provided: PostCrudService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PostCrudService", function() { return PostCrudService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/index.js");
+
+
+
+var PostCrudService = /** @class */ (function () {
+    function PostCrudService(db) {
+        this.db = db;
+    }
+    PostCrudService.prototype.createPost = function (record) {
+        return this.db.collection('posts').add(record);
+    };
+    PostCrudService.prototype.readPosts = function () {
+        return this.db.collection('posts').snapshotChanges();
+    };
+    PostCrudService.prototype.updatePost = function (recordID, record) {
+        this.db.doc('posts/' + recordID).update(record);
+    };
+    PostCrudService.prototype.deletePost = function (recordId) {
+        this.db.doc('posts/' + recordId).delete();
+    };
+    PostCrudService.prototype.readFriendsIds = function (recordID) {
+        return this.db.doc('friends/' + recordID).snapshotChanges();
+    };
+    PostCrudService.prototype.readUsers = function () {
+        return this.db.collection('users').snapshotChanges();
+    };
+    PostCrudService.ctorParameters = function () { return [
+        { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] }
+    ]; };
+    PostCrudService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
+    ], PostCrudService);
+    return PostCrudService;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/services/product.service.ts":
 /*!*********************************************!*\
   !*** ./src/app/services/product.service.ts ***!
