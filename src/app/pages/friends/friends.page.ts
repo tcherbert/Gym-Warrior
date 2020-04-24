@@ -8,7 +8,9 @@ import { CartModalPage } from '../cart-modal/cart-modal.page';
 import { PostCrudService } from './../../services/firestore-api.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+
 import { AngularFireStorage } from '@angular/fire/storage';
+
 
 @Component({
   selector: 'app-buyer-list',
@@ -26,9 +28,11 @@ export class FriendsPage implements OnInit {
   toggleFindFriendsFlag: boolean;
 
   usersData = [];
+
   searchTerm = {};
 
   public filteredFriends: any;
+
 
   constructor(
     private auth: AuthService,
@@ -36,6 +40,7 @@ export class FriendsPage implements OnInit {
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
     private storage: AngularFireStorage,
+
   ) {
     this.findFriends = false;
     this.friendsReady = false;
@@ -70,13 +75,13 @@ export class FriendsPage implements OnInit {
     await this.postCrudService.readFriendsIds(id).subscribe(data => {
       this.friendsIds = data.payload.data()['Friends'];
       // User_ID: e.payload.doc.data()['user_id'],
-      console.log('this.friendsIds');
-      console.log(this.friendsIds);
+
       this.getUserData();
     });
   }
 
   async getUserData() {
+
     // this.friendsData = [];
     let friendsIdsLength;
     if(!this.isEmpty(this.friendsIds)){
@@ -98,13 +103,14 @@ export class FriendsPage implements OnInit {
                 const userData = doc.data();
                 // return userData;
                 this.friendsData[this.friendsCounter] = userData;
+
                 this.friendsData[this.friendsCounter]['id'] = id;
+
                 this.friendsCounter++;
 
                 if(friendsIdsLength === this.friendsCounter){
                   this.friendsReady = true;
-                  console.log('final friends log');
-                  console.log(this.friendsData);
+
                 }
             } else {
                 console.log('No such document!');
@@ -119,7 +125,7 @@ export class FriendsPage implements OnInit {
   async findUsers() {
     this.postCrudService.readUsers().subscribe(data => {
       this.findUsersData = data.map(e => {
-        console.log('postCrudService readUsers() fired...');
+
         return {
           id: e.payload.doc.id,
           isEdit: false,
@@ -127,6 +133,7 @@ export class FriendsPage implements OnInit {
           lname: e.payload.doc.data()['lname'],
         };
       });
+
       console.log('this.findUsersData');
       console.log(this.findUsersData);
 
@@ -138,6 +145,7 @@ export class FriendsPage implements OnInit {
       } else {
         findFriendsIdsLength = 0;
       }
+
       const id = this.afAuth.auth.currentUser.uid;
       let counter = 0;
       let foundFlag;
@@ -153,6 +161,7 @@ export class FriendsPage implements OnInit {
           counter++;
         }
       }
+
       this.findUsersImages();
     });
     // Find all users images.
@@ -175,6 +184,7 @@ export class FriendsPage implements OnInit {
 
   setFilteredItems() {
     this.filteredFriends = this.filterItems(this.searchTerm);
+
   }
 
 
@@ -281,5 +291,6 @@ export class FriendsPage implements OnInit {
         }
     }
     return true;
+
   }
 }

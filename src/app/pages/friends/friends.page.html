@@ -47,6 +47,7 @@
       <form (ngSubmit)="findFriend()" *ngIf="toggleFindFriendsFlag">
         <!-- <ion-input type="text" placeholder="Who are you looking for?" [(ngModel)]="findFriendData.txt" name="txt"></ion-input> -->
         <ion-searchbar animated [(ngModel)]="searchTerm.txt" name="txt" (ionChange)="setFilteredItems()"></ion-searchbar>
+
       </form>
       
       <ion-list class="friends">
@@ -56,6 +57,8 @@
           <ion-button (click)="addFriend(friend.id)">Add Friend</ion-button>
         </ion-item>
       </ion-list>
+
+
     </div>
   </section>
 
@@ -68,5 +71,6 @@
           <ion-button (click)="removeFriend(friend.id)">Remove Friend</ion-button>
       </ion-item> 
     </ion-list>
+
   </section>
 </main>

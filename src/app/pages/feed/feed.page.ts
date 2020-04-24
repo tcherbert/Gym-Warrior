@@ -49,6 +49,10 @@ export class FeedPage implements OnInit {
   }
 
 
+  signOut() {
+    this.auth.signOut();
+  }
+  
   ngOnInit() {
     const id = this.afAuth.auth.currentUser.uid;
     this.getUserData(id);
@@ -71,6 +75,7 @@ export class FeedPage implements OnInit {
       const postsLength = Object.keys(this.posts).length;
       const id = this.afAuth.auth.currentUser.uid;
       let counter = 0;
+
       for (let i = 0; i < postsLength; i++) {
         // If only this users posts
         if (this.posts[i].User_ID === id) {
@@ -193,7 +198,8 @@ export class FeedPage implements OnInit {
     this.postData['fname'] = this.fname;
     this.postData['lname'] = this.lname;
     record['data'] = this.postData;
-    if (this.imageID !== undefined) {
+
+    if(this.imageID !== undefined){
       record['image'] = this.imageID;
     }
 
@@ -246,5 +252,5 @@ export class FeedPage implements OnInit {
     this.lname = userData.lname;
     // this.dataReady = true;
   }
-}
 
+}

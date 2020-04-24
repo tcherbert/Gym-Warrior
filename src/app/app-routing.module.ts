@@ -23,6 +23,14 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'feed',
+        loadChildren: () => import('./pages/feed/feed.module').then( m => m.FeedPageModule)
+      },
+      {
+        path: 'friends',
+        loadChildren: () => import('./pages/friends/friends.module').then( m => m.FriendsPageModule)
+      },
+      {
         path: 'calendar',
         loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
       },
