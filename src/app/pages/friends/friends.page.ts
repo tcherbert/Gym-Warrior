@@ -80,6 +80,7 @@ export class FriendsPage implements OnInit {
     });
   }
 
+  
   async getUserData() {
 
     // this.friendsData = [];
