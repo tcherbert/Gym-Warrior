@@ -32,7 +32,6 @@ export class FeedPage implements OnInit {
   public profileImage;
   public imageReady: boolean;
   public imageID: string;
-  
 
   constructor(
               private auth: AuthService,
@@ -49,9 +48,11 @@ export class FeedPage implements OnInit {
     this.togglePostFlag = false;
   }
 
+
   signOut() {
     this.auth.signOut();
   }
+  
   ngOnInit() {
     const id = this.afAuth.auth.currentUser.uid;
     this.getUserData(id);
@@ -74,7 +75,8 @@ export class FeedPage implements OnInit {
       const postsLength = Object.keys(this.posts).length;
       const id = this.afAuth.auth.currentUser.uid;
       let counter = 0;
-      for(let i = 0; i < postsLength; i++) {
+
+      for (let i = 0; i < postsLength; i++) {
         // If only this users posts
         if (this.posts[i].User_ID === id) {
           this.myPosts[counter] = this.posts[i];
@@ -155,8 +157,6 @@ export class FeedPage implements OnInit {
     return new Promise<any>((resolve, reject) => {
       const id = this.afAuth.auth.currentUser.uid;
       let storageRef: AngularFireStorageReference = this.storage.ref(id);
-      // console.log('storageRef');
-      // console.log(storageRef);
       let imageRef = storageRef.child('image').child(imageName);
       this.encodeImageUri(imageURI, function(image64){
         imageRef.putString(image64, 'data_url')
@@ -198,10 +198,10 @@ export class FeedPage implements OnInit {
     this.postData['fname'] = this.fname;
     this.postData['lname'] = this.lname;
     record['data'] = this.postData;
+
     if(this.imageID !== undefined){
       record['image'] = this.imageID;
     }
-
 
     this.postCrudService.createPost(record).then(resp => {
       // console.log(resp);
@@ -252,4 +252,5 @@ export class FeedPage implements OnInit {
     this.lname = userData.lname;
     // this.dataReady = true;
   }
+
 }

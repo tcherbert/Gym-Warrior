@@ -47,22 +47,30 @@
       <form (ngSubmit)="findFriend()" *ngIf="toggleFindFriendsFlag">
         <!-- <ion-input type="text" placeholder="Who are you looking for?" [(ngModel)]="findFriendData.txt" name="txt"></ion-input> -->
         <ion-searchbar animated [(ngModel)]="searchTerm.txt" name="txt" (ionChange)="setFilteredItems()"></ion-searchbar>
-        <p>all users here.. filter them as we can..</p>        
-        <!-- <ion-button expand="block" type="submit" class="ion-margin-vertical">
-          Search
-        </ion-button> -->
+
       </form>
+      
+      <ion-list class="friends">
+        <ion-item *ngFor="let friend of filteredFriends">
+          <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
+          <p>{{ friend.fname }} {{ friend.lname }}</p>
+          <ion-button (click)="addFriend(friend.id)">Add Friend</ion-button>
+        </ion-item>
+      </ion-list>
+
+
     </div>
   </section>
 
   <section>
-    <p>Friends</p>
-    <div *ngIf="friendsReady">
-      <ion-card  *ngFor ="let friend of friendsData">
-        <div>
+    <p>Current Friends</p>
+    <ion-list class="friends" *ngIf="friendsReady">
+      <ion-item *ngFor ="let friend of friendsData">
+        <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
           <p>{{friend.fname}} {{friend.lname}}</p>
-        </div>
-      </ion-card> 
-    </div>
+          <ion-button (click)="removeFriend(friend.id)">Remove Friend</ion-button>
+      </ion-item> 
+    </ion-list>
+
   </section>
 </main>
