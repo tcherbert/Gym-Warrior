@@ -119,7 +119,7 @@ export class FeedPage implements OnInit {
       console.log(this.posts);
     });
 
-    
+
   }
 
 
