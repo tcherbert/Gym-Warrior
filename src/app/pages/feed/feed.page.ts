@@ -70,56 +70,7 @@ export class FeedPage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     this.getUserData(id);
 
-    // this.friends = this.postCrudService.readFriendsIds(id);
-    // This gets all posts...
-    this.postCrudService.readPosts().subscribe(data => {
-      this.posts = data.map(e => {
-        console.log(e.payload.doc.data()['timeCreated']);
-        const timeCreated = new Date(e.payload.doc.data()['timeCreated']);
-        let hours = timeCreated.getHours();
-        let minutes = timeCreated.getMinutes();
-        if (hours > 12) {
-          hours = hours - 12;
-        }
-        if (minutes < 10) {
-          minutes = this.minutes[minutes - 1];
-        }
-        const timeFormated = this.months[timeCreated.getMonth() - 1] + ' '
-                              + timeCreated.getDate() + ' - ' + hours + ':' + minutes;
-        // timeCreated.
-        // console.log(timeCreated);
-        return {
-          id: e.payload.doc.id,
-          isEdit: false,
-          Data: e.payload.doc.data()["data"],
-          Image: e.payload.doc.data()["image"],
-          User_ID: e.payload.doc.data()["user_id"],
-          TimeCreated: timeFormated
-        };
-      })
-
-      // Overly convoluted hack as I couldn't figure out how to query properly.
-      // This will need to be fixed eventually.
-      const postsLength = Object.keys(this.posts).length;
-      let counter = 0;
-
-      for (let i = 0; i < postsLength; i++) {
-        // If only this users posts
-        if (this.posts[i].User_ID === id) {
-          this.myPosts[counter] = this.posts[i];
-          this.getUserData(this.posts[i].User_ID);
-
-          // If this.posts[i].Image is set.
-          if (this.posts[i].Image !== undefined) {
-            this.getPostImage(id, this.posts[i].Image, counter);
-          }
-          counter++;
-        }
-      }
-      console.log(this.posts);
-    });
-
-
+    this.getFriends();
   }
 
 
@@ -290,7 +241,118 @@ export class FeedPage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     await this.postCrudService.readFriendsIds(id).subscribe(data => {
       this.friends = data.payload.data()['Friends'];
+
+      this.getPosts();
     });
   }
 
+  async getPosts() {
+    const id = this.afAuth.auth.currentUser.uid;
+    // this.friends = this.postCrudService.readFriendsIds(id);
+    // This gets all posts...
+    this.postCrudService.readPosts().subscribe(data => {
+      this.posts = data.map(e => {
+        console.log(e.payload.doc.data()['timeCreated']);
+        const timeCreated = new Date(e.payload.doc.data()['timeCreated']);
+        let hours = timeCreated.getHours();
+        let minutes = timeCreated.getMinutes();
+        if (hours > 12) {
+          hours = hours - 12;
+        }
+        if (minutes < 10) {
+          minutes = this.minutes[minutes - 1];
+        }
+        const timeFormated = this.months[timeCreated.getMonth() - 1] + ' '
+                              + timeCreated.getDate() + ' - ' + hours + ':' + minutes;
+        // timeCreated.
+        // console.log(timeCreated);
+        return {
+          id: e.payload.doc.id,
+          isEdit: false,
+          Data: e.payload.doc.data()["data"],
+          Image: e.payload.doc.data()["image"],
+          User_ID: e.payload.doc.data()["user_id"],
+          TimeCreated: timeFormated
+        };
+      })
+
+      // Overly convoluted hack as I couldn't figure out how to query properly.
+      // This will need to be fixed eventually.
+      const postsLength = Object.keys(this.posts).length;
+      let counter = 0;
+      console.log('this.friends');
+      console.log(this.friends);
+      for (let i = 0; i < postsLength; i++) {
+        // If only this users posts
+        console.log(this.posts[i].User_ID);
+        console.log(this.friends.includes(this.posts[i].User_ID));
+        if (this.posts[i].User_ID === id || this.friends.includes(this.posts[i].User_ID)) {
+          this.myPosts[counter] = this.posts[i];
+          this.getUserData(this.posts[i].User_ID);
+
+          // If this.posts[i].Image is set.
+          if (this.posts[i].Image !== undefined) {
+            this.getPostImage(id, this.posts[i].Image, counter);
+          }
+          counter++;
+        }
+      }
+      console.log(this.posts);
+    });
+  }
 }
+
+
+// Old getPosts leaving for Danielle and the gym feed.
+// async getPosts() {
+//   const id = this.afAuth.auth.currentUser.uid;
+//   // this.friends = this.postCrudService.readFriendsIds(id);
+//   // This gets all posts...
+//   this.postCrudService.readPosts().subscribe(data => {
+//     this.posts = data.map(e => {
+//       console.log(e.payload.doc.data()['timeCreated']);
+//       const timeCreated = new Date(e.payload.doc.data()['timeCreated']);
+//       let hours = timeCreated.getHours();
+//       let minutes = timeCreated.getMinutes();
+//       if (hours > 12) {
+//         hours = hours - 12;
+//       }
+//       if (minutes < 10) {
+//         minutes = this.minutes[minutes - 1];
+//       }
+//       const timeFormated = this.months[timeCreated.getMonth() - 1] + ' '
+//                             + timeCreated.getDate() + ' - ' + hours + ':' + minutes;
+//       // timeCreated.
+//       // console.log(timeCreated);
+//       return {
+//         id: e.payload.doc.id,
+//         isEdit: false,
+//         Data: e.payload.doc.data()["data"],
+//         Image: e.payload.doc.data()["image"],
+//         User_ID: e.payload.doc.data()["user_id"],
+//         TimeCreated: timeFormated
+//       };
+//     })
+
+//     // Overly convoluted hack as I couldn't figure out how to query properly.
+//     // This will need to be fixed eventually.
+//     const postsLength = Object.keys(this.posts).length;
+//     let counter = 0;
+
+//     for (let i = 0; i < postsLength; i++) {
+//       // If only this users posts
+//       if (this.posts[i].User_ID === id) {
+//         this.myPosts[counter] = this.posts[i];
+//         this.getUserData(this.posts[i].User_ID);
+
+//         // If this.posts[i].Image is set.
+//         if (this.posts[i].Image !== undefined) {
+//           this.getPostImage(id, this.posts[i].Image, counter);
+//         }
+//         counter++;
+//       }
+//     }
+//     console.log(this.posts);
+//   });
+// }
+// }
