@@ -35,6 +35,8 @@ export class FeedPage implements OnInit {
   public imageID: string;
   public months = [];
   public minutes = [];
+  createCommentFlag: boolean;
+  createCommentIndex: number;
 
   constructor(
               private auth: AuthService,
@@ -183,6 +185,7 @@ export class FeedPage implements OnInit {
     this.postData['lname'] = this.lname;
     record['timeCreated'] = dateTime;
     record['data'] = this.postData;
+    this.postData = {};
 
     if(this.imageID !== undefined){
       record['image'] = this.imageID;
@@ -242,7 +245,6 @@ export class FeedPage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     await this.postCrudService.readFriendsIds(id).subscribe(data => {
       this.friends = data.payload.data()['Friends'];
-
       this.getPosts();
     });
   }
@@ -283,15 +285,15 @@ export class FeedPage implements OnInit {
       // This will need to be fixed eventually.
       const postsLength = Object.keys(this.posts).length;
       let counter = 0;
-      let likeFlag = 0;
       // console.log('this.friends');
       // console.log(this.friends);
       for (let i = 0; i < postsLength; i++) {
+        let likeFlag = 0;
         // If only this users posts
         // console.log(this.posts[i].User_ID);
         // console.log(this.friends.includes(this.posts[i].User_ID));
         if (this.posts[i].User_ID === id || this.friends.includes(this.posts[i].User_ID)) {
-          // console.log(this.posts[i]);
+          console.log(this.posts[i]);
           if (this.posts[i].Likes) {
             for (let n = 0; n < this.posts[i].Likes.length; n++) {
               if (this.posts[i].Likes[n] === id) {
@@ -299,8 +301,10 @@ export class FeedPage implements OnInit {
               }
             }
           }
+          
           this.myPosts[counter] = this.posts[i];
           this.myPosts[counter]['commentFlag'] = false;
+          this.myPosts[counter]['commentsFlag'] = false;
           if (likeFlag) {
             this.myPosts[counter]['likeFlag'] = true;
           } else {
@@ -309,10 +313,20 @@ export class FeedPage implements OnInit {
           this.myPosts[counter]['index'] = counter;
 
           if (this.posts[i].Likes) {
-            this.myPosts[counter]['likeCount'] = this.posts[i].Likes.length;
             if (this.posts[i].Likes.length > 0) {
+              this.myPosts[counter]['likeCount'] = this.posts[i].Likes.length;
               this.myPosts[counter]['likesFlag'] = true;
             }
+          }
+          if (this.posts[i].Comments) {
+            if (this.posts[i].Comments.length > 0) {
+              this.myPosts[counter]['commentCount'] = this.posts[i].Comments.length;
+              this.myPosts[counter]['commentsFlag'] = true;
+            }
+          }
+
+          if (this.createCommentFlag) {
+            this.myPosts[this.createCommentIndex].commentFlag = true;
           }
 
           this.getUserData(this.posts[i].User_ID);
@@ -324,7 +338,7 @@ export class FeedPage implements OnInit {
           counter++;
         }
       }
-      // console.log(this.posts);
+      console.log(this.posts);
     });
   }
 
@@ -366,7 +380,9 @@ export class FeedPage implements OnInit {
   }
 
   createComment(index){
-    console.log('createComment', this.myPosts[index].id);
+    this.createCommentFlag = true;
+    this.createCommentIndex = index;
+    // console.log('createComment', this.myPosts[index].id);
     const dateTime = new Date();
 
     let hours = dateTime.getHours();
@@ -380,8 +396,6 @@ export class FeedPage implements OnInit {
     const timeFormated = this.months[dateTime.getMonth() - 1] + ' '
                               + dateTime.getDate() + ' at ' + hours + ':' + minutes;
 
-
-
     const id = this.afAuth.auth.currentUser.uid;
     let record = {};
     record['user_id'] = id;
@@ -389,6 +403,7 @@ export class FeedPage implements OnInit {
     record['lname'] = this.lname;
     record['timeCreated'] = timeFormated;
     record['data'] = this.commentData;
+    this.commentData = {};
 
     if(this.imageID !== undefined){
       record['image'] = this.imageID;
