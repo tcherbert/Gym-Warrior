@@ -499,6 +499,14 @@ const routes = [
                 loadChildren: () => Promise.all(/*! import() | pages-feed-feed-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-feed-feed-module")]).then(__webpack_require__.bind(null, /*! ./pages/feed/feed.module */ "./src/app/pages/feed/feed.module.ts")).then(m => m.FeedPageModule)
             },
             {
+                path: 'gym-creation',
+                loadChildren: () => __webpack_require__.e(/*! import() | pages-gym-creation-gym-creation-module */ "pages-gym-creation-gym-creation-module").then(__webpack_require__.bind(null, /*! ./pages/gym-creation/gym-creation.module */ "./src/app/pages/gym-creation/gym-creation.module.ts")).then(m => m.GymCreationPageModule)
+            },
+            {
+                path: 'friends',
+                loadChildren: () => Promise.all(/*! import() | pages-friends-friends-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-friends-friends-module")]).then(__webpack_require__.bind(null, /*! ./pages/friends/friends.module */ "./src/app/pages/friends/friends.module.ts")).then(m => m.FriendsPageModule)
+            },
+            {
                 path: 'calendar',
                 loadChildren: () => Promise.all(/*! import() | pages-calendar-calendar-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-calendar-calendar-module")]).then(__webpack_require__.bind(null, /*! ./pages/calendar/calendar.module */ "./src/app/pages/calendar/calendar.module.ts")).then(m => m.CalendarPageModule)
             },
@@ -528,7 +536,7 @@ const routes = [
             },
             {
                 path: '',
-                redirectTo: 'feed',
+                redirectTo: 'friends',
                 pathMatch: 'full'
             }
         ]
@@ -1250,7 +1258,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/timherbert/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/daniellaamundson/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
 
 
 /***/ })

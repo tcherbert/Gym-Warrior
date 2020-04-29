@@ -1,0 +1,62 @@
+<ion-content>
+  <header>
+    <ion-img class="centerLogo" src="../../../assets/landing_logo.png"></ion-img>
+  </header>
+  <div class="flip-container" #flipcontainer>
+    <div class="flipper">
+      <div class="front">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Register</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="registerForm" (ngSubmit)="register()">
+              <ion-input placeholder="Gym Name" formControlName="name"></ion-input>
+              <ion-input placeholder="Gym Description" formControlName="description"></ion-input>
+              <ion-input placeholder="Address" formControlName="address"></ion-input>
+              <ion-input placeholder="Phone Number" formControlName="phoneNumber"></ion-input>
+              
+              <ion-button expand="block" type="submit" class="ion-padding-horizontal ion-margin-vertical"
+              [disabled]="!registerForm.valid">
+                Create Gym
+              </ion-button>
+              
+              <!-- <ion-button expand="block" type="button"  fill="clear"
+              class="ion-padding-horizontal ion-margin-vertical" (click)="toggleRegister()">
+                <ion-icon name="arrow-back" slot="start"></ion-icon>
+                Back to Login
+              </ion-button> -->
+              
+            </form>
+          </ion-card-content>
+        </ion-card>
+        <!-- <ion-card>
+          <ion-card-header>
+            <ion-card-title>Login</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+              <ion-input type="email" placeholder="E-Mail" formControlName="email"></ion-input>
+              <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
+
+              <ion-button expand="block" type="submit" [disabled]="!loginForm.valid"
+              class="sign-in ion-padding-horizontal ion-margin-vertical">
+                Sign in
+              </ion-button>
+  
+              <ion-button expand="block" type="button" fill="outline"
+              class="create-button ion-padding-horizontal ion-margin-vertical" (click)="toggleRegister()">
+                Create Account
+              </ion-button>
+            </form>
+          </ion-card-content>
+        </ion-card> -->
+      </div>
+
+      <!-- <div class="back">
+    
+      </div> -->
+    </div>
+  </div>
+
+</ion-content>

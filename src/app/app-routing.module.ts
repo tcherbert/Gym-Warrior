@@ -27,6 +27,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/feed/feed.module').then( m => m.FeedPageModule)
       },
       {
+        path: 'gym-creation',
+        loadChildren: () => import('./pages/gym-creation/gym-creation.module').then( m => m.GymCreationPageModule)
+      },
+      {
         path: 'friends',
         loadChildren: () => import('./pages/friends/friends.module').then( m => m.FriendsPageModule)
       },
