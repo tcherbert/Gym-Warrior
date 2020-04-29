@@ -43,14 +43,42 @@ export class PostCrudService {
   }
 
   updateFriend(userId, friendId) {
-    return this.db.doc('friends/' + userId).update({
+    this.db.doc('friends/' + userId).update({
       Friends: firestore.FieldValue.arrayUnion(friendId)
+    });
+
+    this.db.doc('friends/' + friendId).update({
+      Friends: firestore.FieldValue.arrayUnion(userId)
     });
   }
 
   removeFriend(userId, friendId){
-    return this.db.doc('friends/' + userId).update({
+    this.db.doc('friends/' + userId).update({
       Friends: firestore.FieldValue.arrayRemove(friendId)
+    });
+
+    this.db.doc('friends/' + friendId).update({
+      Friends: firestore.FieldValue.arrayRemove(userId)
+    });
+  }
+
+  addLike(postID, userID) {
+    return this.db.doc('posts/' + postID).update({
+      Likes: firestore.FieldValue.arrayUnion(userID)
+    });
+  }
+
+  removeLike(postID, userID) {
+    return this.db.doc('posts/' + postID).update({
+      Likes: firestore.FieldValue.arrayRemove(userID)
+    });
+  }
+
+  addComment(postID, comment) {
+    console.log(postID);
+    console.log(comment);
+    return this.db.doc('posts/' + postID).update({
+      Comments: firestore.FieldValue.arrayUnion(comment)
     });
   }
 

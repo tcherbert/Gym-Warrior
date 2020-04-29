@@ -86,7 +86,7 @@ export class FriendsPage implements OnInit {
     this.friendsData = [];
     this.friendsCounter = 0;
     let friendsIdsLength;
-    if(!this.isEmpty(this.friendsIds)){
+    if (!this.isEmpty(this.friendsIds)) {
       friendsIdsLength = Object.keys(this.friendsIds).length;
     } else {
       friendsIdsLength = 0;
@@ -222,7 +222,6 @@ export class FriendsPage implements OnInit {
 
 
   removeFriend(friendId){
-    console.log('removeFriend');
     const id = this.afAuth.auth.currentUser.uid;
     this.postCrudService.removeFriend(id, friendId).then(resp => {
       // console.log(resp);
@@ -231,8 +230,8 @@ export class FriendsPage implements OnInit {
           this.friendsData.splice(i, 1);
         }
       }
-      console.log('friendsData after remove');
-      console.log(this.friendsData);
+      // console.log('friendsData after remove');
+      // console.log(this.friendsData);
     }).catch(error => {
         // console.log(error);
       });
