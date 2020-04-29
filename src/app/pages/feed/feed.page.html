@@ -81,8 +81,9 @@
             <ion-img src="../../assets/dumbell.png"></ion-img>
             <span *ngIf=post.likesFlag class="like-count">{{post.likeCount}}</span>
           </div>
-          <div class="comment" (click)="commentCtrl(post.index)" [ngClass]="{'active': post.commentFlag}">
+          <div class="comment" (click)="commentCtrl(post.index)"  [ngClass]="{'has-comments': post.commentsFlag, 'active': post.commentFlag}">
             <ion-img src="../../assets/comment.png"></ion-img>
+            <span *ngIf=post.commentsFlag class="comment-count">{{post.commentCount}}</span>
           </div>
 
           <div class="comment-section" *ngIf=post.commentFlag>
@@ -92,9 +93,6 @@
                 <p class="name">{{comment.fname}} {{comment.lname}}</p>
               </div>
               <p class="post-text">{{comment.data.txt}}</p>
-              
-              
-              
             </ion-card>
             <form (ngSubmit)="createComment(post.index)">
               <ion-textarea placeholder="Write a comment..." [(ngModel)]="commentData.txt" name="txt"></ion-textarea>
