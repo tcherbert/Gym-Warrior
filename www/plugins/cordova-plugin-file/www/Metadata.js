@@ -1,4 +1,6 @@
+cordova.define("cordova-plugin-file.Metadata", function(require, exports, module) {
 /*
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -15,22 +17,27 @@
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
 */
 
 /**
- * Exports the ExposedJsApi.java object if available, otherwise exports the PromptBasedNativeApi.
+ * Information about the state of the file or directory
+ *
+ * {Date} modificationTime (readonly)
  */
-
-var nativeApi = this._cordovaNative || require('cordova/android/promptbasednativeapi');
-var currentApi = nativeApi;
-
-module.exports = {
-    get: function() { return currentApi; },
-    setPreferPrompt: function(value) {
-        currentApi = value ? require('cordova/android/promptbasednativeapi') : nativeApi;
-    },
-    // Used only by tests.
-    set: function(value) {
-        currentApi = value;
+var Metadata = function (metadata) {
+    if (typeof metadata === 'object') {
+        this.modificationTime = new Date(metadata.modificationTime);
+        this.size = metadata.size || 0;
+    } else if (typeof metadata === 'undefined') {
+        this.modificationTime = null;
+        this.size = 0;
+    } else {
+        /* Backwards compatiblity with platforms that only return a timestamp */
+        this.modificationTime = new Date(metadata);
     }
 };
+
+module.exports = Metadata;
+
+});

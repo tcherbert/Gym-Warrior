@@ -61,16 +61,29 @@
     </form>
 
     <div>
-      <ion-card  *ngFor ="let post of myPosts">
-        <div>
-          <div class="post-bg" *ngIf=post.Image [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
-          <p>{{post.Data.txt}}</p>
-          <p>{{post.Data.fname}}</p>
-          <p>{{post.Data.lname}}</p>
-          <p>{{post.User_ID}}</p>
-          <p>{{post.TimeCreated}}</p>
-          <!-- <ion-datetime displayFormat="MMM DD, YYYY" [ngModel]=post></ion-datetime> -->
+      <ion-card class="post"  *ngFor ="let post of myPosts">
+        <header class="post-header" *ngIf=post.Image>
+          <div class="inner-bg" [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
+          <div class="text-bg" >
+            <p class="time">{{post.TimeCreated}}</p>
+            <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
+          </div>
+        </header>
+        <div *ngIf=!post.Image class="no-image-text">
+          <p class="time">{{post.TimeCreated}}</p>
+          <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
         </div>
+        <p class="post-text">{{post.Data.txt}}</p>
+        <!-- Leaving this here as may use in the future for use to store likes etc.. -->
+        <!-- <p>{{post.User_ID}}</p> -->
+        <footer>
+          <div class="like">
+            <ion-img src="../../assets/dumbell.png"></ion-img>
+          </div>
+          <div class="comment">
+            <ion-img src="../../assets/comment.png"></ion-img>
+          </div>
+        </footer>
       </ion-card> 
       
       <ion-card class="profileImage2">

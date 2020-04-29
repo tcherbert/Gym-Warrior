@@ -57,10 +57,10 @@ export class FeedPage implements OnInit {
 
   ngOnInit() {
     this.months = [
-      'January', 'February', 'March',
-      'April', 'May', 'June', 'July',
-      'August', 'September', 'October',
-      'November', 'December'
+      'Jan', 'Feb', 'Mar',
+      'Apr', 'May', 'Jun', 'Jul',
+      'Aug', 'Sept', 'Oct',
+      'Nov', 'Dec'
     ];
     this.minutes = [
       '01', '02', '03',
@@ -263,7 +263,7 @@ export class FeedPage implements OnInit {
           minutes = this.minutes[minutes - 1];
         }
         const timeFormated = this.months[timeCreated.getMonth() - 1] + ' '
-                              + timeCreated.getDate() + ' - ' + hours + ':' + minutes;
+                              + timeCreated.getDate() + ' at ' + hours + ':' + minutes;
         // timeCreated.
         // console.log(timeCreated);
         return {

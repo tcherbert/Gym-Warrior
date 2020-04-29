@@ -416,6 +416,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/index.js");
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! firebase/app */ "./node_modules/firebase/app/dist/index.cjs.js");
+/* harmony import */ var firebase_app__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(firebase_app__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
@@ -427,11 +430,11 @@ var PostCrudService = /** @class */ (function () {
         return this.db.collection('posts').add(record);
     };
     PostCrudService.prototype.readPosts = function () {
-        return this.db.collection('posts').snapshotChanges();
+        return this.db.collection('posts', function (ref) { return ref.orderBy('timeCreated', 'desc'); }).snapshotChanges();
     };
-    PostCrudService.prototype.updatePost = function (recordID, record) {
-        this.db.doc('posts/' + recordID).update(record);
-    };
+    // updatePost(recordID, record) {
+    //   this.db.doc('posts/' + recordID).update(record);
+    // }
     PostCrudService.prototype.deletePost = function (recordId) {
         this.db.doc('posts/' + recordId).delete();
     };
@@ -440,6 +443,16 @@ var PostCrudService = /** @class */ (function () {
     };
     PostCrudService.prototype.readUsers = function () {
         return this.db.collection('users').snapshotChanges();
+    };
+    PostCrudService.prototype.updateFriend = function (userId, friendId) {
+        return this.db.doc('friends/' + userId).update({
+            Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(friendId)
+        });
+    };
+    PostCrudService.prototype.removeFriend = function (userId, friendId) {
+        return this.db.doc('friends/' + userId).update({
+            Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(friendId)
+        });
     };
     PostCrudService.ctorParameters = function () { return [
         { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] }
