@@ -48,11 +48,20 @@
     </ion-card-header>
   </div>
   <div class="navbar">
-    <ion-button class="nav" color="lightred">About</ion-button>
-    <ion-button class="nav" color="darkred">Photos</ion-button>
-    <ion-button href="user/friends" class="nav" color="lightred">Friends</ion-button>
-    <ion-button class="nav" color="darkred">Schedule</ion-button>
-  </div>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-no-padding">
+            <ion-button class="nav" expand="full" color="lightred">About</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-button class="nav" expand="full" color="darkred">Photos</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   
   
   <main class="mainContent">
@@ -69,7 +78,7 @@
   
       <ion-card class="profileImage3">
         <ion-card-header>
-          <ion-card-subtitle id="namestatus">Smart Fitness</ion-card-subtitle>
+          <ion-card-subtitle id="nameStatus">Smart Fitness</ion-card-subtitle>
           <ion-card-title id="nameStatus">Tim Herbert</ion-card-title>
         </ion-card-header>
 
