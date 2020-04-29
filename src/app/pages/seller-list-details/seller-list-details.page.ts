@@ -44,7 +44,7 @@ export class SellerListDetailsPage implements OnInit {
     this.camera.getPicture(options).then(data => {
       console.log(data);
       this.productImageBase64 = 'data:image/jpeg;base64,' + data;
-      this.productForm.patchValue({ img: data })
+      this.productForm.patchValue({ img: data });
     });
   }
 

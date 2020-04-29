@@ -80,10 +80,11 @@ export class FriendsPage implements OnInit {
     });
   }
 
-  
+
   async getUserData() {
 
-    // this.friendsData = [];
+    this.friendsData = [];
+    this.friendsCounter = 0;
     let friendsIdsLength;
     if(!this.isEmpty(this.friendsIds)){
       friendsIdsLength = Object.keys(this.friendsIds).length;

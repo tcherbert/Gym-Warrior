@@ -19,7 +19,7 @@ export class PostCrudService {
   }
 
   readPosts() {
-    return this.db.collection('posts').snapshotChanges();
+    return this.db.collection('posts', ref => ref.orderBy('timeCreated', 'desc')).snapshotChanges();
   }
 
 
