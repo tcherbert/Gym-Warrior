@@ -223,27 +223,18 @@ export class FriendsPage implements OnInit {
 
   removeFriend(friendId){
     const id = this.afAuth.auth.currentUser.uid;
-    this.postCrudService.removeFriend(id, friendId).then(resp => {
+    this.postCrudService.removeFriend(id, friendId);
       // console.log(resp);
-      for(let i = 0; i < this.friendsData.length; i++){
-        if(this.friendsData[i].id === friendId){
-          this.friendsData.splice(i, 1);
-        }
+    for (let i = 0; i < this.friendsData.length; i++) {
+      if (this.friendsData[i].id === friendId) {
+        this.friendsData.splice(i, 1);
       }
-      // console.log('friendsData after remove');
-      // console.log(this.friendsData);
-    }).catch(error => {
-        // console.log(error);
-      });
+    }
   }
 
   addFriend(friendId) {
     const id = this.afAuth.auth.currentUser.uid;
-    this.postCrudService.updateFriend(id, friendId).then(resp => {
-      // console.log(resp);
-    }).catch(error => {
-        // console.log(error);
-      });
+    this.postCrudService.updateFriend(id, friendId);
   }
 
 

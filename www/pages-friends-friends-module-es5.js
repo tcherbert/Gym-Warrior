@@ -350,29 +350,18 @@ var FriendsPage = /** @class */ (function () {
         });
     };
     FriendsPage.prototype.removeFriend = function (friendId) {
-        var _this = this;
-        console.log('removeFriend');
         var id = this.afAuth.auth.currentUser.uid;
-        this.postCrudService.removeFriend(id, friendId).then(function (resp) {
-            // console.log(resp);
-            for (var i = 0; i < _this.friendsData.length; i++) {
-                if (_this.friendsData[i].id === friendId) {
-                    _this.friendsData.splice(i, 1);
-                }
+        this.postCrudService.removeFriend(id, friendId);
+        // console.log(resp);
+        for (var i = 0; i < this.friendsData.length; i++) {
+            if (this.friendsData[i].id === friendId) {
+                this.friendsData.splice(i, 1);
             }
-            console.log('friendsData after remove');
-            console.log(_this.friendsData);
-        }).catch(function (error) {
-            // console.log(error);
-        });
+        }
     };
     FriendsPage.prototype.addFriend = function (friendId) {
         var id = this.afAuth.auth.currentUser.uid;
-        this.postCrudService.updateFriend(id, friendId).then(function (resp) {
-            // console.log(resp);
-        }).catch(function (error) {
-            // console.log(error);
-        });
+        this.postCrudService.updateFriend(id, friendId);
     };
     /*
       async createPost() {

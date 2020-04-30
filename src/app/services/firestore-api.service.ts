@@ -75,8 +75,6 @@ export class PostCrudService {
   }
 
   addComment(postID, comment) {
-    console.log(postID);
-    console.log(comment);
     return this.db.doc('posts/' + postID).update({
       Comments: firestore.FieldValue.arrayUnion(comment)
     });

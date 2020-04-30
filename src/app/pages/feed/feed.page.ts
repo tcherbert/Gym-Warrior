@@ -87,7 +87,7 @@ export class FeedPage implements OnInit {
 
 
   // Image Handlers
-  async selectSource() {
+  async selectPostSource() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image Source',
       buttons: [{
@@ -292,8 +292,9 @@ export class FeedPage implements OnInit {
         // If only this users posts
         // console.log(this.posts[i].User_ID);
         // console.log(this.friends.includes(this.posts[i].User_ID));
+
         if (this.posts[i].User_ID === id || this.friends.includes(this.posts[i].User_ID)) {
-          console.log(this.posts[i]);
+
           if (this.posts[i].Likes) {
             for (let n = 0; n < this.posts[i].Likes.length; n++) {
               if (this.posts[i].Likes[n] === id) {
@@ -301,7 +302,7 @@ export class FeedPage implements OnInit {
               }
             }
           }
-          
+
           this.myPosts[counter] = this.posts[i];
           this.myPosts[counter]['commentFlag'] = false;
           this.myPosts[counter]['commentsFlag'] = false;
@@ -338,7 +339,7 @@ export class FeedPage implements OnInit {
           counter++;
         }
       }
-      console.log(this.posts);
+      // console.log(this.posts);
     });
   }
 

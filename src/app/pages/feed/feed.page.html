@@ -53,7 +53,7 @@
 
     <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
       <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
-      <ion-button (click)="selectSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
+      <ion-button (click)="selectPostSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
       <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
       <ion-button expand="block" type="submit" class="ion-margin-vertical">
         Post

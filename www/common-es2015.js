@@ -723,13 +723,36 @@ let PostCrudService = class PostCrudService {
         return this.db.collection('users').snapshotChanges();
     }
     updateFriend(userId, friendId) {
-        return this.db.doc('friends/' + userId).update({
+        this.db.doc('friends/' + userId).update({
             Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(friendId)
+        });
+        this.db.doc('friends/' + friendId).update({
+            Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(userId)
         });
     }
     removeFriend(userId, friendId) {
-        return this.db.doc('friends/' + userId).update({
+        this.db.doc('friends/' + userId).update({
             Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(friendId)
+        });
+        this.db.doc('friends/' + friendId).update({
+            Friends: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(userId)
+        });
+    }
+    addLike(postID, userID) {
+        return this.db.doc('posts/' + postID).update({
+            Likes: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(userID)
+        });
+    }
+    removeLike(postID, userID) {
+        return this.db.doc('posts/' + postID).update({
+            Likes: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(userID)
+        });
+    }
+    addComment(postID, comment) {
+        console.log(postID);
+        console.log(comment);
+        return this.db.doc('posts/' + postID).update({
+            Comments: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(comment)
         });
     }
 };

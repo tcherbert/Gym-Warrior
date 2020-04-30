@@ -111,8 +111,7 @@ export class LoginPage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     // this.db.doc('friends').ref.update(id);
     // this.db.collection('friends').add(id);
-    console.log(id);
-    const myobj = {};
+    const myobj = {Friends: []};
     this.db.collection('friends').doc(id).set(myobj);
   }
 }
