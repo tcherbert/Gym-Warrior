@@ -24,6 +24,7 @@
     bottom: 0px;
     padding: 10px;
     background: rgba(0,0,0,0.7);
+    width: 100%;
     color: #ffffff;
 
     ion-card-title {
@@ -44,6 +45,10 @@
     right: 5px;
     top: 0px;
   }
+}
+
+ion-card{
+  background: white;
 }
 
 .profileImage2 {
