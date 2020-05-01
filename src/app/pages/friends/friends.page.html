@@ -7,15 +7,22 @@
         <ion-content>
           <ion-list>
             <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile Page</ion-button>
+              <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
             </ion-item>
             <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/gym">Gym Page</ion-button>
+              <ion-button class="navButton" fill="clear"  href="/user/groups">Groups</ion-button>
             </ion-item>
             <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/groups">Groups Page</ion-button>
+              <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
             </ion-item>
-       
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button (click)="signOut()" class="signOutButton">
+                <ion-icon slot="icon-only" name="log-out"></ion-icon>
+              </ion-button>
+            </ion-item>
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -26,7 +33,9 @@
             <ion-buttons slot="end">
               <ion-menu-button></ion-menu-button>
             </ion-buttons>
-            <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+            <a href="user/feed">
+              <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+              </a>
           </ion-toolbar>
         </ion-header>
       </div>   
