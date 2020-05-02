@@ -88,3 +88,151 @@ ion-card{
     width: 23.7%;
   }
 }*/
+p{
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+ion-textarea {
+  background: #fff;
+  padding: 10px;
+  color: #000 !important;
+}
+.post-bg {
+ min-height: 200px;
+ background-size: cover;
+ background-position: 50% 50%;
+}
+
+
+
+
+.post {
+ padding: 0px 20px 10px 20px;
+
+ .post-header {
+   position: relative;
+   height: 200px;
+   margin-left: -20px;
+   margin-right: -20px;
+   
+   .inner-bg {
+     height: 200px;
+     width: 100%;
+     background-size: cover;
+     background-position: 50% 50%;
+     position: absolute;
+     top: 0px;
+     left: 0px;
+     
+     z-index: 0;
+   }
+   .text-bg {
+     background: rgba(0,0,0,0.61);
+     padding: 10px;
+     padding-left: 10px;
+     display: inline-block;
+     margin-top: -100%;
+     z-index: 10;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+
+   }
+ }
+ 
+
+ .no-image-text {
+   margin-top: 15px;
+ }
+
+ p {
+   text-align: left;
+   padding: 0px;
+   margin: 0px;
+ }
+
+ 
+
+ p.time {
+   font-size: 10px;
+
+ }
+ p.name {
+   font-size: 16px;
+ }
+ p.post-text {
+   margin: 10px 0px;
+   line-height: 1.5;
+   background: rgba(0,0,0,0.3);
+   padding: 10px 20px;
+ }
+
+ 
+ //Icons
+ .like {
+   max-width: 60px;
+   padding: 0px 10px 0px 10px;
+   opacity: 0.6;
+   border: 1px solid rgba(255,255,255,0.6);
+   display: inline-block;
+   position: relative;
+
+   &.active {
+     opacity: 1;
+     background:rgba(0,0,0,0.2);
+   }
+   .like-count {
+     background: rgba(208,32,39, 0.99);
+     border-radius: 10px;
+     padding: 0px 5px;
+     margin: 0px;
+     position: absolute;
+     bottom: 5px;
+     right: 5px;
+     color: #fff;
+   }
+ }
+
+ .comment {
+   max-width: 60px;
+   padding: 0px 10px 0px 10px;
+   opacity: 0.6;
+   border: 1px solid rgba(255,255,255,0.6);
+   display: inline-block;
+   margin-left: 10px;
+   position: relative;
+
+   &.active {
+     opacity: 1;
+     background:rgba(0,0,0,0.2);
+   }
+   &.has-comments {
+     opacity: 1;
+     background:rgba(0,0,0,0.2);
+   }
+   .comment-count {
+     background: rgba(208,32,39, 0.99);
+     border-radius: 10px;
+     padding: 0px 5px;
+     margin: 0px;
+     position: absolute;
+     bottom: 5px;
+     right: 5px;
+     color: #fff;
+   }
+ }  
+
+ .comment-section {
+   ion-card {
+     padding: 5px 20px;
+   }
+   ion-textarea {
+     padding: 5px;
+     margin-top: 10px;
+   }
+ }
+}

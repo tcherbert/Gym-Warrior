@@ -30,8 +30,37 @@
       height: 100%;
     }
   }
- p{
+ p {
    color: white;
    text-align: center;
  }
  
+
+  .friends {
+    p {
+      max-width: calc(100% - 200px);
+    } 
+    ion-button {
+      position: absolute;
+      right: 10px;
+    }
+
+    .imageBg {
+      height: 75px;
+      width: 75px;
+      background-size: cover;
+      margin-right: 10px;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      background-position: 50% 50%;
+    }
+  }
+
+ .searchbar-left-aligned {
+   --color: #ffffff !important;
+
+   .searchbar-search-icon {
+     color: #ffffff !important;
+   }
+ }
+

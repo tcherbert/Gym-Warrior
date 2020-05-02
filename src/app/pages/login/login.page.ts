@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,9 @@ export class LoginPage implements OnInit {
               private loadingCtrl: LoadingController,
               private toastCtrl: ToastController,
               private alertCtrl: AlertController,
-              private router: Router
+              private router: Router,
+              private db: AngularFirestore,
+              private afAuth: AngularFireAuth
   ) {}
 
   ngOnInit() {
@@ -83,6 +87,7 @@ export class LoginPage implements OnInit {
       });
       toast.present();
       console.log('finished: ', res);
+      this.createFriendsTable();
 
       this.navigateByRole(this.registerForm.value['role']);
 
@@ -102,6 +107,13 @@ export class LoginPage implements OnInit {
     this.flipcontainer.nativeElement.classList.toggle('flip');
   }
 
+  createFriendsTable() {
+    const id = this.afAuth.auth.currentUser.uid;
+    // this.db.doc('friends').ref.update(id);
+    // this.db.collection('friends').add(id);
+    const myobj = {Friends: []};
+    this.db.collection('friends').doc(id).set(myobj);
+  }
 }
 
 

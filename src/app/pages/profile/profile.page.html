@@ -8,10 +8,13 @@
           <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
         </ion-item>
         <ion-item>
-          <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
+          <ion-button class="navButton" fill="clear"  href="/user/friends">friends</ion-button>
         </ion-item>
         <ion-item>
           <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
+        </ion-item>
+        <ion-item>
+          <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
         </ion-item>
         <ion-item>
           <ion-button (click)="signOut()" class="signOutButton">
@@ -28,7 +31,9 @@
         <ion-buttons slot="end">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
+        <a href="user/feed">
         <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+        </a>
       </ion-toolbar>
     </ion-header>
   </div> 
@@ -44,20 +49,17 @@
     <ion-button (click)="selectSource()"><ion-icon name="md-create"></ion-icon></ion-button>  
     <ion-card-header>
         <ion-card-title> {{ fname }} {{ lname }}</ion-card-title>
-        <ion-card-subtitle> Out of Shape -- Beginner </ion-card-subtitle>
+        <ion-card-subtitle *ngIf="gymFlag"> {{ gymData }} </ion-card-subtitle>
     </ion-card-header>
   </div>
   <div class="navbar">
       <ion-grid class="ion-no-padding">
         <ion-row >
           <ion-col class="ion-no-padding">
-            <ion-button class="nav" expand="full" color="lightred">About</ion-button>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-button class="nav" expand="full" color="darkred">Photos</ion-button>
-          </ion-col>
-          <ion-col class="ion-no-padding">
             <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+          </ion-col>
+          <ion-col class="ion-no-padding">
+            <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -65,28 +67,69 @@
   
   
   <main class="mainContent">
+    <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
+      <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
+      <ion-button (click)="selectPostSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
+      <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
+      <ion-button expand="block" type="submit" class="ion-margin-vertical">
+        Post
+      </ion-button>
+    </form>
     <div>
-      <ion-card >
-        <ion-card-header class="profileImage2">
-          <ion-card-subtitle id="nameStatus">Smart Fitness</ion-card-subtitle>
-          <ion-card-title id="nameStatus">Tim Herbert</ion-card-title>
-        </ion-card-header>
-        <ion-card-content >
-            Exercise is a celebration of what your body can do, not a punishment for what you ate.
-        </ion-card-content>
-      </ion-card>
-  
-      <ion-card >
-        <ion-card-header class="profileImage3">
-          <ion-card-subtitle id="nameStatus">Smart Fitness</ion-card-subtitle>
-          <ion-card-title id="nameStatus">Tim Herbert</ion-card-title>
-        </ion-card-header>
+      <ion-card class="post"  *ngFor ="let post of myPosts">
+        <header class="post-header" *ngIf=post.Image>
+          <div class="inner-bg" [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
+          <div class="text-bg" >
+            <p class="time">{{post.TimeCreated}}</p>
+            <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
+          </div>
+        </header>
+        <div *ngIf=!post.Image class="no-image-text">
+          <p class="time">{{post.TimeCreated}}</p>
+          <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
+        </div>
+        <p class="post-text">{{post.Data.txt}}</p>
+        <!-- Leaving this here as may use in the future for use to store likes etc.. -->
+        <!-- <p>{{post.User_ID}}</p> -->
+        <footer>
+          <div class="like" (click)="likeCtrl(post.index)" [ngClass]="{'active': post.likeFlag}">
+            <ion-img src="../../assets/dumbell.png"></ion-img>
+            <span *ngIf=post.likesFlag class="like-count">{{post.likeCount}}</span>
+          </div>
+          <div class="comment" (click)="commentCtrl(post.index)"  [ngClass]="{'has-comments': post.commentsFlag, 'active': post.commentFlag}">
+            <ion-img src="../../assets/comment.png"></ion-img>
+            <span *ngIf=post.commentsFlag class="comment-count">{{post.commentCount}}</span>
+          </div>
 
-      <ion-card-content >
-        <ion-icon name="location-outline"></ion-icon>Smart Fitness 9 am Yoga
-      </ion-card-content>
-      </ion-card>
+          <div class="comment-section" *ngIf=post.commentFlag>
+            <ion-card *ngFor ="let comment of post.Comments">
+              <div class="no-image-text">
+                <p class="time">{{comment.timeCreated}}</p>
+                <p class="name">{{comment.fname}} {{comment.lname}}</p>
+              </div>
+              <p class="post-text">{{comment.data.txt}}</p>
+            </ion-card>
+            <form (ngSubmit)="createComment(post.index)">
+              <ion-textarea placeholder="Write a comment..." [(ngModel)]="commentData.txt" name="txt"></ion-textarea>
+              <ion-button expand="block" type="submit" class="ion-margin-vertical">
+                Comment
+              </ion-button>
+            </form>
+          </div>
+        </footer>
+      </ion-card> 
+      
+      <!-- <ion-card class="profileImage2">
+          <ion-card-header>
+            <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content id="nameStatus">
+            We just released a new class schedule! Check it out!
+          </ion-card-content>
+        </ion-card> -->
     </div>
+    
   </main>
       
  

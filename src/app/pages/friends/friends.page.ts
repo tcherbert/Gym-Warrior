@@ -9,6 +9,9 @@ import { PostCrudService } from './../../services/firestore-api.service';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 
+import { AngularFireStorage } from '@angular/fire/storage';
+
+
 @Component({
   selector: 'app-buyer-list',
   templateUrl: './friends.page.html',
@@ -28,11 +31,16 @@ export class FriendsPage implements OnInit {
 
   searchTerm = {};
 
+  public filteredFriends: any;
+
+
   constructor(
     private auth: AuthService,
     private postCrudService: PostCrudService,
     private afAuth: AngularFireAuth,
     private db: AngularFirestore,
+    private storage: AngularFireStorage,
+
   ) {
     this.findFriends = false;
     this.friendsReady = false;
@@ -55,6 +63,7 @@ export class FriendsPage implements OnInit {
     // console.log('findFriendsToggle...');
     // console.log(this.findUsersData);
   }
+
   signOut() {
     this.auth.signOut();
   }
@@ -66,13 +75,22 @@ export class FriendsPage implements OnInit {
     await this.postCrudService.readFriendsIds(id).subscribe(data => {
       this.friendsIds = data.payload.data()['Friends'];
       // User_ID: e.payload.doc.data()['user_id'],
-      // console.log(this.friendsIds);
+
       this.getUserData();
     });
   }
 
+
   async getUserData() {
-    const friendsIdsLength = Object.keys(this.friendsIds).length;
+
+    this.friendsData = [];
+    this.friendsCounter = 0;
+    let friendsIdsLength;
+    if (!this.isEmpty(this.friendsIds)) {
+      friendsIdsLength = Object.keys(this.friendsIds).length;
+    } else {
+      friendsIdsLength = 0;
+    }
     console.log('friendsIdsLength', friendsIdsLength);
 
     for (let i = 0; i < friendsIdsLength; i++) {
@@ -87,12 +105,14 @@ export class FriendsPage implements OnInit {
                 const userData = doc.data();
                 // return userData;
                 this.friendsData[this.friendsCounter] = userData;
+
+                this.friendsData[this.friendsCounter]['id'] = id;
+
                 this.friendsCounter++;
 
                 if(friendsIdsLength === this.friendsCounter){
                   this.friendsReady = true;
-                  // console.log('final friends log');
-                  // console.log(this.friendsData);
+
                 }
             } else {
                 console.log('No such document!');
@@ -107,6 +127,7 @@ export class FriendsPage implements OnInit {
   async findUsers() {
     this.postCrudService.readUsers().subscribe(data => {
       this.findUsersData = data.map(e => {
+
         return {
           id: e.payload.doc.id,
           isEdit: false,
@@ -115,9 +136,18 @@ export class FriendsPage implements OnInit {
         };
       });
 
+      console.log('this.findUsersData');
+      console.log(this.findUsersData);
+
       // Filter out yourself and any other active friends.
       const findUsersDataLength = Object.keys(this.findUsersData).length;
-      const findFriendsIdsLength = Object.keys(this.friendsIds).length;
+      let findFriendsIdsLength;
+      if(!this.isEmpty(this.friendsIds)){
+        findFriendsIdsLength = Object.keys(this.friendsIds).length;
+      } else {
+        findFriendsIdsLength = 0;
+      }
+
       const id = this.afAuth.auth.currentUser.uid;
       let counter = 0;
       let foundFlag;
@@ -133,21 +163,126 @@ export class FriendsPage implements OnInit {
           counter++;
         }
       }
+
+      this.findUsersImages();
     });
+    // Find all users images.
+  }
+
+  findUsersImages() {
+    // Known friends
+    const friendsDataLength = Object.keys(this.friendsData).length;
+    for (let i = 0; i < friendsDataLength; i++) {
+      this.friendsData[i].image = this.getProfileImage(this.friendsData[i].id, i, 'friendsData');
+    }
+
+    // For the find function
+    const usersDataLength = Object.keys(this.usersData).length;
+    for (let i = 0; i < usersDataLength; i++) {
+      console.log(this.usersData[i]);
+      this.usersData[i]['image'] = this.getProfileImage(this.usersData[i].id, i, 'usersData');
+    }
   }
 
   setFilteredItems() {
-    console.log(this.searchTerm);
-    let search = this.filterItems(this.searchTerm);
-    console.log(search);
+    this.filteredFriends = this.filterItems(this.searchTerm);
+
   }
 
 
   filterItems(searchTerm) {
-    console.log(searchTerm);
-    return this.usersData.filter(user => {
-      console.log(user.fname.toLowerCase());
-      // return user.fname.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+    // If search is empty make sure it empties the list.
+    if ( searchTerm.txt === '' ) {
+      return [];
+    }
+    // Filter fname
+    const filterFname = this.usersData.filter(user => {
+      return user.fname.toLowerCase().indexOf(searchTerm.txt.toLowerCase()) > -1;
     });
+    // Filter lname
+    const filterLname = this.usersData.filter(user => {
+      return user.lname.toLowerCase().indexOf(searchTerm.txt.toLowerCase()) > -1;
+    });
+
+    // Merge the 2 filter objects.
+    return this.arrayUnique(filterFname.concat(filterLname)); // [...filterFname, ...filterLname];
+  }
+
+  async getProfileImage(id, index, resultArray){
+    const ref = this.storage.ref(id + '/image/profileImage');
+    const profileImage = ref.getDownloadURL();
+    profileImage.subscribe(result => {
+      if ( resultArray === 'usersData') {
+        this.usersData[index]['image'] = result;
+      } else {
+        this.friendsData[index]['image'] = result;
+      }
+    });
+  }
+
+
+  removeFriend(friendId){
+    const id = this.afAuth.auth.currentUser.uid;
+    this.postCrudService.removeFriend(id, friendId);
+      // console.log(resp);
+    for (let i = 0; i < this.friendsData.length; i++) {
+      if (this.friendsData[i].id === friendId) {
+        this.friendsData.splice(i, 1);
+      }
+    }
+  }
+
+  addFriend(friendId) {
+    const id = this.afAuth.auth.currentUser.uid;
+    this.postCrudService.updateFriend(id, friendId);
+  }
+
+
+/*
+  async createPost() {
+    const id = this.afAuth.auth.currentUser.uid;
+    let record = {};
+    record['user_id'] = id;
+    this.postData['fname'] = this.fname;
+    this.postData['lname'] = this.lname;
+    record['data'] = this.postData;
+    if (this.imageID !== undefined) {
+      record['image'] = this.imageID;
+    }
+
+    this.postCrudService.createPost(record).then(resp => {
+      // console.log(resp);
+    })
+      .catch(error => {
+        // console.log(error);
+      });
+  }
+*/
+
+
+
+
+  // Utility function to add 2 arrays uniquely
+  arrayUnique(array) {
+    const a = array.concat();
+    for ( let i = 0; i < a.length; ++i ) {
+        for ( let j = i + 1; j < a.length; ++j ) {
+            if (a[i] === a[j]) {
+              a.splice(j--, 1);
+            }
+        }
+    }
+
+    return a;
+  }
+
+  isEmpty(obj) {
+    for ( const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          return false;
+        }
+    }
+    return true;
+
   }
 }
