@@ -43,6 +43,10 @@
   }
 }
 
+ion-card{
+  background: white;
+}
+
 #nameStatus {
   color:white;
   text-shadow: -2px 2px 6px black;
@@ -55,9 +59,9 @@
     height: 55%;
 
   }
-  .nav{
+  /*.nav{
     width: 24%;
-  }
+  }*/
 
   .navMenu {
     position: fixed;
