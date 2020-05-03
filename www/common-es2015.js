@@ -749,8 +749,6 @@ let PostCrudService = class PostCrudService {
         });
     }
     addComment(postID, comment) {
-        console.log(postID);
-        console.log(comment);
         return this.db.doc('posts/' + postID).update({
             Comments: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(comment)
         });

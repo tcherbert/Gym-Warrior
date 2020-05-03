@@ -516,7 +516,11 @@ const routes = [
             },
             {
                 path: 'profile',
-                loadChildren: () => __webpack_require__.e(/*! import() | pages-profile-profile-module */ "pages-profile-profile-module").then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(m => m.ProfilePageModule)
+                loadChildren: () => Promise.all(/*! import() | pages-profile-profile-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-profile-profile-module")]).then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(m => m.ProfilePageModule)
+            },
+            {
+                path: 'gym-admin',
+                loadChildren: () => Promise.all(/*! import() | pages-gym-admin-gym-admin-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-admin-gym-admin-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(m => m.GymAdminPageModule)
             },
             {
                 path: 'groups',
@@ -1254,7 +1258,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/timherbert/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/daniellaamundson/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
 
 
 /***/ })
