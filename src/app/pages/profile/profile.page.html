@@ -53,17 +53,21 @@
     </ion-card-header>
   </div>
   <div class="navbar">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-no-padding">
-            <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button  href="user/feed"  class="darkred">Feed</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </div>
   
   
   <main class="mainContent">

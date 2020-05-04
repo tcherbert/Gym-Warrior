@@ -41,11 +41,22 @@
       </div>   
 
 <main>
-    <div class="testing">
-      <ion-button class="nav" href="user/profile" color="lightred">Profile</ion-button>
-      <ion-button class="nav" href="user/friends" color="darkred">Friends</ion-button>
-      <ion-button (click)="togglePost()" class="darkred nav">Add Post</ion-button>
-    </div>
+  <div class="navbar">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button  href="user/profile"  class="darkred">Profile</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </div>
     
     <div class="profileImage" *ngIf="togglePostFlag">
       <div *ngIf="imageReady">

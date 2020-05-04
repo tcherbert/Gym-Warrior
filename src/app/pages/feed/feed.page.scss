@@ -221,3 +221,24 @@
     }
   }
 }
+
+
+
+.navbar {
+  width: 100%;
+  ion-col {
+    width: 33%;
+    margin-top: 0px;
+    padding-top: 0px;
+    &:first-of-type {
+      padding-left: 0px;
+    }
+    ion-button {
+      width: 100%;
+    }
+  }
+}
+
+#main {
+  padding-top: 10px;
+}
