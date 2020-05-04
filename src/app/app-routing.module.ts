@@ -1,3 +1,4 @@
+import { DataResolverService } from './services/data-resolver.service';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
@@ -51,6 +52,13 @@ const routes: Routes = [
         loadChildren: () => import('./pages/gym-admin/gym-admin.module').then( m => m.GymAdminPageModule)
       },
       {
+        path: 'gym-admin/:id',
+        resolve: {
+          gymID: DataResolverService
+        },
+        loadChildren: './pages/gym-admin/gym-admin.module#GymAdminPageModule'
+      },
+      {
         path: 'groups',
         loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
       },
@@ -64,7 +72,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'feed',
+        redirectTo: 'profile',
         pathMatch: 'full'
       }
     ]

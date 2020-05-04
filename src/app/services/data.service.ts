@@ -1,25 +1,21 @@
 import { Injectable } from '@angular/core';
-
+ 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class DataService {
-  public items: any = [];
 
-  constructor() {
-    this.items = [
-      { title: "one" },
-      { title: "two" },
-      { title: "three" },
-      { title: "four" },
-      { title: "five" },
-      { title: "six" }
-    ];
+  private data = [];
+
+  constructor() { }
+
+  setData(id, data) {
+    console.log('setData()');
+    console.log(data);
+    this.data[id] = data;
   }
 
-  filterItems(searchTerm) {
-    return this.items.filter(item => {
-      return item.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
-    });
+  getData(id) {
+    return this.data[id];
   }
 }
