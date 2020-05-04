@@ -93,13 +93,13 @@ export class FeedPage implements OnInit {
       buttons: [{
         text: 'Load from Library',
         handler: () => {
-          this.captureImage(this.camera.PictureSourceType.PHOTOLIBRARY);
+          this.capturePostImage(this.camera.PictureSourceType.PHOTOLIBRARY);
         }
       },
       {
         text: 'Use Camera',
         handler: () => {
-          this.captureImage(this.camera.PictureSourceType.CAMERA);
+          this.capturePostImage(this.camera.PictureSourceType.CAMERA);
         }
       },
       {
@@ -111,7 +111,7 @@ export class FeedPage implements OnInit {
     actionSheet.present();
   }
 
-  captureImage(sourceType: number) {
+  capturePostImage(sourceType: number) {
     let storageRef: AngularFireStorageReference = null;
     const id = this.afAuth.auth.currentUser.uid;
 
@@ -132,11 +132,11 @@ export class FeedPage implements OnInit {
       // Upload image
       this.imageID = this.makeid(60);
       // console.log(this.imageID);
-      this.uploadImage(this.profileImage, this.imageID);
+      this.uploadPostImage(this.profileImage, this.imageID);
     });
   }
 
-  uploadImage(imageURI, imageName){
+  uploadPostImage(imageURI, imageName){
     return new Promise<any>((resolve, reject) => {
       const id = this.afAuth.auth.currentUser.uid;
       let storageRef: AngularFireStorageReference = this.storage.ref(id);

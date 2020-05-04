@@ -31,6 +31,8 @@ export class ProfilePage implements OnInit {
   public gymID: string;
   public gymFlag: boolean;
   public gymData: string;
+  public gymAdminID: string;
+  public gymAdminFlag: boolean;
 
 
 
@@ -61,12 +63,13 @@ export class ProfilePage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     this.dataReady = false;
     this.imageReady = false;
+    this.gymAdminFlag = false;
   }
 
 
   ngOnInit() {
     const id = this.afAuth.auth.currentUser.uid;
-    this.getUserData(id);
+    this.getCurrentUserData(id);
     this.getProfileImage(id);
     this.getGymMembers();
 
@@ -90,6 +93,7 @@ export class ProfilePage implements OnInit {
   }
 
   async getUserData(id) {
+
     const userData = await this.db.collection('users')
       .doc(id)
       .ref
@@ -101,7 +105,20 @@ export class ProfilePage implements OnInit {
               console.log('No such document!');
           }
       });
+  }
 
+  async getCurrentUserData(id) {
+    const userData = await this.db.collection('users')
+      .doc(id)
+      .ref
+      .get().then( doc => { // function(doc) {
+          if (doc.exists) {
+              const userData = doc.data();
+              return userData;
+          } else {
+              console.log('No such document!');
+          }
+      });
     this.fname = userData.fname;
     this.lname = userData.lname;
     this.dataReady = true;
@@ -217,12 +234,19 @@ export class ProfilePage implements OnInit {
 
 
   async getGymData() {
+    const id = this.afAuth.auth.currentUser.uid;
     const userData = await this.db.collection('gyms')
       .doc(this.gymID)
       .ref
       .get().then( doc => {
         if (doc.exists) {
           this.gymData = doc.data().name;
+          if (doc.data().admins.includes(id)) {
+            console.log('Hello Nurse!');
+            this.gymAdminID = doc.id;
+            this.gymAdminFlag = true;
+          }
+          console.log(doc.data());
         } else {
             this.gymFlag = false;
         }
@@ -460,7 +484,8 @@ export class ProfilePage implements OnInit {
       });
   }
 
-  createComment(index){
+  createComment(index) {
+    console.log('createComment()');
     this.createCommentFlag = true;
     this.createCommentIndex = index;
     // console.log('createComment', this.myPosts[index].id);
@@ -506,5 +531,31 @@ export class ProfilePage implements OnInit {
     }
     return result;
   }
+
+  async createPost() {
+    const dateTime = new Date().toISOString();
+    // console.log("dateTime");
+    // console.log(dateTime);
+    const id = this.afAuth.auth.currentUser.uid;
+    let record = {};
+    record['user_id'] = id;
+    this.postData['fname'] = this.fname;
+    this.postData['lname'] = this.lname;
+    record['timeCreated'] = dateTime;
+    record['data'] = this.postData;
+    this.postData = {};
+
+    if(this.imageID !== undefined){
+      record['image'] = this.imageID;
+    }
+
+    this.postCrudService.createPost(record).then(resp => {
+      // console.log(resp);
+    })
+      .catch(error => {
+        // console.log(error);
+      });
+  }
+
 
 } // end ProfilePage Class

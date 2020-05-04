@@ -241,6 +241,9 @@ ion-textarea {
     &:first-of-type {
       padding-left: 0px;
     }
+    &.gym-admin {
+      width: 100%;
+    }
     ion-button {
       width: 100%;
     }

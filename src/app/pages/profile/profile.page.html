@@ -54,17 +54,21 @@
   </div>
   <div class="navbar">
     <ion-grid>
+      <ion-row *ngIf="gymAdminFlag">
+        <ion-col class="gym-admin">
+          <ion-button href="user/gym-admin/{{gymAdminID}}" expand="full" color="lightred">Gym Admin</ion-button>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col>
           <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button  href="user/feed"  class="darkred">Feed</ion-button>
+          <ion-button href="user/feed"  class="darkred">Feed</ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
         </ion-col>
-
       </ion-row>
     </ion-grid>
   </div>
