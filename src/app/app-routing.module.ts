@@ -47,6 +47,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
+        path: 'gym-admin',
+        loadChildren: () => import('./pages/gym-admin/gym-admin.module').then( m => m.GymAdminPageModule)
+      },
+      {
         path: 'groups',
         loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
       },
