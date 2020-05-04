@@ -26,7 +26,8 @@ export class FeedPage implements OnInit {
   friends = [];
   public fname: string;
   public lname: string;
-  postData = { };
+  postData = {};
+  commentData = {};
   posts = {};
   public myPosts = [];
   public profileImage;
@@ -34,6 +35,8 @@ export class FeedPage implements OnInit {
   public imageID: string;
   public months = [];
   public minutes = [];
+  createCommentFlag: boolean;
+  createCommentIndex: number;
 
   constructor(
               private auth: AuthService,
@@ -84,7 +87,7 @@ export class FeedPage implements OnInit {
 
 
   // Image Handlers
-  async selectSource() {
+  async selectPostSource() {
     const actionSheet = await this.actionSheetController.create({
       header: 'Select Image Source',
       buttons: [{
@@ -173,8 +176,8 @@ export class FeedPage implements OnInit {
 
   async createPost() {
     const dateTime = new Date().toISOString();
-    console.log("dateTime");
-    console.log(dateTime);
+    // console.log("dateTime");
+    // console.log(dateTime);
     const id = this.afAuth.auth.currentUser.uid;
     let record = {};
     record['user_id'] = id;
@@ -182,6 +185,7 @@ export class FeedPage implements OnInit {
     this.postData['lname'] = this.lname;
     record['timeCreated'] = dateTime;
     record['data'] = this.postData;
+    this.postData = {};
 
     if(this.imageID !== undefined){
       record['image'] = this.imageID;
@@ -241,7 +245,6 @@ export class FeedPage implements OnInit {
     const id = this.afAuth.auth.currentUser.uid;
     await this.postCrudService.readFriendsIds(id).subscribe(data => {
       this.friends = data.payload.data()['Friends'];
-
       this.getPosts();
     });
   }
@@ -252,7 +255,7 @@ export class FeedPage implements OnInit {
     // This gets all posts...
     this.postCrudService.readPosts().subscribe(data => {
       this.posts = data.map(e => {
-        console.log(e.payload.doc.data()['timeCreated']);
+        // console.log(e.payload.doc.data()['timeCreated']);
         const timeCreated = new Date(e.payload.doc.data()['timeCreated']);
         let hours = timeCreated.getHours();
         let minutes = timeCreated.getMinutes();
@@ -272,7 +275,9 @@ export class FeedPage implements OnInit {
           Data: e.payload.doc.data()["data"],
           Image: e.payload.doc.data()["image"],
           User_ID: e.payload.doc.data()["user_id"],
-          TimeCreated: timeFormated
+          TimeCreated: timeFormated,
+          Likes: e.payload.doc.data()["Likes"],
+          Comments: e.payload.doc.data()["Comments"]
         };
       })
 
@@ -280,25 +285,137 @@ export class FeedPage implements OnInit {
       // This will need to be fixed eventually.
       const postsLength = Object.keys(this.posts).length;
       let counter = 0;
-      console.log('this.friends');
-      console.log(this.friends);
+      // console.log('this.friends');
+      // console.log(this.friends);
       for (let i = 0; i < postsLength; i++) {
+        let likeFlag = 0;
         // If only this users posts
-        console.log(this.posts[i].User_ID);
-        console.log(this.friends.includes(this.posts[i].User_ID));
+        // console.log(this.posts[i].User_ID);
+        // console.log(this.friends.includes(this.posts[i].User_ID));
+
         if (this.posts[i].User_ID === id || this.friends.includes(this.posts[i].User_ID)) {
+
+          if (this.posts[i].Likes) {
+            for (let n = 0; n < this.posts[i].Likes.length; n++) {
+              if (this.posts[i].Likes[n] === id) {
+                likeFlag = 1;
+              }
+            }
+          }
+
           this.myPosts[counter] = this.posts[i];
+          this.myPosts[counter]['commentFlag'] = false;
+          this.myPosts[counter]['commentsFlag'] = false;
+          if (likeFlag) {
+            this.myPosts[counter]['likeFlag'] = true;
+          } else {
+            this.myPosts[counter]['likeFlag'] = false;
+          }
+          this.myPosts[counter]['index'] = counter;
+
+          if (this.posts[i].Likes) {
+            if (this.posts[i].Likes.length > 0) {
+              this.myPosts[counter]['likeCount'] = this.posts[i].Likes.length;
+              this.myPosts[counter]['likesFlag'] = true;
+            }
+          }
+          if (this.posts[i].Comments) {
+            if (this.posts[i].Comments.length > 0) {
+              this.myPosts[counter]['commentCount'] = this.posts[i].Comments.length;
+              this.myPosts[counter]['commentsFlag'] = true;
+            }
+          }
+
+          if (this.createCommentFlag) {
+            this.myPosts[this.createCommentIndex].commentFlag = true;
+          }
+
           this.getUserData(this.posts[i].User_ID);
 
           // If this.posts[i].Image is set.
           if (this.posts[i].Image !== undefined) {
-            this.getPostImage(id, this.posts[i].Image, counter);
+            this.getPostImage(this.posts[i].User_ID, this.posts[i].Image, counter);
           }
           counter++;
         }
       }
-      console.log(this.posts);
+      // console.log(this.posts);
     });
+  }
+
+  commentCtrl(index) {
+    if (this.myPosts[index].commentFlag === false) {
+      this.myPosts[index].commentFlag = true;
+    } else {
+      this.myPosts[index].commentFlag = false;
+    }
+  }
+  likeCtrl(index) {
+    const id = this.afAuth.auth.currentUser.uid;
+    if (this.myPosts[index].likeFlag === false) {
+      this.myPosts[index].likeFlag = true;
+      // Add user id to like array
+      this.addLike(this.myPosts[index].id);
+    } else {
+      this.myPosts[index].likeFlag = false;
+      // remove user id from like array
+      this.removeLike(this.myPosts[index].id);
+    }
+  }
+
+  addLike(postID) {
+    const id = this.afAuth.auth.currentUser.uid;
+    this.postCrudService.addLike(postID, id).then(resp => {
+      console.log(resp);
+    }).catch(error => {
+        // console.log(error);
+      });
+  }
+  removeLike(postID) {
+    const id = this.afAuth.auth.currentUser.uid;
+    this.postCrudService.removeLike(postID, id).then(resp => {
+      console.log(resp);
+    }).catch(error => {
+        // console.log(error);
+      });
+  }
+
+  createComment(index){
+    this.createCommentFlag = true;
+    this.createCommentIndex = index;
+    // console.log('createComment', this.myPosts[index].id);
+    const dateTime = new Date();
+
+    let hours = dateTime.getHours();
+    let minutes = dateTime.getMinutes();
+    if (hours > 12) {
+      hours = hours - 12;
+    }
+    if (minutes < 10) {
+      minutes = this.minutes[minutes - 1];
+    }
+    const timeFormated = this.months[dateTime.getMonth() - 1] + ' '
+                              + dateTime.getDate() + ' at ' + hours + ':' + minutes;
+
+    const id = this.afAuth.auth.currentUser.uid;
+    let record = {};
+    record['user_id'] = id;
+    record['fname'] = this.fname;
+    record['lname'] = this.lname;
+    record['timeCreated'] = timeFormated;
+    record['data'] = this.commentData;
+    this.commentData = {};
+
+    if(this.imageID !== undefined){
+      record['image'] = this.imageID;
+    }
+
+    this.postCrudService.addComment(this.myPosts[index].id, record).then(resp => {
+      // console.log(resp);
+    })
+      .catch(error => {
+        // console.log(error);
+      });
   }
 }
 

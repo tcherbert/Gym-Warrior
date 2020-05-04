@@ -7,18 +7,22 @@
         <ion-content>
           <ion-list>
             <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/profile">Profile</ion-button>
+              <ion-button class="navButton" fill="clear"  href="/user/friends">Friends</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
             </ion-item>
             <ion-item>
               <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
             </ion-item>
             <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
+              <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
             </ion-item>
+            <ion-item>
             <ion-button (click)="signOut()" class="signOutButton">
-              Logout <ion-icon slot="icon-only" name="log-out"></ion-icon>
+              <ion-icon slot="icon-only" name="log-out"></ion-icon>
             </ion-button>
-       
+            </ion-item>
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -29,18 +33,30 @@
             <ion-buttons slot="end">
               <ion-menu-button></ion-menu-button>
             </ion-buttons>
-            <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+            
+              <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+           
           </ion-toolbar>
         </ion-header>
       </div>   
 
 <main>
-    <div>
-      <ion-button class="nav" href="user/profile" color="lightred">profile</ion-button>
-      <ion-button class="nav" color="darkred">Photos</ion-button>
-      <ion-button class="nav" color="lightred">Schedule</ion-button>
-      <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
-    </div>
+  <div class="navbar">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button  href="user/profile"  class="darkred">Profile</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </div>
     
     <div class="profileImage" *ngIf="togglePostFlag">
       <div *ngIf="imageReady">
@@ -53,7 +69,7 @@
 
     <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
       <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
-      <ion-button (click)="selectSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
+      <ion-button (click)="selectPostSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
       <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
       <ion-button expand="block" type="submit" class="ion-margin-vertical">
         Post
@@ -77,16 +93,34 @@
         <!-- Leaving this here as may use in the future for use to store likes etc.. -->
         <!-- <p>{{post.User_ID}}</p> -->
         <footer>
-          <div class="like">
+          <div class="like" (click)="likeCtrl(post.index)" [ngClass]="{'active': post.likeFlag}">
             <ion-img src="../../assets/dumbell.png"></ion-img>
+            <span *ngIf=post.likesFlag class="like-count">{{post.likeCount}}</span>
           </div>
-          <div class="comment">
+          <div class="comment" (click)="commentCtrl(post.index)"  [ngClass]="{'has-comments': post.commentsFlag, 'active': post.commentFlag}">
             <ion-img src="../../assets/comment.png"></ion-img>
+            <span *ngIf=post.commentsFlag class="comment-count">{{post.commentCount}}</span>
+          </div>
+
+          <div class="comment-section" *ngIf=post.commentFlag>
+            <ion-card *ngFor ="let comment of post.Comments">
+              <div class="no-image-text">
+                <p class="time">{{comment.timeCreated}}</p>
+                <p class="name">{{comment.fname}} {{comment.lname}}</p>
+              </div>
+              <p class="post-text">{{comment.data.txt}}</p>
+            </ion-card>
+            <form (ngSubmit)="createComment(post.index)">
+              <ion-textarea placeholder="Write a comment..." [(ngModel)]="commentData.txt" name="txt"></ion-textarea>
+              <ion-button expand="block" type="submit" class="ion-margin-vertical">
+                Comment
+              </ion-button>
+            </form>
           </div>
         </footer>
       </ion-card> 
       
-      <ion-card class="profileImage2">
+      <!-- <ion-card class="profileImage2">
           <ion-card-header>
             <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
           </ion-card-header>
@@ -94,7 +128,7 @@
           <ion-card-content id="nameStatus">
             We just released a new class schedule! Check it out!
           </ion-card-content>
-        </ion-card>
+        </ion-card> -->
     </div>
 </main>
 </ion-content>

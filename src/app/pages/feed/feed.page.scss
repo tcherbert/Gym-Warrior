@@ -56,7 +56,10 @@
 
   }
   .nav{
-    width: 24%;
+    width: 32%;
+  }
+  .testing{
+    max-width: 100%;
   }
 
   .navMenu {
@@ -161,10 +164,21 @@
     opacity: 0.6;
     border: 1px solid rgba(255,255,255,0.6);
     display: inline-block;
+    position: relative;
 
     &.active {
       opacity: 1;
-      background:rgba(0,0,0,0.8);
+      background:rgba(0,0,0,0.2);
+    }
+    .like-count {
+      background: rgba(208,32,39, 0.99);
+      border-radius: 10px;
+      padding: 0px 5px;
+      margin: 0px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      color: #fff;
     }
   }
 
@@ -175,11 +189,56 @@
     border: 1px solid rgba(255,255,255,0.6);
     display: inline-block;
     margin-left: 10px;
+    position: relative;
 
     &.active {
       opacity: 1;
-      background:rgba(0,0,0,0.8);
+      background:rgba(0,0,0,0.2);
+    }
+    &.has-comments {
+      opacity: 1;
+      background:rgba(0,0,0,0.2);
+    }
+    .comment-count {
+      background: rgba(208,32,39, 0.99);
+      border-radius: 10px;
+      padding: 0px 5px;
+      margin: 0px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      color: #fff;
     }
   }  
 
+  .comment-section {
+    ion-card {
+      padding: 5px 20px;
+    }
+    ion-textarea {
+      padding: 5px;
+      margin-top: 10px;
+    }
+  }
+}
+
+
+
+.navbar {
+  width: 100%;
+  ion-col {
+    width: 33%;
+    margin-top: 0px;
+    padding-top: 0px;
+    &:first-of-type {
+      padding-left: 0px;
+    }
+    ion-button {
+      width: 100%;
+    }
+  }
+}
+
+#main {
+  padding-top: 10px;
 }
