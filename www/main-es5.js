@@ -5,21 +5,34 @@
   !*** ./$$_lazy_route_resource lazy namespace object ***!
   \******************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncaught exception popping up in devtools
-	return Promise.resolve().then(function() {
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
+var map = {
+	"./pages/gym-admin/gym-admin.module": [
+		"./src/app/pages/gym-admin/gym-admin.module.ts",
+		"common",
+		"pages-gym-admin-gym-admin-module"
+	]
+};
+function webpackAsyncContext(req) {
+	if(!__webpack_require__.o(map, req)) {
+		return Promise.resolve().then(function() {
+			var e = new Error("Cannot find module '" + req + "'");
+			e.code = 'MODULE_NOT_FOUND';
+			throw e;
+		});
+	}
+
+	var ids = map[req], id = ids[0];
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
+		return __webpack_require__(id);
 	});
 }
-webpackEmptyAsyncContext.keys = function() { return []; };
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -473,28 +486,30 @@ module.exports = "<ion-content>\n \n    <div class=\"ion-text-end\">\n      <ion
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/index.js");
-/* harmony import */ var _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./guards/role.guard */ "./src/app/guards/role.guard.ts");
-/* harmony import */ var _guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./guards/automatic-login.guard */ "./src/app/guards/automatic-login.guard.ts");
+/* harmony import */ var _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/data-resolver.service */ "./src/app/services/data-resolver.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/index.js");
+/* harmony import */ var _guards_role_guard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./guards/role.guard */ "./src/app/guards/role.guard.ts");
+/* harmony import */ var _guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./guards/automatic-login.guard */ "./src/app/guards/automatic-login.guard.ts");
 
 
 
 
 
 
-var redirectUnauthorizedToLogin = function () { return Object(_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["redirectUnauthorizedTo"])(['/']); };
+
+var redirectUnauthorizedToLogin = function () { return Object(_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__["redirectUnauthorizedTo"])(['/']); };
 var routes = [
     {
         path: '',
         loadChildren: function () { return __webpack_require__.e(/*! import() | pages-login-login-module */ "pages-login-login-module").then(__webpack_require__.bind(null, /*! ./pages/login/login.module */ "./src/app/pages/login/login.module.ts")).then(function (m) { return m.LoginPageModule; }); },
-        canActivate: [_guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_5__["AutomaticLoginGuard"]]
+        canActivate: [_guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_6__["AutomaticLoginGuard"]]
     },
     // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
     {
         path: 'user',
-        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
+        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_5__["RoleGuard"]],
         data: {
             authGuardPipe: redirectUnauthorizedToLogin,
             role: 'USER'
@@ -526,7 +541,14 @@ var routes = [
             },
             {
                 path: 'gym-admin',
-                loadChildren: function () { return __webpack_require__.e(/*! import() | pages-gym-admin-gym-admin-module */ "pages-gym-admin-gym-admin-module").then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(function (m) { return m.GymAdminPageModule; }); }
+                loadChildren: function () { return Promise.all(/*! import() | pages-gym-admin-gym-admin-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-admin-gym-admin-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(function (m) { return m.GymAdminPageModule; }); }
+            },
+            {
+                path: 'gym-admin/:id',
+                resolve: {
+                    gymID: _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__["DataResolverService"]
+                },
+                loadChildren: './pages/gym-admin/gym-admin.module#GymAdminPageModule'
             },
             {
                 path: 'groups',
@@ -542,14 +564,14 @@ var routes = [
             },
             {
                 path: '',
-                redirectTo: 'feed',
+                redirectTo: 'profile',
                 pathMatch: 'full'
             }
         ]
     },
     {
         path: 'seller',
-        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
+        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_5__["RoleGuard"]],
         data: {
             authGuardPipe: redirectUnauthorizedToLogin,
             role: 'SELLER'
@@ -579,11 +601,11 @@ var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
     AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             imports: [
-                _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_2__["PreloadAllModules"] })
+                _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_3__["PreloadAllModules"] })
             ],
-            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
+            exports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"]]
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -1213,6 +1235,85 @@ var CartService = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], CartService);
     return CartService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/data-resolver.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/services/data-resolver.service.ts ***!
+  \***************************************************/
+/*! exports provided: DataResolverService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataResolverService", function() { return DataResolverService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.service */ "./src/app/services/data.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+
+var DataResolverService = /** @class */ (function () {
+    function DataResolverService(dataService) {
+        this.dataService = dataService;
+    }
+    DataResolverService.prototype.resolve = function (route) {
+        var id = route.paramMap.get('id');
+        return this.dataService.getData(id);
+    };
+    DataResolverService.ctorParameters = function () { return [
+        { type: _data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"] }
+    ]; };
+    DataResolverService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"]])
+    ], DataResolverService);
+    return DataResolverService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/data.service.ts":
+/*!******************************************!*\
+  !*** ./src/app/services/data.service.ts ***!
+  \******************************************/
+/*! exports provided: DataService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataService", function() { return DataService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var DataService = /** @class */ (function () {
+    function DataService() {
+        this.data = [];
+    }
+    DataService.prototype.setData = function (id, data) {
+        console.log('setData()');
+        console.log(data);
+        this.data[id] = data;
+    };
+    DataService.prototype.getData = function (id) {
+        return this.data[id];
+    };
+    DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+            providedIn: 'root'
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+    ], DataService);
+    return DataService;
 }());
 
 
