@@ -22,25 +22,14 @@ export class PostCrudService {
     return this.db.collection('posts', ref => ref.orderBy('timeCreated', 'desc')).snapshotChanges();
   }
 
-
-  // updatePost(recordID, record) {
-  //   this.db.doc('posts/' + recordID).update(record);
-  // }
-
-
-  deletePost(recordId) {
-    this.db.doc('posts/' + recordId).delete();
-  }
-
-
   readFriendsIds(recordID) {
-
     return this.db.doc('friends/' + recordID).snapshotChanges();
   }
 
   readUsers() {
     return this.db.collection('users').snapshotChanges();
   }
+
   readGyms(){
     return this.db.collection('gyms').snapshotChanges();
   }
@@ -83,5 +72,54 @@ export class PostCrudService {
     });
   }
 
+
+  readGymPosts() {
+    return this.db.collection('gymposts', ref => ref.orderBy('timeCreated', 'desc')).snapshotChanges();
+  }
+
+  createGymPost(record) {
+    return this.db.collection('gymposts').add(record);
+  }
+
+  addGymComment(postID, comment) {
+    return this.db.doc('gymposts/' + postID).update({
+      Comments: firestore.FieldValue.arrayUnion(comment)
+    });
+  }
+
+  addGymLike(postID, userID) {
+    return this.db.doc('gymposts/' + postID).update({
+      Likes: firestore.FieldValue.arrayUnion(userID)
+    });
+  }
+
+  removeGymLike(postID, userID) {
+    return this.db.doc('gymposts/' + postID).update({
+      Likes: firestore.FieldValue.arrayRemove(userID)
+    });
+  }
+
+  readGymMembersIds(recordID) {
+    return this.db.doc('gymMembers/' + recordID).snapshotChanges();
+  }
+
+  removeGymMember(userId, friendId){
+    this.db.doc('gymMembers/' + userId).update({
+      Members: firestore.FieldValue.arrayRemove(friendId)
+    });
+
+    // this.db.doc('gymMembers/' + friendId).update({
+    //   Members: firestore.FieldValue.arrayRemove(userId)
+    // });
+  }
+
+  addGymMember(userId, friendId){
+    this.db.doc('gymMembers/' + userId).update({
+      Members: firestore.FieldValue.arrayUnion(friendId)
+    });
+  }
+  readGymMembers(){
+    return this.db.collection('gymMembers').snapshotChanges();
+  }
 }
 

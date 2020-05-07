@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { PostCrudService } from './../../services/firestore-api.service';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AngularFireStorage } from '@angular/fire/storage';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
   selector: 'app-buyer-list',
-  templateUrl: './friends.page.html',
-  styleUrls: ['./friends.page.scss'],
+  templateUrl: './gymmembers.page.html',
+  styleUrls: ['./gymmembers.page.scss'],
 })
-export class FriendsPage implements OnInit {
+export class GymMembersPage implements OnInit {
   findFriends: boolean;
   friendsIds = {};
   friendsData = [];
@@ -23,14 +23,15 @@ export class FriendsPage implements OnInit {
   usersData = [];
   searchTerm = {};
   public filteredFriends: any;
+  gymID: string;
 
 
   constructor(
     private auth: AuthService,
     private postCrudService: PostCrudService,
-    private afAuth: AngularFireAuth,
     private db: AngularFirestore,
     private storage: AngularFireStorage,
+    private route: ActivatedRoute
 
   ) {
     this.findFriends = false;
@@ -39,7 +40,8 @@ export class FriendsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getFriends();
+    this.gymID = this.route.snapshot.params.id;
+    this.getGymMembers();
   }
 
   findFriendsToggle() {
@@ -53,13 +55,12 @@ export class FriendsPage implements OnInit {
   }
 
   signOut() {
-    this.auth.signOut();
-  }
+    this.auth.signOut();  }
 
-  async getFriends() {
-    const id = this.afAuth.auth.currentUser.uid;
-    await this.postCrudService.readFriendsIds(id).subscribe(data => {
-      this.friendsIds = data.payload.data()['Friends'];
+  async getGymMembers() {
+    const id = this.gymID;
+    await this.postCrudService.readGymMembersIds(id).subscribe(data => {
+      this.friendsIds = data.payload.data()['Members'];
       this.getUserData();
     });
   }
@@ -75,24 +76,20 @@ export class FriendsPage implements OnInit {
     } else {
       friendsIdsLength = 0;
     }
-    console.log('friendsIdsLength', friendsIdsLength);
 
     for (let i = 0; i < friendsIdsLength; i++) {
       const id = this.friendsIds[i];
+
       const friendData = await this.db.collection('users')
         .doc(id)
         .ref
         .get().then( doc => { 
             if (doc.exists) {
                 const userData = doc.data();
-                // return userData;
                 this.friendsData[this.friendsCounter] = userData;
-
                 this.friendsData[this.friendsCounter]['id'] = id;
-
                 this.friendsCounter++;
-
-                if(friendsIdsLength === this.friendsCounter){
+                if (friendsIdsLength === this.friendsCounter) {
                   this.friendsReady = true;
 
                 }
@@ -107,7 +104,6 @@ export class FriendsPage implements OnInit {
   async findUsers() {
     this.postCrudService.readUsers().subscribe(data => {
       this.findUsersData = data.map(e => {
-
         return {
           id: e.payload.doc.id,
           isEdit: false,
@@ -119,13 +115,13 @@ export class FriendsPage implements OnInit {
       // Filter out yourself and any other active friends.
       const findUsersDataLength = Object.keys(this.findUsersData).length;
       let findFriendsIdsLength;
-      if (!this.isEmpty(this.friendsIds)) {
+      if(!this.isEmpty(this.friendsIds)){
         findFriendsIdsLength = Object.keys(this.friendsIds).length;
       } else {
         findFriendsIdsLength = 0;
       }
 
-      const id = this.afAuth.auth.currentUser.uid;
+      const id = this.gymID;
       let counter = 0;
       let foundFlag;
       for (let i = 0; i < findUsersDataLength; i++) {
@@ -156,13 +152,13 @@ export class FriendsPage implements OnInit {
     // For the find function
     const usersDataLength = Object.keys(this.usersData).length;
     for (let i = 0; i < usersDataLength; i++) {
+      console.log(this.usersData[i]);
       this.usersData[i]['image'] = this.getProfileImage(this.usersData[i].id, i, 'usersData');
     }
   }
 
   setFilteredItems() {
     this.filteredFriends = this.filterItems(this.searchTerm);
-
   }
 
 
@@ -198,8 +194,9 @@ export class FriendsPage implements OnInit {
 
 
   removeFriend(friendId){
-    const id = this.afAuth.auth.currentUser.uid;
-    this.postCrudService.removeFriend(id, friendId);
+    const id = this.gymID;
+    this.postCrudService.removeGymMember(id, friendId);
+      // console.log(resp);
     for (let i = 0; i < this.friendsData.length; i++) {
       if (this.friendsData[i].id === friendId) {
         this.friendsData.splice(i, 1);
@@ -208,9 +205,10 @@ export class FriendsPage implements OnInit {
   }
 
   addFriend(friendId) {
-    const id = this.afAuth.auth.currentUser.uid;
+    const id = this.gymID;
     this.postCrudService.updateFriend(id, friendId);
   }
+
 
   // Utility function to add 2 arrays uniquely
   arrayUnique(array) {
@@ -222,7 +220,6 @@ export class FriendsPage implements OnInit {
             }
         }
     }
-
     return a;
   }
 
@@ -233,6 +230,6 @@ export class FriendsPage implements OnInit {
         }
     }
     return true;
-
   }
+
 }

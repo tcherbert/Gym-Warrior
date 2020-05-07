@@ -1,68 +1,67 @@
 <ion-app *ngIf="dataReady">
-    <ion-content overflow-scroll="true">
-  <!--Navigation Bar-->
-  <ion-menu contentId="main" side="end" class="navMenu">
-    <ion-content>
-      <ion-list>
-        <ion-item>
-          <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
-        </ion-item>
-        <ion-item>
-          <ion-button (click)="signOut()" class="signOutButton">
-            <ion-icon slot="icon-only" name="log-out"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-menu>
-              
-  <div id="main">
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="end">
-          <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-img class="logo" src="../../assets/logo.png"></ion-img>
-      </ion-toolbar>
-    </ion-header>
-  </div> 
-  
-  <div class="profileImage">
-    <div *ngIf="imageReady">
-      <!-- <div class="imageBg" [style.background-image]="profileImage"> -->
-      <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
-        
-        <!-- <img [src]="profileImage" *ngIf="profileImage"> -->
+  <ion-content overflow-scroll="true">
+    <!--Navigation Bar-->
+    <ion-menu contentId="main" side="end" class="navMenu">
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button class="navButton" fill="clear" href="/user/gymmembers/{{gymID}}">Members</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button (click)="signOut()" class="signOutButton">
+              <ion-icon slot="icon-only" name="log-out"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+            
+    <div id="main">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+        </ion-toolbar>
+      </ion-header>
+    </div> 
+
+    <div class="profileImage">
+      <div *ngIf="imageReady">
+        <!-- <div class="imageBg" [style.background-image]="profileImage"> -->
+        <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
+          
+          <!-- <img [src]="profileImage" *ngIf="profileImage"> -->
+        </div>
       </div>
-  </div>
-    <ion-button (click)="selectSource()"><ion-icon name="md-create"></ion-icon></ion-button>  
-    <ion-card-header>
-        <ion-card-title> {{ name }}</ion-card-title>
-        <ion-card-subtitle> {{ city }}, {{ address }}, {{ phone }} </ion-card-subtitle>
-    </ion-card-header>
-  </div>
-  <div class="navbar">
+      <ion-button (click)="selectSource()"><ion-icon name="md-create"></ion-icon></ion-button>  
+      <ion-card-header>
+          <ion-card-title> {{ name }}</ion-card-title>
+          <ion-card-subtitle> {{ address }}, {{ phone }} <br> {{ city }}, {{ state }} </ion-card-subtitle>
+      </ion-card-header>
+    </div>
+    <div class="navbar">
       <ion-grid>
         <ion-row>
-          <ion-col class="ion-no-padding">
-            <ion-button class="nav" expand="full" color="lightred">About</ion-button>
-          </ion-col>
-          <ion-col class="ion-no-padding">
-            <ion-button class="nav" expand="full" color="darkred">Photos</ion-button>
-          </ion-col>
-          <!-- <ion-col class="ion-no-padding">
+          <ion-col>
             <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
-          </ion-col> -->
+          </ion-col>
+          <ion-col>
+            <ion-button href="user/feed"  class="darkred">Feed</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button (click)="togglePost()" class="darkred">Add Post</ion-button>
+          </ion-col>
         </ion-row>
       </ion-grid>
     </div>
-  
   
     <main class="mainContent">
       <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
@@ -79,16 +78,14 @@
             <div class="inner-bg" [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
             <div class="text-bg" >
               <p class="time">{{post.TimeCreated}}</p>
-              <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
+              <p class="name">{{post.Data.name}}</p>
             </div>
           </header>
           <div *ngIf=!post.Image class="no-image-text">
             <p class="time">{{post.TimeCreated}}</p>
-            <p class="name">{{post.Data.fname}} {{post.Data.lname}}</p>
+            <p class="name">{{post.Data.name}}</p>
           </div>
           <p class="post-text">{{post.Data.txt}}</p>
-          <!-- Leaving this here as may use in the future for use to store likes etc.. -->
-          <!-- <p>{{post.User_ID}}</p> -->
           <footer>
             <div class="like" (click)="likeCtrl(post.index)" [ngClass]="{'active': post.likeFlag}">
               <ion-img src="../../assets/dumbell.png"></ion-img>
@@ -103,7 +100,7 @@
               <ion-card *ngFor ="let comment of post.Comments">
                 <div class="no-image-text">
                   <p class="time">{{comment.timeCreated}}</p>
-                  <p class="name">{{comment.fname}} {{comment.lname}}</p>
+                  <p class="name">{{comment.name}}</p>
                 </div>
                 <p class="post-text">{{comment.data.txt}}</p>
               </ion-card>
@@ -115,22 +112,9 @@
               </form>
             </div>
           </footer>
-        </ion-card> 
-        
-        <!-- <ion-card class="profileImage2">
-            <ion-card-header>
-              <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-            </ion-card-header>
-  
-            <ion-card-content id="nameStatus">
-              We just released a new class schedule! Check it out!
-            </ion-card-content>
-          </ion-card> -->
+        </ion-card>
       </div>
-      
     </main>
-      
- 
   </ion-content>
 </ion-app>
 

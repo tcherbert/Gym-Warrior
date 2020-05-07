@@ -1,106 +1,117 @@
-
-
-<ion-app>
-    <ion-content overflow-scroll="true">
-
+<ion-app > 
+  <ion-content overflow-scroll="true">
     <ion-menu contentId="main" side="end" class="navMenu">
-        <ion-content>
-          <ion-list>
-            <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/friends">Friends</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/groups">Groups</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button (click)="signOut()" class="signOutButton">
-                <ion-icon slot="icon-only" name="log-out"></ion-icon>
-              </ion-button>
-            </ion-item>
-       
-          </ion-list>
-        </ion-content>
-      </ion-menu>
-      
-      <div id="main">
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="end">
-              <ion-menu-button></ion-menu-button>
-            </ion-buttons>
-            <a href="user/feed">
-              <ion-img class="logo" src="../../assets/logo.png"></ion-img>
-            </a>
-          </ion-toolbar>
-        </ion-header>
-      </div>   
-  
-    
-  <div class="profileImage">
-    <ion-card-header>
-        <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-        <ion-card-subtitle id="nameStatus">1234 Street, City 555-555-5555</ion-card-subtitle>
-    </ion-card-header>
-  </div>
-  
-<main>
-  
-    <div class="navbar">
-        <ion-grid>
-          <ion-row>
-            <ion-col class="ion-no-padding">
-              <ion-button class="nav" expand="full" color="lightred">Message</ion-button>
-            </ion-col>
-            <ion-col class="ion-no-padding">
-              <ion-button class="nav" expand="full" color="darkred">Photos</ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button class="navButton" fill="clear" href="/user/gymmembers/{{gymID}}">Members</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button (click)="signOut()" class="signOutButton">
+              <ion-icon slot="icon-only" name="log-out"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+                
+    <div id="main">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+        </ion-toolbar>
+      </ion-header>
+    </div> 
+
+    <div class="profileImage">
+      <div *ngIf="imageReady">
+        <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}"></div>
       </div>
-
-    <div>
-        <ion-card class="profileImage2">
-            <ion-card-header>
-                <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-             </ion-card-header>
-
-         <ion-card-content id="nameStatus">
-            We just released a new class schedule! Check it out!
-        </ion-card-content>
-        </ion-card>
-
-        <ion-card class="profileImage2">
-             <ion-card-header>
-                <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-             </ion-card-header>
-
-         <ion-card-content id="nameStatus">
-           Personal training special! Now through March 1 all of our personal training sessions are 50% off!
-        </ion-card-content>
-        </ion-card>
-
-        <ion-card class="profileImage2">
-             <ion-card-header>
-                <ion-card-title id="nameStatus">Smart Fitness</ion-card-title>
-             </ion-card-header>
-
-         <ion-card-content id="nameStatus">
-           It's a great day for a great day!
-        </ion-card-content>
-        </ion-card>  
+      <ion-card-header>
+          <ion-card-title> {{ name }}</ion-card-title>
+          <ion-card-subtitle> {{ address }} - {{ phone }} <br> {{ city }}, {{ state }} </ion-card-subtitle>
+      </ion-card-header>
     </div>
-</main>
-  <ion-button (click)="getLocation()" class="geolocationButton">
-    Get Location  
-  </ion-button>
-  <p>Latitude: {{lat}}</p>
-  <p>Longitude: {{long}}</p>
-</ion-content>
+    <div class="navbar">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button href="user/friends" class="nav" expand="full" color="lightred">Friends</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button href="user/feed"  class="darkred">Feed</ion-button>
+          </ion-col>
+          <ion-col *ngIf="notMember">
+            <ion-button (click)="becomeMember()"  class="darkred">Add Gym</ion-button>
+          </ion-col>
+          <ion-col *ngIf="!notMember">
+            <ion-button (click)="removeMember()"  class="darkred">Remove Gym</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
 
+
+    <main class="mainContent">
+      <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
+        <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
+        <ion-button (click)="selectPostSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>
+        <ion-button *ngIf="imageReady" (click)="removeImage()"><ion-icon name="ios-image"></ion-icon> Remove Image</ion-button>
+        <ion-button expand="block" type="submit" class="ion-margin-vertical">
+          Post
+        </ion-button>
+      </form>
+      <div>
+        <ion-card class="post"  *ngFor ="let post of myPosts">
+          <header class="post-header" *ngIf=post.Image>
+            <div class="inner-bg" [ngStyle]="{'background-image':'url('+post.Image+')'}"></div>
+            <div class="text-bg" >
+              <p class="time">{{post.TimeCreated}}</p>
+              <p class="name">{{post.Data.name}}</p>
+            </div>
+          </header>
+          <div *ngIf=!post.Image class="no-image-text">
+            <p class="time">{{post.TimeCreated}}</p>
+            <p class="name">{{post.Data.name}}</p>
+          </div>
+          <p class="post-text">{{post.Data.txt}}</p>
+          <footer>
+            <div class="like" (click)="likeCtrl(post.index)" [ngClass]="{'active': post.likeFlag}">
+              <ion-img src="../../assets/dumbell.png"></ion-img>
+              <span *ngIf=post.likesFlag class="like-count">{{post.likeCount}}</span>
+            </div>
+            <div class="comment" (click)="commentCtrl(post.index)"  [ngClass]="{'has-comments': post.commentsFlag, 'active': post.commentFlag}">
+              <ion-img src="../../assets/comment.png"></ion-img>
+              <span *ngIf=post.commentsFlag class="comment-count">{{post.commentCount}}</span>
+            </div>
+            <div class="comment-section" *ngIf=post.commentFlag>
+              <ion-card *ngFor ="let comment of post.Comments">
+                <div class="no-image-text">
+                  <p class="time">{{comment.timeCreated}}</p>
+                  <p class="name">{{comment.name}}</p>
+                </div>
+                <p class="post-text">{{comment.data.txt}}</p>
+              </ion-card>
+              <form (ngSubmit)="createComment(post.index)">
+                <ion-textarea placeholder="Write a comment..." [(ngModel)]="commentData.txt" name="txt"></ion-textarea>
+                <ion-button expand="block" type="submit" class="ion-margin-vertical">
+                  Comment
+                </ion-button>
+              </form>
+            </div>
+          </footer>
+        </ion-card> 
+      </div>
+    </main>
+  </ion-content>
 </ion-app>
+

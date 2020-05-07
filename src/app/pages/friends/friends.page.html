@@ -1,85 +1,67 @@
-
-
 <ion-app>
-    <ion-content overflow-scroll="true">
-
+  <ion-content overflow-scroll="true">
     <ion-menu contentId="main" side="end" class="navMenu">
-        <ion-content>
-          <ion-list>
-            <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear"  href="/user/groups">Groups</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button (click)="signOut()" class="signOutButton">
-                <ion-icon slot="icon-only" name="log-out"></ion-icon>
-              </ion-button>
+      <ion-content>
+        <ion-list>
+          <ion-item>
+            <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
+          </ion-item>
+          <ion-item>
+            <ion-button (click)="signOut()" class="signOutButton">
+              <ion-icon slot="icon-only" name="log-out"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    
+    <div id="main">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <a href="user/feed">
+            <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+            </a>
+        </ion-toolbar>
+      </ion-header>
+    </div>   
+  
+    <main>
+      <section>
+        <p (click)="findFriendsToggle()">
+          Find Friends 
+          <span *ngIf="!findFriends"><ion-icon name="arrow-forward"></ion-icon></span>
+          <span *ngIf="findFriends"><ion-icon name="arrow-down"></ion-icon></span>
+        </p>
+        <div *ngIf="findFriends" class="find-friends">
+          <form (ngSubmit)="findFriend()" *ngIf="toggleFindFriendsFlag">
+            <ion-searchbar animated [(ngModel)]="searchTerm.txt" name="txt" (ionChange)="setFilteredItems()"></ion-searchbar>
+          </form>
+          <ion-list class="friends">
+            <ion-item *ngFor="let friend of filteredFriends">
+              <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
+              <p>{{ friend.fname }} {{ friend.lname }}</p>
+              <ion-button (click)="addFriend(friend.id)">Add Friend</ion-button>
             </ion-item>
           </ion-list>
-        </ion-content>
-      </ion-menu>
-      
-      <div id="main">
-        <ion-header>
-          <ion-toolbar>
-            <ion-buttons slot="end">
-              <ion-menu-button></ion-menu-button>
-            </ion-buttons>
-            <a href="user/feed">
-              <ion-img class="logo" src="../../assets/logo.png"></ion-img>
-              </a>
-          </ion-toolbar>
-        </ion-header>
-      </div>   
-  
-    
-  
-  
-<main>
-  <section>
-    <p (click)="findFriendsToggle()">
-      Find Friends 
-      <span *ngIf="!findFriends"><ion-icon name="arrow-forward"></ion-icon></span>
-      <span *ngIf="findFriends"><ion-icon name="arrow-down"></ion-icon></span>
-    </p>
-    
-    
-    <div *ngIf="findFriends" class="find-friends">
-      <form (ngSubmit)="findFriend()" *ngIf="toggleFindFriendsFlag">
-        <!-- <ion-input type="text" placeholder="Who are you looking for?" [(ngModel)]="findFriendData.txt" name="txt"></ion-input> -->
-        <ion-searchbar animated [(ngModel)]="searchTerm.txt" name="txt" (ionChange)="setFilteredItems()"></ion-searchbar>
+        </div>
+      </section>
 
-      </form>
-      
-      <ion-list class="friends">
-        <ion-item *ngFor="let friend of filteredFriends">
-          <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
-          <p>{{ friend.fname }} {{ friend.lname }}</p>
-          <ion-button (click)="addFriend(friend.id)">Add Friend</ion-button>
-        </ion-item>
-      </ion-list>
-
-
-    </div>
-  </section>
-
-  <section>
-    <p>Current Friends</p>
-    <ion-list class="friends" *ngIf="friendsReady">
-      <ion-item *ngFor ="let friend of friendsData">
-        <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
-          <p>{{friend.fname}} {{friend.lname}}</p>
-          <ion-button (click)="removeFriend(friend.id)">Remove Friend</ion-button>
-      </ion-item> 
-    </ion-list>
-
-  </section>
-</main>
+      <section>
+        <p>Current Friends</p>
+        <ion-list class="friends" *ngIf="friendsReady">
+          <ion-item *ngFor ="let friend of friendsData">
+            <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
+              <p>{{friend.fname}} {{friend.lname}}</p>
+              <ion-button (click)="removeFriend(friend.id)">Remove Friend</ion-button>
+          </ion-item> 
+        </ion-list>
+      </section>
+    </main>
+  </ion-content>
+</ion-app>

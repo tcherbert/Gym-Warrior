@@ -1,5 +1,53 @@
+.menu-content {
+  --background-color: #f00;
+}
+
 .profileImage {
-  background: url(../../../assets/gymprofile.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 55%;
+  position: relative;
+
+  
+  .imageBg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
+  ion-card-header {
+    position: absolute;
+    bottom: 0px;
+    padding: 10px;
+    background: rgba(0,0,0,0.7);
+    color: #ffffff;
+
+    ion-card-title {
+      font-weight: bold;
+      padding: 0px;
+      color: #fff !important;
+    }
+    ion-card-subtitle {
+      margin: 0px;
+      color: #fff;
+    }
+  }
+
+  ion-button {
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    position: absolute;
+    right: 5px;
+    top: 0px;
+  }
+}
+
+.profileImage2 {
+  background: url(../../../assets/profilePhoto2.jpeg);
   background-size: cover;
   background-repeat: no-repeat;
   height: 55%;
@@ -10,30 +58,194 @@
   text-shadow: -2px 2px 6px black;
   }
 
-  .profileImage2 {
-    background: url(../../../assets/gymprofile.jpeg);
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 55%;
 
+.profileImage3 {
+  background: url(../../../assets/groupprofile.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 55%;
+}
+
+.navMenu {
+  position: fixed;
+  z-index: 9999;
+  
+  ion-list {
+    padding-top: 30px;
+    height: 100%;
   }
- 
+}
 
-  .navMenu {
-    position: fixed;
-    z-index: 9999;
+/*
+@media only screen and (max-width: 400px){
+  .nav{
+    width: 23.7%;
+  }
+}*/
+
+
+.post {
+  padding: 0px 20px 10px 20px;
+ 
+  .post-header {
+    position: relative;
+    height: 200px;
+    margin-left: -20px;
+    margin-right: -20px;
     
-    ion-list {
-      padding-top: 30px;
-      height: 100%;
+    .inner-bg {
+      height: 200px;
+      width: 100%;
+      background-size: cover;
+      background-position: 50% 50%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      
+      z-index: 0;
+    }
+    .text-bg {
+      background: rgba(0,0,0,0.61);
+      padding: 10px;
+      padding-left: 10px;
+      display: inline-block;
+      margin-top: -100%;
+      z-index: 10;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+ 
     }
   }
- p{
-   color: white;
-   text-align: center;
- }
+  
  
+  .no-image-text {
+    margin-top: 15px;
+  }
+ 
+  p {
+    text-align: left;
+    padding: 0px;
+    margin: 0px;
+    color: white;
+  }
+  
+  
+ 
+  p.time {
+    font-size: 10px;
+ 
+  }
+  p.name {
+    font-size: 16px;
+  }
+  p.post-text {
+    margin: 10px 0px;
+    line-height: 1.5;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 20px;
+  }
+ 
+  
+  //Icons
+  .like {
+    max-width: 60px;
+    padding: 0px 10px 0px 10px;
+    opacity: 0.6;
+    border: 1px solid rgba(255,255,255,0.6);
+    display: inline-block;
+    position: relative;
+ 
+    &.active {
+      opacity: 1;
+      background:rgba(0,0,0,0.2);
+    }
+    .like-count {
+      background: rgba(208,32,39, 0.99);
+      border-radius: 10px;
+      padding: 0px 5px;
+      margin: 0px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      color: #fff;
+    }
+  }
+ 
+  .comment {
+    max-width: 60px;
+    padding: 0px 10px 0px 10px;
+    opacity: 0.6;
+    border: 1px solid rgba(255,255,255,0.6);
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+ 
+    &.active {
+      opacity: 1;
+      background:rgba(0,0,0,0.2);
+    }
+    &.has-comments {
+      opacity: 1;
+      background:rgba(0,0,0,0.2);
+    }
+    .comment-count {
+      background: rgba(208,32,39, 0.99);
+      border-radius: 10px;
+      padding: 0px 5px;
+      margin: 0px;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      color: #fff;
+    }
+  }  
+ 
+  .comment-section {
+    ion-card {
+      padding: 5px 20px;
+    }
+    ion-textarea {
+      padding: 5px;
+      margin-top: 10px;
+    }
+  }
+ }
 
- #main {
-  padding-top: 10px;
+ .navbar {
+  width: 100%;
+  ion-col {
+    width: 33%;
+    margin-top: 0px;
+    padding-top: 0px;
+    &:first-of-type {
+      padding-left: 0px;
+    }
+    &.gym-admin {
+      width: 100%;
+    }
+    ion-button {
+      width: 100%;
+    }
+  }
+}
+
+
+p {
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+ion-textarea {
+  background: #fff;
+  padding: 10px;
+  color: #000 !important;
+}
+.post-bg {
+ min-height: 200px;
+ background-size: cover;
+ background-position: 50% 50%;
 }

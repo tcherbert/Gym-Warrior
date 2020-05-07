@@ -211,3 +211,41 @@
     }
   }
  }
+
+ .navbar {
+  width: 100%;
+  ion-col {
+    width: 33%;
+    margin-top: 0px;
+    padding-top: 0px;
+    &:first-of-type {
+      padding-left: 0px;
+    }
+    &.gym-admin {
+      width: 100%;
+    }
+    ion-button {
+      width: 100%;
+    }
+  }
+}
+
+
+p{
+  color: white;
+}
+
+.hide {
+  display: none;
+}
+
+ion-textarea {
+  background: #fff;
+  padding: 10px;
+  color: #000 !important;
+}
+.post-bg {
+ min-height: 200px;
+ background-size: cover;
+ background-position: 50% 50%;
+}

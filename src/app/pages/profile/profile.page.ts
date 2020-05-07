@@ -33,8 +33,8 @@ export class ProfilePage implements OnInit {
   public gymData: string;
   public gymAdminID: string;
   public gymAdminFlag: boolean;
-
-
+  public gymMemberFlag: boolean;
+  public noGymFlag: boolean;
 
   togglePostFlag: boolean;
   newPostImage: string;
@@ -64,6 +64,8 @@ export class ProfilePage implements OnInit {
     this.dataReady = false;
     this.imageReady = false;
     this.gymAdminFlag = false;
+    this.gymMemberFlag = false;
+    this.noGymFlag = false;
   }
 
 
@@ -214,7 +216,6 @@ export class ProfilePage implements OnInit {
     });
   }
 
-
   async getGymMembers() {
     const id = this.afAuth.auth.currentUser.uid;
     this.gymFlag = false;
@@ -228,35 +229,38 @@ export class ProfilePage implements OnInit {
         });
           if (this.gymFlag) {
             this.getGymData();
+          } else {
+            this.noGymFlag = true;
           }
     });
   }
 
-
   async getGymData() {
+    console.log('getGymData()');
     const id = this.afAuth.auth.currentUser.uid;
     const userData = await this.db.collection('gyms')
       .doc(this.gymID)
       .ref
       .get().then( doc => {
         if (doc.exists) {
+          console.log('Hello Nurse!!!!!');
           this.gymData = doc.data().name;
+          this.gymAdminID = doc.id;
           if (doc.data().admins.includes(id)) {
-            console.log('Hello Nurse!');
-            this.gymAdminID = doc.id;
             this.gymAdminFlag = true;
+          } else {
+            this.gymMemberFlag = true;
           }
           console.log(doc.data());
         } else {
             this.gymFlag = false;
+            this.noGymFlag = true;
         }
       });
   }
 
 
-
   // Post Functions
-
   togglePost() {
     if (this.togglePostFlag === false) {
       this.togglePostFlag = true;
@@ -264,7 +268,6 @@ export class ProfilePage implements OnInit {
       this.togglePostFlag = false;
     }
   }
-
 
   // Image Handlers
   async selectPostSource() {
@@ -430,7 +433,6 @@ export class ProfilePage implements OnInit {
           counter++;
         }
       }
-      // console.log(this.posts);
     });
   }
 
@@ -485,10 +487,8 @@ export class ProfilePage implements OnInit {
   }
 
   createComment(index) {
-    console.log('createComment()');
     this.createCommentFlag = true;
     this.createCommentIndex = index;
-    // console.log('createComment', this.myPosts[index].id);
     const dateTime = new Date();
 
     let hours = dateTime.getHours();
