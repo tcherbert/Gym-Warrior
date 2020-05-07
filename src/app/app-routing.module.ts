@@ -52,6 +52,10 @@ const routes: Routes = [
         loadChildren: () => import('./pages/gym-admin/gym-admin.module').then( m => m.GymAdminPageModule)
       },
       {
+        path: 'gym-listings',
+        loadChildren: () => import('./pages/gymListings/gymlistings.module').then(m => m.GymListingsPageModule)
+      },
+      {
         path: 'gym-admin/:id',
         resolve: {
           gymID: DataResolverService

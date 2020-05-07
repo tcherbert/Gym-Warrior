@@ -41,6 +41,9 @@ export class PostCrudService {
   readUsers() {
     return this.db.collection('users').snapshotChanges();
   }
+  readGyms(){
+    return this.db.collection('gyms').snapshotChanges();
+  }
 
   updateFriend(userId, friendId) {
     this.db.doc('friends/' + userId).update({
