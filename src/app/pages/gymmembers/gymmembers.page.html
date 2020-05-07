@@ -1,0 +1,48 @@
+<ion-app>
+  <ion-content overflow-scroll="true">
+    <ion-menu contentId="main" side="end" class="navMenu">
+        <ion-content>
+          <ion-list>
+            <ion-item>
+              <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button class="navButton" fill="clear" href="/user/gym-admin/{{gymID}}">Gym Admin</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button (click)="signOut()" class="signOutButton">
+                <ion-icon slot="icon-only" name="log-out"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+      <div id="main">
+        <ion-header>
+          <ion-toolbar>
+            <ion-buttons slot="end">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <a href="user/feed">
+              <ion-img class="logo" src="../../assets/logo.png"></ion-img>
+              </a>
+          </ion-toolbar>
+        </ion-header>
+      </div>   
+    <main>
+      <section>
+        <p>Current Members</p>
+        <ion-list class="friends" *ngIf="friendsReady">
+          <ion-item *ngFor ="let friend of friendsData">
+            <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
+              <p>{{friend.fname}} {{friend.lname}}</p>
+              <ion-button (click)="removeFriend(friend.id)">Remove Member</ion-button>
+          </ion-item> 
+        </ion-list>
+      </section>
+    </main>
+  </ion-content>
+</ion-app>

@@ -1,18 +1,11 @@
 
 <ion-app>
   <ion-content overflow-scroll="true">
-
-  <ion-menu contentId="main" side="end" class="navMenu">
+    <ion-menu contentId="main" side="end" class="navMenu">
       <ion-content>
         <ion-list>
           <ion-item>
             <ion-button class="navButton" fill="clear"  href="/user/feed">Feed</ion-button>
-          </ion-item>
-          <ion-item>
-            <ion-button class="navButton" fill="clear"  href="/user/groups">Groups</ion-button>
-          </ion-item>
-          <ion-item>
-            <ion-button class="navButton" fill="clear" href="/user/gym">Gyms</ion-button>
           </ion-item>
           <ion-item>
             <ion-button class="navButton" fill="clear" href="/user/profile">Profile</ion-button>
@@ -34,37 +27,28 @@
           </ion-buttons>
           <a href="user/feed">
             <ion-img class="logo" src="../../assets/logo.png"></ion-img>
-            </a>
+          </a>
         </ion-toolbar>
       </ion-header>
     </div>   
 
-  
-
-
-<main>
-<section>
-  <h1>Gyms</h1>
-    <ion-list *ngFor="let gym of gyms">
-    
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>{{gym.name}}</ion-card-title>
-          <ion-card-subtitle>{{gym.city}}, {{gym.state}}</ion-card-subtitle>
-          <ion-card-subtitle>{{gym.address}}</ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          Filler text to show how it looks
-        </ion-card-content>
-        
-        <ion-button>To Gym</ion-button>
-      </ion-card>
-     
-  
-    </ion-list>
-    
-</section>
-
-</main>
-</ion-content>
+    <main>
+      <section>
+        <h1>Gyms</h1>
+          <ion-list *ngFor="let gym of myGyms">
+            <ion-card class="gym">
+              <ion-card-header>
+                <div *ngIf="gym.imageFlag">
+                  <div class="imageBg" [ngStyle]="{'background-image':'url('+gym.image+')'}"></div>
+                </div>
+              </ion-card-header>
+              <ion-card-title>{{ gym.name }}</ion-card-title>
+              <ion-card-subtitle>{{ gym.city }}, {{ gym.state }}</ion-card-subtitle>
+              <ion-card-subtitle>{{ gym.address }}</ion-card-subtitle>
+              <ion-button href="/user/gym/{{ gym.id }}">View Gym</ion-button>
+            </ion-card>
+          </ion-list> 
+      </section>
+    </main>
+  </ion-content>
 </ion-app>

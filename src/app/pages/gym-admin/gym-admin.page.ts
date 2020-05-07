@@ -11,6 +11,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { ActionSheetController } from '@ionic/angular';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { PostCrudService } from 'src/app/services/firestore-api.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -27,12 +28,14 @@ export class GymAdminPage implements OnInit {
   // public lname: string;
   public address: string;
   public city: string;
+  public state: string;
   public name: string;
   public phone: string;
   public dataReady: boolean;
   image = null;
   public imageReady: boolean;
   public profileImage;
+  public detailsFlag: boolean;
 
 
   public gymID: string;
@@ -68,6 +71,7 @@ export class GymAdminPage implements OnInit {
     const id = '9WkemgxIr047EjC8y7C5';
     this.dataReady = false;
     this.imageReady = false;
+    this.detailsFlag = false;
     this.months = [
       'Jan', 'Feb', 'Mar',
       'Apr', 'May', 'Jun', 'Jul',
@@ -82,6 +86,7 @@ export class GymAdminPage implements OnInit {
   }
 
   ngOnInit() {
+    this.gymID = this.route.snapshot.params.id; // '9WkemgxIr047EjC8y7C5';
     const id = this.route.snapshot.params.id; // '9WkemgxIr047EjC8y7C5';
     this.getGymData(id);
     this.getProfileImage(id);
@@ -108,6 +113,7 @@ export class GymAdminPage implements OnInit {
     this.name = gymData.name;
     this.address = gymData.address;
     this.city = gymData.city;
+    this.state = gymData.state;
     this.phone = gymData.phone;
     this.dataReady = true;
   }
@@ -138,8 +144,7 @@ export class GymAdminPage implements OnInit {
 
   captureImage(sourceType: number) {
     let storageRef: AngularFireStorageReference = null;
-    const id = '9WkemgxIr047EjC8y7C5';
-
+    const id = this.gymID; // '9WkemgxIr047EjC8y7C5';
 
     const options: CameraOptions = {
       quality: 100,
@@ -202,20 +207,19 @@ export class GymAdminPage implements OnInit {
     });
   }
 
-  async createPost() {
-    const id = '9WkemgxIr047EjC8y7C5';
-  }
 
 
 
 
 
   async getPosts() {
-    const id = this.afAuth.auth.currentUser.uid;
+    console.log('getPosts()');
     // this.friends = this.postCrudService.readFriendsIds(id);
     // This gets all posts...
-    this.postCrudService.readPosts().subscribe(data => {
+    this.postCrudService.readGymPosts().subscribe(data => {
       this.posts = data.map(e => {
+
+        console.log(e.payload.doc.data());
         // console.log(e.payload.doc.data()['timeCreated']);
         const timeCreated = new Date(e.payload.doc.data()['timeCreated']);
         let hours = timeCreated.getHours();
@@ -228,19 +232,24 @@ export class GymAdminPage implements OnInit {
         }
         const timeFormated = this.months[timeCreated.getMonth() - 1] + ' '
                               + timeCreated.getDate() + ' at ' + hours + ':' + minutes;
-        // timeCreated.
-        // console.log(timeCreated);
         return {
-          id: e.payload.doc.id,
           isEdit: false,
+          id: e.payload.doc.id,
+          // Data: e.payload.doc.data()["data"],
+          // Image: e.payload.doc.data()["image"],
+          // User_ID: e.payload.doc.data()["user_id"],
+          // TimeCreated: timeFormated,
+          // name: e.payload.doc.data()['name'],
+          gym_id: e.payload.doc.data()['gym_id'],
+          TimeCreated: timeFormated,
           Data: e.payload.doc.data()["data"],
           Image: e.payload.doc.data()["image"],
-          User_ID: e.payload.doc.data()["user_id"],
-          TimeCreated: timeFormated,
           Likes: e.payload.doc.data()["Likes"],
           Comments: e.payload.doc.data()["Comments"]
         };
       })
+      console.log(this.posts);
+      // console.log(this.posts[0].id);
 
       // Overly convoluted hack as I couldn't figure out how to query properly.
       // This will need to be fixed eventually.
@@ -251,14 +260,15 @@ export class GymAdminPage implements OnInit {
       for (let i = 0; i < postsLength; i++) {
         let likeFlag = 0;
         // If only this users posts
-        // console.log(this.posts[i].User_ID);
+        // console.log('this.posts[i]');
+        // console.log(this.posts[i]);
+        // console.log('this.gymID: ' + this.gymID);
         // console.log(this.friends.includes(this.posts[i].User_ID));
-
-        if (this.posts[i].User_ID === id) { // || this.friends.includes(this.posts[i].User_ID)
+        if (this.posts[i].gym_id === this.gymID) { // || this.friends.includes(this.posts[i].User_this.gymID)
 
           if (this.posts[i].Likes) {
             for (let n = 0; n < this.posts[i].Likes.length; n++) {
-              if (this.posts[i].Likes[n] === id) {
+              if (this.posts[i].Likes[n] === this.gymID) {
                 likeFlag = 1;
               }
             }
@@ -291,16 +301,18 @@ export class GymAdminPage implements OnInit {
             this.myPosts[this.createCommentIndex].commentFlag = true;
           }
 
-          this.getUserData(this.posts[i].User_ID);
+          this.getUserData(this.posts[i].id);
 
           // If this.posts[i].Image is set.
           if (this.posts[i].Image !== undefined) {
-            this.getPostImage(this.posts[i].User_ID, this.posts[i].Image, counter);
+            this.getGymPostImage(this.posts[i].User_ID, this.posts[i].Image, counter);
           }
           counter++;
         }
       }
       // console.log(this.posts);
+
+      console.log(this.myPosts);
     });
   }
 
@@ -319,7 +331,7 @@ export class GymAdminPage implements OnInit {
       });
   }
 
-  async getPostImage(id, imageID, counter){
+  async getGymPostImage(id, imageID, counter){
     const ref = this.storage.ref(id + '/image/' + imageID);
     const profileImage = ref.getDownloadURL();
     profileImage.subscribe(result => {
@@ -340,7 +352,7 @@ export class GymAdminPage implements OnInit {
     }
   }
   likeCtrl(index) {
-    const id = this.afAuth.auth.currentUser.uid;
+    const id = this.gymID;
     if (this.myPosts[index].likeFlag === false) {
       this.myPosts[index].likeFlag = true;
       // Add user id to like array
@@ -353,16 +365,22 @@ export class GymAdminPage implements OnInit {
   }
 
   addLike(postID) {
-    const id = this.afAuth.auth.currentUser.uid;
-    this.postCrudService.addLike(postID, id).then(resp => {
+    console.log('addLike()');
+    const id = this.gymID;
+    console.log(postID);
+    console.log(id);
+    this.postCrudService.addGymLike(postID, id).then(resp => {
       console.log(resp);
     }).catch(error => {
         // console.log(error);
       });
   }
   removeLike(postID) {
-    const id = this.afAuth.auth.currentUser.uid;
-    this.postCrudService.removeLike(postID, id).then(resp => {
+    console.log('removeLike()');
+    const id = this.gymID;
+    console.log(postID);
+    console.log(id);
+    this.postCrudService.removeGymLike(postID, id).then(resp => {
       console.log(resp);
     }).catch(error => {
         // console.log(error);
@@ -370,10 +388,8 @@ export class GymAdminPage implements OnInit {
   }
 
   createComment(index) {
-    console.log('createComment()');
     this.createCommentFlag = true;
     this.createCommentIndex = index;
-    // console.log('createComment', this.myPosts[index].id);
     const dateTime = new Date();
 
     let hours = dateTime.getHours();
@@ -387,20 +403,20 @@ export class GymAdminPage implements OnInit {
     const timeFormated = this.months[dateTime.getMonth() - 1] + ' '
                               + dateTime.getDate() + ' at ' + hours + ':' + minutes;
 
-    const id = this.afAuth.auth.currentUser.uid;
+    const id = this.gymID;
     let record = {};
     record['user_id'] = id;
-    // record['fname'] = this.fname;
-    // record['lname'] = this.lname;
+    record['name'] = this.name;
     record['timeCreated'] = timeFormated;
     record['data'] = this.commentData;
+    
     this.commentData = {};
 
     if(this.imageID !== undefined){
       record['image'] = this.imageID;
     }
 
-    this.postCrudService.addComment(this.myPosts[index].id, record).then(resp => {
+    this.postCrudService.addGymComment(this.myPosts[index].id, record).then(resp => {
       // console.log(resp);
     })
       .catch(error => {
@@ -408,4 +424,35 @@ export class GymAdminPage implements OnInit {
       });
   }
 
+  togglePost() {
+    if (this.togglePostFlag === false) {
+      this.togglePostFlag = true;
+    } else {
+      this.togglePostFlag = false;
+    }
+  }
+
+  async createPost() {
+    const dateTime = new Date().toISOString();
+    // console.log("dateTime");
+    // console.log(dateTime);
+    const id = this.gymID;
+    let record = {};
+    record['gym_id'] = id;
+    this.postData['name'] = this.name;
+    record['timeCreated'] = dateTime;
+    record['data'] = this.postData;
+    this.postData = {};
+
+    if(this.imageID !== undefined){
+      record['image'] = this.imageID;
+    }
+
+    this.postCrudService.createGymPost(record).then(resp => {
+      // console.log(resp);
+    })
+      .catch(error => {
+        // console.log(error);
+      });
+  }
 } // end ProfilePage Class

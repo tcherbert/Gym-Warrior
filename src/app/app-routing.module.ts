@@ -13,8 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
     canActivate: [AutomaticLoginGuard]
   },
-
-  // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
   {
     path: 'user',
     canActivate: [AngularFireAuthGuard, RoleGuard],
@@ -32,28 +30,23 @@ const routes: Routes = [
         loadChildren: () => import('./pages/friends/friends.module').then( m => m.FriendsPageModule)
       },
       {
-        path: 'calendar',
-        loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
+        path: 'profile',
+        loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
       },
       {
         path: 'gym',
         loadChildren: () => import('./pages/gym/gym.module').then( m => m.GymPageModule)
       },
       {
-        path: 'camera',
-        loadChildren: () => import('./pages/camera/camera.module').then( m => m.CameraPageModule)
-      },
-      {
-        path: 'profile',
-        loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+        path: 'gym/:id',
+        resolve: {
+          gymID: DataResolverService
+        },
+        loadChildren: './pages/gym/gym.module#GymPageModule'
       },
       {
         path: 'gym-admin',
         loadChildren: () => import('./pages/gym-admin/gym-admin.module').then( m => m.GymAdminPageModule)
-      },
-      {
-        path: 'gym-listings',
-        loadChildren: () => import('./pages/gymListings/gymlistings.module').then(m => m.GymListingsPageModule)
       },
       {
         path: 'gym-admin/:id',
@@ -63,16 +56,19 @@ const routes: Routes = [
         loadChildren: './pages/gym-admin/gym-admin.module#GymAdminPageModule'
       },
       {
-        path: 'groups',
-        loadChildren: () => import('./pages/groups/groups.module').then( m => m.GroupsPageModule)
+        path: 'gymmembers',
+        loadChildren: () => import('./pages/gym-admin/gym-admin.module').then( m => m.GymAdminPageModule)
       },
       {
-        path: 'list',
-        loadChildren: () => import('./pages/buyer-list/buyer-list.module').then( m => m.BuyerListPageModule)
+        path: 'gymmembers/:id',
+        resolve: {
+          gymID: DataResolverService
+        },
+        loadChildren: './pages/gymmembers/gymmembers.module#GymMembersPageModule'
       },
       {
-        path: 'list/:id',
-        loadChildren: () => import('./pages/buyer-list-details/buyer-list-details.module').then( m => m.BuyerListDetailsPageModule)
+        path: 'gym-listings',
+        loadChildren: () => import('./pages/gymListings/gymlistings.module').then(m => m.GymListingsPageModule)
       },
       {
         path: '',
@@ -80,35 +76,7 @@ const routes: Routes = [
         pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: 'seller',
-    canActivate: [AngularFireAuthGuard, RoleGuard],
-    data: {
-      authGuardPipe: redirectUnauthorizedToLogin,
-      role: 'SELLER'
-    },
-    children: [
-      {
-        path: 'list',
-        loadChildren: () => import('./pages/seller-list/seller-list.module').then( m => m.SellerListPageModule)
-      },
-      {
-        path: 'list/new',
-        loadChildren: () => import('./pages/seller-list-details/seller-list-details.module').then( m => m.SellerListDetailsPageModule)
-      },
-      {
-        path: '',
-        redirectTo: 'list',
-        pathMatch: 'full'
-      }
-    ]
-  },
-  {
-    path: 'cart-modal',
-    loadChildren: () => import('./pages/cart-modal/cart-modal.module').then( m => m.CartModalPageModule)
   }
-
 ];
 
 @NgModule({
