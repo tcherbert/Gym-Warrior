@@ -432,17 +432,14 @@ var PostCrudService = /** @class */ (function () {
     PostCrudService.prototype.readPosts = function () {
         return this.db.collection('posts', function (ref) { return ref.orderBy('timeCreated', 'desc'); }).snapshotChanges();
     };
-    // updatePost(recordID, record) {
-    //   this.db.doc('posts/' + recordID).update(record);
-    // }
-    PostCrudService.prototype.deletePost = function (recordId) {
-        this.db.doc('posts/' + recordId).delete();
-    };
     PostCrudService.prototype.readFriendsIds = function (recordID) {
         return this.db.doc('friends/' + recordID).snapshotChanges();
     };
     PostCrudService.prototype.readUsers = function () {
         return this.db.collection('users').snapshotChanges();
+    };
+    PostCrudService.prototype.readGyms = function () {
+        return this.db.collection('gyms').snapshotChanges();
     };
     PostCrudService.prototype.updateFriend = function (userId, friendId) {
         this.db.doc('friends/' + userId).update({
@@ -475,6 +472,46 @@ var PostCrudService = /** @class */ (function () {
             Comments: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(comment)
         });
     };
+    PostCrudService.prototype.readGymPosts = function () {
+        return this.db.collection('gymposts', function (ref) { return ref.orderBy('timeCreated', 'desc'); }).snapshotChanges();
+    };
+    PostCrudService.prototype.createGymPost = function (record) {
+        return this.db.collection('gymposts').add(record);
+    };
+    PostCrudService.prototype.addGymComment = function (postID, comment) {
+        return this.db.doc('gymposts/' + postID).update({
+            Comments: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(comment)
+        });
+    };
+    PostCrudService.prototype.addGymLike = function (postID, userID) {
+        return this.db.doc('gymposts/' + postID).update({
+            Likes: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(userID)
+        });
+    };
+    PostCrudService.prototype.removeGymLike = function (postID, userID) {
+        return this.db.doc('gymposts/' + postID).update({
+            Likes: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(userID)
+        });
+    };
+    PostCrudService.prototype.readGymMembersIds = function (recordID) {
+        return this.db.doc('gymMembers/' + recordID).snapshotChanges();
+    };
+    PostCrudService.prototype.removeGymMember = function (userId, friendId) {
+        this.db.doc('gymMembers/' + userId).update({
+            Members: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayRemove(friendId)
+        });
+        // this.db.doc('gymMembers/' + friendId).update({
+        //   Members: firestore.FieldValue.arrayRemove(userId)
+        // });
+    };
+    PostCrudService.prototype.addGymMember = function (userId, friendId) {
+        this.db.doc('gymMembers/' + userId).update({
+            Members: firebase_app__WEBPACK_IMPORTED_MODULE_3__["firestore"].FieldValue.arrayUnion(friendId)
+        });
+    };
+    PostCrudService.prototype.readGymMembers = function () {
+        return this.db.collection('gymMembers').snapshotChanges();
+    };
     PostCrudService.ctorParameters = function () { return [
         { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] }
     ]; };
@@ -485,95 +522,6 @@ var PostCrudService = /** @class */ (function () {
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"]])
     ], PostCrudService);
     return PostCrudService;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/services/product.service.ts":
-/*!*********************************************!*\
-  !*** ./src/app/services/product.service.ts ***!
-  \*********************************************/
-/*! exports provided: ProductService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProductService", function() { return ProductService; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/index.js");
-/* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/fire/auth */ "./node_modules/@angular/fire/auth/index.js");
-/* harmony import */ var _angular_fire_storage__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/storage */ "./node_modules/@angular/fire/storage/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-
-
-
-
-
-
-var ProductService = /** @class */ (function () {
-    function ProductService(db, afAuth, storage) {
-        this.db = db;
-        this.afAuth = afAuth;
-        this.storage = storage;
-    }
-    ProductService.prototype.getAllProducts = function () {
-        return this.db.collection('products').snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) { return actions.map(function (a) {
-            var data = a.payload.doc.data();
-            var id = a.payload.doc.id;
-            return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-        }); }));
-    };
-    ProductService.prototype.getOneProduct = function (id) {
-        return this.db.doc("products/" + id).valueChanges();
-    };
-    ProductService.prototype.addProduct = function (product) {
-        var _this = this;
-        product.creator = this.afAuth.auth.currentUser.uid;
-        var imageData = product.img;
-        delete product.image;
-        var documentId = null;
-        var storageRef = null;
-        return this.db.collection('products').add(product).then(function (ref) {
-            console.log('ref: ', ref);
-            documentId = ref.id;
-            storageRef = _this.storage.ref("products/" + documentId);
-            var uploadTask = storageRef.putString(imageData, 'base64', { contentType: 'image/png' });
-            return uploadTask;
-        }).then(function (task) {
-            console.log('task: ', task);
-            return storageRef.getDownloadURL().toPromise();
-        }).then(function (imageUrl) {
-            console.log('got url: ', imageUrl);
-            return _this.db.doc("products/" + documentId).update({ img: imageUrl });
-        });
-    };
-    ProductService.prototype.getSellerProducts = function () {
-        var id = this.afAuth.auth.currentUser.uid;
-        return this.db.collection('products', function (ref) { return ref.where('creator', '==', id); }).snapshotChanges().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (actions) { return actions.map(function (a) {
-            var data = a.payload.doc.data();
-            var id = a.payload.doc.id;
-            return tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({ id: id }, data);
-        }); }));
-    };
-    ProductService.prototype.deleteProduct = function (id) {
-        this.db.doc("products/" + id).delete();
-        this.storage.ref("products/" + id).delete().subscribe(function (res) { });
-    };
-    ProductService.ctorParameters = function () { return [
-        { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"] },
-        { type: _angular_fire_auth__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuth"] },
-        { type: _angular_fire_storage__WEBPACK_IMPORTED_MODULE_4__["AngularFireStorage"] }
-    ]; };
-    ProductService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
-            providedIn: 'root'
-        }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_2__["AngularFirestore"], _angular_fire_auth__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuth"], _angular_fire_storage__WEBPACK_IMPORTED_MODULE_4__["AngularFireStorage"]])
-    ], ProductService);
-    return ProductService;
 }());
 
 

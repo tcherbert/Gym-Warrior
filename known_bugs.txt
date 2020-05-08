@@ -1,0 +1,5 @@
+********** List of known bugs *****
+
+Logout from friends page brings back to blank for some reason
+Friends array will get a blank friend added somehow which breaks friends adding / showing.
+

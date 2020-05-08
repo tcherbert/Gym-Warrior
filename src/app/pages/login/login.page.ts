@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
 
   navigateByRole(role) {
     if (role === 'USER') {
-      this.router.navigateByUrl('/user/feed');
+      this.router.navigateByUrl('/user/profile');
     }
   }
 
