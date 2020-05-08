@@ -5,21 +5,44 @@
   !*** ./$$_lazy_route_resource lazy namespace object ***!
   \******************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncaught exception popping up in devtools
-	return Promise.resolve().then(function() {
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
+var map = {
+	"./pages/gym-admin/gym-admin.module": [
+		"./src/app/pages/gym-admin/gym-admin.module.ts",
+		"common",
+		"pages-gym-admin-gym-admin-module"
+	],
+	"./pages/gym/gym.module": [
+		"./src/app/pages/gym/gym.module.ts",
+		"common",
+		"pages-gym-gym-module"
+	],
+	"./pages/gymmembers/gymmembers.module": [
+		"./src/app/pages/gymmembers/gymmembers.module.ts",
+		"common",
+		"pages-gymmembers-gymmembers-module"
+	]
+};
+function webpackAsyncContext(req) {
+	if(!__webpack_require__.o(map, req)) {
+		return Promise.resolve().then(function() {
+			var e = new Error("Cannot find module '" + req + "'");
+			e.code = 'MODULE_NOT_FOUND';
+			throw e;
+		});
+	}
+
+	var ids = map[req], id = ids[0];
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
+		return __webpack_require__(id);
 	});
 }
-webpackEmptyAsyncContext.keys = function() { return []; };
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -445,17 +468,6 @@ module.exports = "<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n\n</ion-
 
 /***/ }),
 
-/***/ "./node_modules/raw-loader/index.js!./src/app/pages/cart-modal/cart-modal.page.html":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/raw-loader!./src/app/pages/cart-modal/cart-modal.page.html ***!
-  \*********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<ion-content>\n \n    <div class=\"ion-text-end\">\n      <ion-button (click)=\"close()\" fill=\"clear\" color=\"dark\">\n        <ion-icon name=\"close\" slot=\"start\"></ion-icon>\n      </ion-button>\n    </div>\n   \n    <div class=\"ion-padding\">\n   \n      <ion-list>\n        <ion-item *ngFor=\"let p of cart\" class=\"ion-text-wrap\">\n          <ion-grid>\n            <ion-row class=\"ion-align-items-center\">\n              <ion-col size=\"3\" class=\"ion-text-center\">\n                <ion-button color=\"medium\" fill=\"clear\" (click)=\"decreaseCartItem(p)\">\n                  <ion-icon name=\"remove-circle\" slot=\"icon-only\"></ion-icon>\n                </ion-button>\n              </ion-col>\n   \n              <ion-col size=\"2\" class=\"ion-text-center\">\n                {{ p.amount }}\n              </ion-col>\n   \n              <ion-col size=\"3\" class=\"ion-text-center\">\n                <ion-button color=\"medium\" fill=\"clear\" (click)=\"increaseCartItem(p)\">\n                  <ion-icon name=\"add-circle\" slot=\"icon-only\"></ion-icon>\n                </ion-button>\n              </ion-col>\n   \n              <ion-col size=\"2\" offset=\"2\">\n                <ion-button color=\"medium\" fill=\"clear\" (click)=\"removeCartItem(p)\">\n                  <ion-icon name=\"close-circle\" slot=\"icon-only\"></ion-icon>\n                </ion-button>\n              </ion-col>\n            </ion-row>\n            <ion-row>\n              <ion-col size=\"9\">\n                <b>{{ p.name }}</b>\n              </ion-col>\n              <ion-col size=\"3\" class=\"ion-text-end\">\n                {{ p.amount * p.price | currency:'USD' }}\n              </ion-col>\n            </ion-row>\n          </ion-grid>\n        </ion-item>\n        <ion-item>\n          <ion-grid>\n            <ion-row>\n              <ion-col size=\"9\">\n                Total:\n              </ion-col>\n              <ion-col size=\"3\" class=\"ion-text-end\">\n                {{ getTotal() | currency:'USD' }}\n              </ion-col>\n            </ion-row>\n          </ion-grid>\n        </ion-item>\n      </ion-list>\n   \n      <ion-button expand=\"full\" (click)=\"checkout()\">\n        Checkout\n      </ion-button>\n    </div>\n   \n  </ion-content>"
-
-/***/ }),
-
 /***/ "./src/app/app-routing.module.ts":
 /*!***************************************!*\
   !*** ./src/app/app-routing.module.ts ***!
@@ -467,28 +479,29 @@ module.exports = "<ion-content>\n \n    <div class=\"ion-text-end\">\n      <ion
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppRoutingModule", function() { return AppRoutingModule; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/es2015/index.js");
-/* harmony import */ var _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./guards/role.guard */ "./src/app/guards/role.guard.ts");
-/* harmony import */ var _guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./guards/automatic-login.guard */ "./src/app/guards/automatic-login.guard.ts");
+/* harmony import */ var _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/data-resolver.service */ "./src/app/services/data-resolver.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/es2015/index.js");
+/* harmony import */ var _guards_role_guard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./guards/role.guard */ "./src/app/guards/role.guard.ts");
+/* harmony import */ var _guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./guards/automatic-login.guard */ "./src/app/guards/automatic-login.guard.ts");
 
 
 
 
 
 
-const redirectUnauthorizedToLogin = () => Object(_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["redirectUnauthorizedTo"])(['/']);
+
+const redirectUnauthorizedToLogin = () => Object(_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__["redirectUnauthorizedTo"])(['/']);
 const routes = [
     {
         path: '',
         loadChildren: () => __webpack_require__.e(/*! import() | pages-login-login-module */ "pages-login-login-module").then(__webpack_require__.bind(null, /*! ./pages/login/login.module */ "./src/app/pages/login/login.module.ts")).then(m => m.LoginPageModule),
-        canActivate: [_guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_5__["AutomaticLoginGuard"]]
+        canActivate: [_guards_automatic_login_guard__WEBPACK_IMPORTED_MODULE_6__["AutomaticLoginGuard"]]
     },
-    // Stuff held over from the tutorial. Might be worth a look for future stuff so I left it.
     {
         path: 'user',
-        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
+        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_4__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_5__["RoleGuard"]],
         data: {
             authGuardPipe: redirectUnauthorizedToLogin,
             role: 'USER'
@@ -503,80 +516,62 @@ const routes = [
                 loadChildren: () => Promise.all(/*! import() | pages-friends-friends-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-friends-friends-module")]).then(__webpack_require__.bind(null, /*! ./pages/friends/friends.module */ "./src/app/pages/friends/friends.module.ts")).then(m => m.FriendsPageModule)
             },
             {
-                path: 'calendar',
-                loadChildren: () => Promise.all(/*! import() | pages-calendar-calendar-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-calendar-calendar-module")]).then(__webpack_require__.bind(null, /*! ./pages/calendar/calendar.module */ "./src/app/pages/calendar/calendar.module.ts")).then(m => m.CalendarPageModule)
+                path: 'profile',
+                loadChildren: () => Promise.all(/*! import() | pages-profile-profile-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-profile-profile-module")]).then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(m => m.ProfilePageModule)
             },
             {
                 path: 'gym',
                 loadChildren: () => Promise.all(/*! import() | pages-gym-gym-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-gym-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym/gym.module */ "./src/app/pages/gym/gym.module.ts")).then(m => m.GymPageModule)
             },
             {
-                path: 'camera',
-                loadChildren: () => __webpack_require__.e(/*! import() | pages-camera-camera-module */ "pages-camera-camera-module").then(__webpack_require__.bind(null, /*! ./pages/camera/camera.module */ "./src/app/pages/camera/camera.module.ts")).then(m => m.CameraPageModule)
-            },
-            {
-                path: 'profile',
-                loadChildren: () => Promise.all(/*! import() | pages-profile-profile-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-profile-profile-module")]).then(__webpack_require__.bind(null, /*! ./pages/profile/profile.module */ "./src/app/pages/profile/profile.module.ts")).then(m => m.ProfilePageModule)
+                path: 'gym/:id',
+                resolve: {
+                    gymID: _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__["DataResolverService"]
+                },
+                loadChildren: './pages/gym/gym.module#GymPageModule'
             },
             {
                 path: 'gym-admin',
-                loadChildren: () => __webpack_require__.e(/*! import() | pages-gym-admin-gym-admin-module */ "pages-gym-admin-gym-admin-module").then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(m => m.GymAdminPageModule)
+                loadChildren: () => Promise.all(/*! import() | pages-gym-admin-gym-admin-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-admin-gym-admin-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(m => m.GymAdminPageModule)
             },
             {
-                path: 'groups',
-                loadChildren: () => Promise.all(/*! import() | pages-groups-groups-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-groups-groups-module")]).then(__webpack_require__.bind(null, /*! ./pages/groups/groups.module */ "./src/app/pages/groups/groups.module.ts")).then(m => m.GroupsPageModule)
+                path: 'gym-admin/:id',
+                resolve: {
+                    gymID: _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__["DataResolverService"]
+                },
+                loadChildren: './pages/gym-admin/gym-admin.module#GymAdminPageModule'
             },
             {
-                path: 'list',
-                loadChildren: () => Promise.all(/*! import() | pages-buyer-list-buyer-list-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-buyer-list-buyer-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/buyer-list/buyer-list.module */ "./src/app/pages/buyer-list/buyer-list.module.ts")).then(m => m.BuyerListPageModule)
+                path: 'gymmembers',
+                loadChildren: () => Promise.all(/*! import() | pages-gym-admin-gym-admin-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gym-admin-gym-admin-module")]).then(__webpack_require__.bind(null, /*! ./pages/gym-admin/gym-admin.module */ "./src/app/pages/gym-admin/gym-admin.module.ts")).then(m => m.GymAdminPageModule)
             },
             {
-                path: 'list/:id',
-                loadChildren: () => Promise.all(/*! import() | pages-buyer-list-details-buyer-list-details-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-buyer-list-details-buyer-list-details-module")]).then(__webpack_require__.bind(null, /*! ./pages/buyer-list-details/buyer-list-details.module */ "./src/app/pages/buyer-list-details/buyer-list-details.module.ts")).then(m => m.BuyerListDetailsPageModule)
+                path: 'gymmembers/:id',
+                resolve: {
+                    gymID: _services_data_resolver_service__WEBPACK_IMPORTED_MODULE_1__["DataResolverService"]
+                },
+                loadChildren: './pages/gymmembers/gymmembers.module#GymMembersPageModule'
             },
             {
-                path: '',
-                redirectTo: 'feed',
-                pathMatch: 'full'
-            }
-        ]
-    },
-    {
-        path: 'seller',
-        canActivate: [_angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_3__["AngularFireAuthGuard"], _guards_role_guard__WEBPACK_IMPORTED_MODULE_4__["RoleGuard"]],
-        data: {
-            authGuardPipe: redirectUnauthorizedToLogin,
-            role: 'SELLER'
-        },
-        children: [
-            {
-                path: 'list',
-                loadChildren: () => Promise.all(/*! import() | pages-seller-list-seller-list-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-seller-list-seller-list-module")]).then(__webpack_require__.bind(null, /*! ./pages/seller-list/seller-list.module */ "./src/app/pages/seller-list/seller-list.module.ts")).then(m => m.SellerListPageModule)
-            },
-            {
-                path: 'list/new',
-                loadChildren: () => Promise.all(/*! import() | pages-seller-list-details-seller-list-details-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-seller-list-details-seller-list-details-module")]).then(__webpack_require__.bind(null, /*! ./pages/seller-list-details/seller-list-details.module */ "./src/app/pages/seller-list-details/seller-list-details.module.ts")).then(m => m.SellerListDetailsPageModule)
+                path: 'gym-listings',
+                loadChildren: () => Promise.all(/*! import() | pages-gymListings-gymlistings-module */[__webpack_require__.e("common"), __webpack_require__.e("pages-gymListings-gymlistings-module")]).then(__webpack_require__.bind(null, /*! ./pages/gymListings/gymlistings.module */ "./src/app/pages/gymListings/gymlistings.module.ts")).then(m => m.GymListingsPageModule)
             },
             {
                 path: '',
-                redirectTo: 'list',
+                redirectTo: 'profile',
                 pathMatch: 'full'
             }
         ]
-    },
-    {
-        path: 'cart-modal',
-        loadChildren: () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./pages/cart-modal/cart-modal.module */ "./src/app/pages/cart-modal/cart-modal.module.ts")).then(m => m.CartModalPageModule)
     }
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
 AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
         imports: [
-            _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_2__["PreloadAllModules"] })
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"].forRoot(routes, { preloadingStrategy: _angular_router__WEBPACK_IMPORTED_MODULE_3__["PreloadAllModules"] })
         ],
-        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]]
+        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_3__["RouterModule"]]
     })
 ], AppRoutingModule);
 
@@ -675,13 +670,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_storage__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/fire/storage */ "./node_modules/@angular/fire/storage/es2015/index.js");
 /* harmony import */ var _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/fire/auth-guard */ "./node_modules/@angular/fire/auth-guard/es2015/index.js");
 /* harmony import */ var _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @ionic-native/camera/ngx */ "./node_modules/@ionic-native/camera/ngx/index.js");
-/* harmony import */ var _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/cart-modal/cart-modal.module */ "./src/app/pages/cart-modal/cart-modal.module.ts");
-/* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
-/* harmony import */ var _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic-native/geofence/ngx */ "./node_modules/@ionic-native/geofence/ngx/index.js");
-/* harmony import */ var _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @ionic-native/ionic-webview/ngx */ "./node_modules/@ionic-native/ionic-webview/ngx/index.js");
-/* harmony import */ var _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @ionic-native/file/ngx */ "./node_modules/@ionic-native/file/ngx/index.js");
-/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm2015/ionic-storage.js");
-
+/* harmony import */ var _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @ionic-native/geolocation/ngx */ "./node_modules/@ionic-native/geolocation/ngx/index.js");
+/* harmony import */ var _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @ionic-native/geofence/ngx */ "./node_modules/@ionic-native/geofence/ngx/index.js");
+/* harmony import */ var _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @ionic-native/ionic-webview/ngx */ "./node_modules/@ionic-native/ionic-webview/ngx/index.js");
+/* harmony import */ var _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @ionic-native/file/ngx */ "./node_modules/@ionic-native/file/ngx/index.js");
+/* harmony import */ var _ionic_storage__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @ionic/storage */ "./node_modules/@ionic/storage/fesm2015/ionic-storage.js");
 
 
 
@@ -717,18 +710,17 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_12__["AngularFirestoreModule"],
             _angular_fire_storage__WEBPACK_IMPORTED_MODULE_13__["AngularFireStorageModule"],
             _angular_fire_auth_guard__WEBPACK_IMPORTED_MODULE_14__["AngularFireAuthGuardModule"],
-            _pages_cart_modal_cart_modal_module__WEBPACK_IMPORTED_MODULE_16__["CartModalPageModule"],
-            _ionic_storage__WEBPACK_IMPORTED_MODULE_21__["IonicStorageModule"].forRoot()
+            _ionic_storage__WEBPACK_IMPORTED_MODULE_20__["IonicStorageModule"].forRoot()
         ],
         providers: [
             _ionic_native_status_bar_ngx__WEBPACK_IMPORTED_MODULE_7__["StatusBar"],
-            _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_17__["Geolocation"],
-            _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_18__["Geofence"],
+            _ionic_native_geolocation_ngx__WEBPACK_IMPORTED_MODULE_16__["Geolocation"],
+            _ionic_native_geofence_ngx__WEBPACK_IMPORTED_MODULE_17__["Geofence"],
             _ionic_native_splash_screen_ngx__WEBPACK_IMPORTED_MODULE_6__["SplashScreen"],
-            _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_19__["WebView"],
+            _ionic_native_ionic_webview_ngx__WEBPACK_IMPORTED_MODULE_18__["WebView"],
             { provide: _angular_router__WEBPACK_IMPORTED_MODULE_4__["RouteReuseStrategy"], useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_5__["IonicRouteStrategy"] },
             _ionic_native_camera_ngx__WEBPACK_IMPORTED_MODULE_15__["Camera"],
-            _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_20__["File"]
+            _ionic_native_file_ngx__WEBPACK_IMPORTED_MODULE_19__["File"]
             // { provide: Camera, useClass: CameraMock}
         ],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_8__["AppComponent"]]
@@ -858,158 +850,6 @@ RoleGuard = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
-/***/ "./src/app/pages/cart-modal/cart-modal-routing.module.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/pages/cart-modal/cart-modal-routing.module.ts ***!
-  \***************************************************************/
-/*! exports provided: CartModalPageRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CartModalPageRoutingModule", function() { return CartModalPageRoutingModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var _cart_modal_page__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./cart-modal.page */ "./src/app/pages/cart-modal/cart-modal.page.ts");
-
-
-
-
-const routes = [
-    {
-        path: '',
-        component: _cart_modal_page__WEBPACK_IMPORTED_MODULE_3__["CartModalPage"]
-    }
-];
-let CartModalPageRoutingModule = class CartModalPageRoutingModule {
-};
-CartModalPageRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        imports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"].forChild(routes)],
-        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterModule"]],
-    })
-], CartModalPageRoutingModule);
-
-
-
-/***/ }),
-
-/***/ "./src/app/pages/cart-modal/cart-modal.module.ts":
-/*!*******************************************************!*\
-  !*** ./src/app/pages/cart-modal/cart-modal.module.ts ***!
-  \*******************************************************/
-/*! exports provided: CartModalPageModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CartModalPageModule", function() { return CartModalPageModule; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-/* harmony import */ var _cart_modal_routing_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./cart-modal-routing.module */ "./src/app/pages/cart-modal/cart-modal-routing.module.ts");
-/* harmony import */ var _cart_modal_page__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./cart-modal.page */ "./src/app/pages/cart-modal/cart-modal.page.ts");
-
-
-
-
-
-
-
-let CartModalPageModule = class CartModalPageModule {
-};
-CartModalPageModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"])({
-        imports: [
-            _angular_common__WEBPACK_IMPORTED_MODULE_2__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_4__["IonicModule"],
-            _cart_modal_routing_module__WEBPACK_IMPORTED_MODULE_5__["CartModalPageRoutingModule"]
-        ],
-        declarations: [_cart_modal_page__WEBPACK_IMPORTED_MODULE_6__["CartModalPage"]]
-    })
-], CartModalPageModule);
-
-
-
-/***/ }),
-
-/***/ "./src/app/pages/cart-modal/cart-modal.page.scss":
-/*!*******************************************************!*\
-  !*** ./src/app/pages/cart-modal/cart-modal.page.scss ***!
-  \*******************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3BhZ2VzL2NhcnQtbW9kYWwvY2FydC1tb2RhbC5wYWdlLnNjc3MifQ== */"
-
-/***/ }),
-
-/***/ "./src/app/pages/cart-modal/cart-modal.page.ts":
-/*!*****************************************************!*\
-  !*** ./src/app/pages/cart-modal/cart-modal.page.ts ***!
-  \*****************************************************/
-/*! exports provided: CartModalPage */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CartModalPage", function() { return CartModalPage; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _services_cart_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/cart.service */ "./src/app/services/cart.service.ts");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-
-
-
-
-let CartModalPage = class CartModalPage {
-    constructor(cartService, modalCtrl) {
-        this.cartService = cartService;
-        this.modalCtrl = modalCtrl;
-        this.cart = [];
-    }
-    ngOnInit() {
-        this.cartService.getCart().subscribe(res => {
-            this.cart = res;
-        });
-    }
-    decreaseCartItem(product) {
-        this.cartService.decreaseProduct(product);
-    }
-    increaseCartItem(product) {
-        this.cartService.addProduct(product);
-    }
-    removeCartItem(product) {
-        this.cartService.removeProduct(product);
-    }
-    getTotal() {
-        return this.cart.reduce((i, j) => i + j.price * j.amount, 0);
-    }
-    close() {
-        this.modalCtrl.dismiss();
-    }
-};
-CartModalPage.ctorParameters = () => [
-    { type: _services_cart_service__WEBPACK_IMPORTED_MODULE_2__["CartService"] },
-    { type: _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["ModalController"] }
-];
-CartModalPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
-        selector: 'app-cart-modal',
-        template: __webpack_require__(/*! raw-loader!./cart-modal.page.html */ "./node_modules/raw-loader/index.js!./src/app/pages/cart-modal/cart-modal.page.html"),
-        styles: [__webpack_require__(/*! ./cart-modal.page.scss */ "./src/app/pages/cart-modal/cart-modal.page.scss")]
-    }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_cart_service__WEBPACK_IMPORTED_MODULE_2__["CartService"], _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["ModalController"]])
-], CartModalPage);
-
-
-
-/***/ }),
-
 /***/ "./src/app/services/auth.service.ts":
 /*!******************************************!*\
   !*** ./src/app/services/auth.service.ts ***!
@@ -1100,88 +940,78 @@ AuthService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 /***/ }),
 
-/***/ "./src/app/services/cart.service.ts":
-/*!******************************************!*\
-  !*** ./src/app/services/cart.service.ts ***!
-  \******************************************/
-/*! exports provided: CartService */
+/***/ "./src/app/services/data-resolver.service.ts":
+/*!***************************************************!*\
+  !*** ./src/app/services/data-resolver.service.ts ***!
+  \***************************************************/
+/*! exports provided: DataResolverService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CartService", function() { return CartService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataResolverService", function() { return DataResolverService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var _data_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data.service */ "./src/app/services/data.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 
 
 
-let CartService = class CartService {
-    constructor() {
-        this.cart = [];
-        this.cartItems = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"]([]);
-        this.cartItemCount = new rxjs__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](0);
+let DataResolverService = class DataResolverService {
+    constructor(dataService) {
+        this.dataService = dataService;
     }
-    getCart() {
-        return this.cartItems.asObservable();
-    }
-    getCartItemCount() {
-        return this.cartItemCount;
-    }
-    addProduct(product) {
-        let added = false;
-        // for (let p of this.cart) {
-        //   if (p.id === product.id) {
-        //     p.amount += 1;
-        //     added = true;
-        //     break;
-        //   }
-        // }
-        if (!added) {
-            product.amount = 1;
-            this.cart.push(product);
-        }
-        this.cartItems.next(this.cart);
-        this.cartItemCount.next(this.cartItemCount.value + 1);
-    }
-    decreaseProduct(product) {
-        // for (let [index, p] of this.cart.entries()) {
-        //   if (p.id === product.id) {
-        //     p.amount -= 1;
-        //     if (p.amount == 0) {
-        //       this.cart.splice(index, 1);
-        //     }
-        //   }
-        // }
-        this.cartItems.next(this.cart);
-        this.cartItemCount.next(this.cartItemCount.value - 1);
-    }
-    removeProduct(product) {
-        // for (let [index, p] of this.cart.entries()) {
-        //   if (p.id === product.id) {
-        //     this.cartItemCount.next(this.cartItemCount.value - p.amount);
-        //     this.cart.splice(index, 1);
-        //   }
-        // }
-        this.cartItems.next(this.cart);
-    }
-    getItemCount(id) {
-        // for (let [index, p] of this.cart.entries()) {
-        //   if (p.id === id) {
-        //     return p.amount;
-        //   }
-        // }
-        return 0;
-    }
-    checkout() {
+    resolve(route) {
+        let id = route.paramMap.get('id');
+        return this.dataService.getData(id);
     }
 };
-CartService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+DataResolverService.ctorParameters = () => [
+    { type: _data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"] }
+];
+DataResolverService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])({
+        providedIn: 'root'
+    }),
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_data_service__WEBPACK_IMPORTED_MODULE_1__["DataService"]])
+], DataResolverService);
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/data.service.ts":
+/*!******************************************!*\
+  !*** ./src/app/services/data.service.ts ***!
+  \******************************************/
+/*! exports provided: DataService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataService", function() { return DataService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+
+
+let DataService = class DataService {
+    constructor() {
+        this.data = [];
+    }
+    setData(id, data) {
+        console.log('setData()');
+        console.log(data);
+        this.data[id] = data;
+    }
+    getData(id) {
+        return this.data[id];
+    }
+};
+DataService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
         providedIn: 'root'
     }),
     tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
-], CartService);
+], DataService);
 
 
 
@@ -1258,7 +1088,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/daniellaamundson/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/timherbert/Documents/GitHub/Gym-Warrior/src/main.ts */"./src/main.ts");
 
 
 /***/ })

@@ -17,7 +17,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
 import { Camera } from '@ionic-native/camera/ngx';
-import { CartModalPageModule } from './pages/cart-modal/cart-modal.module';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Geofence } from '@ionic-native/geofence/ngx';
 
@@ -38,7 +37,6 @@ import { IonicStorageModule } from '@ionic/storage';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthGuardModule,
-    CartModalPageModule,
     IonicStorageModule.forRoot()
   ],
   providers: [
