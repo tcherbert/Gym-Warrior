@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-app>\n  <ion-content overflow-scroll=\"true\">\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/feed\">Feed</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/profile\">Profile</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym-admin/{{gymID}}\">Gym Admin</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n                <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n              </ion-button>\n            </ion-item>\n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <a href=\"user/feed\">\n              <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n              </a>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n    <main>\n      <section>\n        <p>Current Members</p>\n        <ion-list class=\"friends\" *ngIf=\"friendsReady\">\n          <ion-item *ngFor =\"let friend of friendsData\">\n            <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+friend.image+')'}\"></div>\n              <p>{{friend.fname}} {{friend.lname}}</p>\n              <ion-button (click)=\"removeFriend(friend.id)\">Remove Member</ion-button>\n          </ion-item> \n        </ion-list>\n      </section>\n    </main>\n  </ion-content>\n</ion-app>"
+module.exports = "<ion-app>\n  <ion-content overflow-scroll=\"true\">\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/feed\">Feed</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/profile\">Profile</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym-admin/{{gymID}}\">Gym Admin</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n                <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n              </ion-button>\n            </ion-item>\n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <a href=\"user/feed\">\n              <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n              </a>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n    <main>\n      <section>\n        <p>Current Members</p>\n        <ion-list class=\"friends\" *ngIf=\"friendsReady\">\n          <ion-item *ngFor =\"let friend of friendsData\">\n            <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+friend.image+')'}\"></div>\n              <p>{{friend.fname}} {{friend.lname}}</p>\n              <ion-button *ngIf=\"adminFlag\" (click)=\"removeFriend(friend.id)\">Remove Member</ion-button>\n          </ion-item> \n        </ion-list>\n      </section>\n    </main>\n  </ion-content>\n</ion-app>"
 
 /***/ }),
 
@@ -124,6 +124,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/index.js");
 /* harmony import */ var _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/fire/storage */ "./node_modules/@angular/fire/storage/index.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/fire/auth */ "./node_modules/@angular/fire/auth/index.js");
+
 
 
 
@@ -132,12 +134,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var GymMembersPage = /** @class */ (function () {
-    function GymMembersPage(auth, postCrudService, db, storage, route) {
+    function GymMembersPage(auth, postCrudService, db, storage, route, afAuth) {
         this.auth = auth;
         this.postCrudService = postCrudService;
         this.db = db;
         this.storage = storage;
         this.route = route;
+        this.afAuth = afAuth;
         this.friendsIds = {};
         this.friendsData = [];
         this.friendsCounter = 0;
@@ -147,6 +150,7 @@ var GymMembersPage = /** @class */ (function () {
         this.findFriends = false;
         this.friendsReady = false;
         this.toggleFindFriendsFlag = false;
+        this.adminFlag = false;
     }
     GymMembersPage.prototype.ngOnInit = function () {
         this.gymID = this.route.snapshot.params.id;
@@ -375,12 +379,47 @@ var GymMembersPage = /** @class */ (function () {
         }
         return true;
     };
+    GymMembersPage.prototype.getGymData = function () {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var id, userData;
+            var _this = this;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = this.afAuth.auth.currentUser.uid;
+                        return [4 /*yield*/, this.db.collection('gyms')
+                                .doc(this.gymID)
+                                .ref
+                                .get().then(function (doc) {
+                                if (doc.exists) {
+                                    // this.gymData = doc.data().name;
+                                    // this.gymAdminID = doc.id;
+                                    if (doc.data().admins.includes(id)) {
+                                        _this.adminFlag = true;
+                                    }
+                                    else {
+                                        // this.gymMemberFlag = true;
+                                    }
+                                }
+                                else {
+                                    // this.gymFlag = false;
+                                    // this.noGymFlag = true;
+                                }
+                            })];
+                    case 1:
+                        userData = _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     GymMembersPage.ctorParameters = function () { return [
         { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] },
         { type: _services_firestore_api_service__WEBPACK_IMPORTED_MODULE_3__["PostCrudService"] },
         { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"] },
         { type: _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__["AngularFireStorage"] },
-        { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"] }
+        { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"] },
+        { type: _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__["AngularFireAuth"] }
     ]; };
     GymMembersPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -392,7 +431,8 @@ var GymMembersPage = /** @class */ (function () {
             _services_firestore_api_service__WEBPACK_IMPORTED_MODULE_3__["PostCrudService"],
             _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"],
             _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__["AngularFireStorage"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"]])
+            _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"],
+            _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__["AngularFireAuth"]])
     ], GymMembersPage);
     return GymMembersPage;
 }());

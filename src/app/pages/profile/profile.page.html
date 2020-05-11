@@ -43,9 +43,8 @@
     
     <div class="profileImage">
       <div *ngIf="imageReady">
-        <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}">
-        </div>
-    </div>
+        <div class="imageBg" [ngStyle]="{'background-image':'url('+profileImage+')'}"></div>
+      </div>
       <ion-button (click)="selectSource()"><ion-icon name="md-create"></ion-icon></ion-button>  
       <ion-card-header>
           <ion-card-title> {{ fname }} {{ lname }}</ion-card-title>
@@ -69,6 +68,11 @@
     </div>
 
     <main class="mainContent">
+      <div *ngIf="postImageReady">
+        <div class="img-container">
+          <div class="imageBg" [ngStyle]="{'background-image':'url('+postImage+')'}"></div>
+        </div>
+      </div>
       <form (ngSubmit)="createPost()" *ngIf="togglePostFlag">
         <ion-textarea placeholder="What is on your mind?" [(ngModel)]="postData.txt" name="txt"></ion-textarea>
         <ion-button (click)="selectPostSource()"><ion-icon name="ios-image"></ion-icon> Add Image</ion-button>

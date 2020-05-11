@@ -49,6 +49,8 @@ export class ProfilePage implements OnInit {
   public minutes = [];
   createCommentFlag: boolean;
   createCommentIndex: number;
+  public postImage;
+  public postImageReady;
 
   constructor(private auth: AuthService,
               private db: AngularFirestore,
@@ -66,6 +68,7 @@ export class ProfilePage implements OnInit {
     this.gymAdminFlag = false;
     this.gymMemberFlag = false;
     this.noGymFlag = false;
+    this.postImageReady = false;
   }
 
 
@@ -236,14 +239,12 @@ export class ProfilePage implements OnInit {
   }
 
   async getGymData() {
-    console.log('getGymData()');
     const id = this.afAuth.auth.currentUser.uid;
     const userData = await this.db.collection('gyms')
       .doc(this.gymID)
       .ref
       .get().then( doc => {
         if (doc.exists) {
-          console.log('Hello Nurse!!!!!');
           this.gymData = doc.data().name;
           this.gymAdminID = doc.id;
           if (doc.data().admins.includes(id)) {
@@ -251,7 +252,6 @@ export class ProfilePage implements OnInit {
           } else {
             this.gymMemberFlag = true;
           }
-          console.log(doc.data());
         } else {
             this.gymFlag = false;
             this.noGymFlag = true;
@@ -310,12 +310,14 @@ export class ProfilePage implements OnInit {
     this.camera.getPicture(options).then(imagePath => {
       storageRef = this.storage.ref(id);
       // Convert url to safe url and set the state of new profileImage
-      this.profileImage = this.webview.convertFileSrc(imagePath);
-      this.imageReady = true;
+      this.postImage = this.webview.convertFileSrc(imagePath);
+      console.log('capturePostImage');
+      console.log(this.postImage);
+      this.postImageReady = true;
       // Upload image
       this.imageID = this.makeid(60);
       // console.log(this.imageID);
-      this.uploadPostImage(this.profileImage, this.imageID);
+      this.uploadPostImage(this.postImage, this.imageID);
     });
   }
 
@@ -328,7 +330,9 @@ export class ProfilePage implements OnInit {
         imageRef.putString(image64, 'data_url')
         .then(snapshot => {
           resolve(snapshot.downloadURL);
-          this.profileImage = snapshot.downloadURL;
+          this.postImage = snapshot.downloadURL;
+          console.log('uploadPostImage');
+          console.log(this.postImage);
         }, err => {
           reject(err);
         })
@@ -442,6 +446,8 @@ export class ProfilePage implements OnInit {
     profileImage.subscribe(result => {
       // this.profileImage = result;
       // this.imageReady = true;
+      // this.postImage = result;
+      // this.postImageReady = true;
       // console.log('counter', counter);
       // console.log(result);
       this.myPosts[counter].Image = result;

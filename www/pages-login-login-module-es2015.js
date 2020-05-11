@@ -154,7 +154,7 @@ let LoginPage = class LoginPage {
     }
     navigateByRole(role) {
         if (role === 'USER') {
-            this.router.navigateByUrl('/user/feed');
+            this.router.navigateByUrl('/user/profile');
         }
     }
     login() {
