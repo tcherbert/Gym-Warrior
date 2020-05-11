@@ -39,7 +39,7 @@
           <ion-item *ngFor ="let friend of friendsData">
             <div class="imageBg" [ngStyle]="{'background-image':'url('+friend.image+')'}"></div>
               <p>{{friend.fname}} {{friend.lname}}</p>
-              <ion-button (click)="removeFriend(friend.id)">Remove Member</ion-button>
+              <ion-button *ngIf="adminFlag" (click)="removeFriend(friend.id)">Remove Member</ion-button>
           </ion-item> 
         </ion-list>
       </section>

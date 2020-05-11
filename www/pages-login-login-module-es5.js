@@ -160,7 +160,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage.prototype.navigateByRole = function (role) {
         if (role === 'USER') {
-            this.router.navigateByUrl('/user/feed');
+            this.router.navigateByUrl('/user/profile');
         }
     };
     LoginPage.prototype.login = function () {

@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ActivatedRoute } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class GymMembersPage implements OnInit {
   searchTerm = {};
   public filteredFriends: any;
   gymID: string;
+  adminFlag: boolean;
 
 
   constructor(
@@ -31,12 +33,14 @@ export class GymMembersPage implements OnInit {
     private postCrudService: PostCrudService,
     private db: AngularFirestore,
     private storage: AngularFireStorage,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private afAuth: AngularFireAuth
 
   ) {
     this.findFriends = false;
     this.friendsReady = false;
     this.toggleFindFriendsFlag = false;
+    this.adminFlag = false;
   }
 
   ngOnInit() {
@@ -67,7 +71,6 @@ export class GymMembersPage implements OnInit {
 
 
   async getUserData() {
-
     this.friendsData = [];
     this.friendsCounter = 0;
     let friendsIdsLength;
@@ -230,6 +233,27 @@ export class GymMembersPage implements OnInit {
         }
     }
     return true;
+  }
+
+  async getGymData() {
+    const id = this.afAuth.auth.currentUser.uid;
+    const userData = await this.db.collection('gyms')
+      .doc(this.gymID)
+      .ref
+      .get().then( doc => {
+        if (doc.exists) {
+          // this.gymData = doc.data().name;
+          // this.gymAdminID = doc.id;
+          if (doc.data().admins.includes(id)) {
+            this.adminFlag = true;
+          } else {
+            // this.gymMemberFlag = true;
+          }
+        } else {
+            // this.gymFlag = false;
+            // this.noGymFlag = true;
+        }
+      });
   }
 
 }

@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ion-app>\n  <ion-content overflow-scroll=\"true\">\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/feed\">Feed</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/profile\">Profile</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym-admin/{{gymID}}\">Gym Admin</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n                <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n              </ion-button>\n            </ion-item>\n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <a href=\"user/feed\">\n              <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n              </a>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n    <main>\n      <section>\n        <p>Current Members</p>\n        <ion-list class=\"friends\" *ngIf=\"friendsReady\">\n          <ion-item *ngFor =\"let friend of friendsData\">\n            <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+friend.image+')'}\"></div>\n              <p>{{friend.fname}} {{friend.lname}}</p>\n              <ion-button (click)=\"removeFriend(friend.id)\">Remove Member</ion-button>\n          </ion-item> \n        </ion-list>\n      </section>\n    </main>\n  </ion-content>\n</ion-app>"
+module.exports = "<ion-app>\n  <ion-content overflow-scroll=\"true\">\n    <ion-menu contentId=\"main\" side=\"end\" class=\"navMenu\">\n        <ion-content>\n          <ion-list>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\"  href=\"/user/feed\">Feed</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/profile\">Profile</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button class=\"navButton\" fill=\"clear\" href=\"/user/gym-admin/{{gymID}}\">Gym Admin</ion-button>\n            </ion-item>\n            <ion-item>\n              <ion-button (click)=\"signOut()\" class=\"signOutButton\">\n                <ion-icon slot=\"icon-only\" name=\"log-out\"></ion-icon>\n              </ion-button>\n            </ion-item>\n          </ion-list>\n        </ion-content>\n      </ion-menu>\n      <div id=\"main\">\n        <ion-header>\n          <ion-toolbar>\n            <ion-buttons slot=\"end\">\n              <ion-menu-button></ion-menu-button>\n            </ion-buttons>\n            <a href=\"user/feed\">\n              <ion-img class=\"logo\" src=\"../../assets/logo.png\"></ion-img>\n              </a>\n          </ion-toolbar>\n        </ion-header>\n      </div>   \n    <main>\n      <section>\n        <p>Current Members</p>\n        <ion-list class=\"friends\" *ngIf=\"friendsReady\">\n          <ion-item *ngFor =\"let friend of friendsData\">\n            <div class=\"imageBg\" [ngStyle]=\"{'background-image':'url('+friend.image+')'}\"></div>\n              <p>{{friend.fname}} {{friend.lname}}</p>\n              <ion-button *ngIf=\"adminFlag\" (click)=\"removeFriend(friend.id)\">Remove Member</ion-button>\n          </ion-item> \n        </ion-list>\n      </section>\n    </main>\n  </ion-content>\n</ion-app>"
 
 /***/ }),
 
@@ -118,6 +118,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/fire/firestore */ "./node_modules/@angular/fire/firestore/es2015/index.js");
 /* harmony import */ var _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/fire/storage */ "./node_modules/@angular/fire/storage/es2015/index.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/fire/auth */ "./node_modules/@angular/fire/auth/es2015/index.js");
+
 
 
 
@@ -126,12 +128,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let GymMembersPage = class GymMembersPage {
-    constructor(auth, postCrudService, db, storage, route) {
+    constructor(auth, postCrudService, db, storage, route, afAuth) {
         this.auth = auth;
         this.postCrudService = postCrudService;
         this.db = db;
         this.storage = storage;
         this.route = route;
+        this.afAuth = afAuth;
         this.friendsIds = {};
         this.friendsData = [];
         this.friendsCounter = 0;
@@ -141,6 +144,7 @@ let GymMembersPage = class GymMembersPage {
         this.findFriends = false;
         this.friendsReady = false;
         this.toggleFindFriendsFlag = false;
+        this.adminFlag = false;
     }
     ngOnInit() {
         this.gymID = this.route.snapshot.params.id;
@@ -322,13 +326,38 @@ let GymMembersPage = class GymMembersPage {
         }
         return true;
     }
+    getGymData() {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const id = this.afAuth.auth.currentUser.uid;
+            const userData = yield this.db.collection('gyms')
+                .doc(this.gymID)
+                .ref
+                .get().then(doc => {
+                if (doc.exists) {
+                    // this.gymData = doc.data().name;
+                    // this.gymAdminID = doc.id;
+                    if (doc.data().admins.includes(id)) {
+                        this.adminFlag = true;
+                    }
+                    else {
+                        // this.gymMemberFlag = true;
+                    }
+                }
+                else {
+                    // this.gymFlag = false;
+                    // this.noGymFlag = true;
+                }
+            });
+        });
+    }
 };
 GymMembersPage.ctorParameters = () => [
     { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_2__["AuthService"] },
     { type: _services_firestore_api_service__WEBPACK_IMPORTED_MODULE_3__["PostCrudService"] },
     { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"] },
     { type: _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__["AngularFireStorage"] },
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"] }
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"] },
+    { type: _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__["AngularFireAuth"] }
 ];
 GymMembersPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -340,7 +369,8 @@ GymMembersPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         _services_firestore_api_service__WEBPACK_IMPORTED_MODULE_3__["PostCrudService"],
         _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_4__["AngularFirestore"],
         _angular_fire_storage__WEBPACK_IMPORTED_MODULE_5__["AngularFireStorage"],
-        _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"]])
+        _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"],
+        _angular_fire_auth__WEBPACK_IMPORTED_MODULE_7__["AngularFireAuth"]])
 ], GymMembersPage);
 
 
